@@ -46,13 +46,14 @@ Tasks
 - NPM (ja używam 11.6.1)
 ### Uruchomienie
 1. sklonuj repozytorium `git clone`
-2. `npm install` - zainstaluj paczki
-3. utwórz plik `.env` w folderze `/backend` i dodaj w nim dwie linijki:
+2. przejdź do folderu `/backend`
+3. `npm install` - zainstaluj paczki
+4. utwórz plik `.env` w folderze `/backend` i dodaj w nim dwie linijki:
 ```
 PORT=5000 #lub inny port
 NODE_ENV=development
 ```
-4. `npm run dev` - włącz serwer
+5. `npm run dev` - włącz serwer
 ### Docker
 **coming soon**
 ### Postman

@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "superkanban_api",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

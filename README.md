@@ -39,3 +39,22 @@ Tasks
 `PUT /api/projects/:projectId/tasks/:taskId` - zmien szczegóły zadania (jeżeli jesteś właścicielem)
 
 `DELETE /api/projects/:projectId/tasks/:taskId` - usuń zadanie (jeżeli jesteś właścicielem)
+
+## Development
+### Wymagania
+- Node (ja używam v24.11.0)
+- NPM (ja używam 11.6.1)
+### Uruchomienie
+1. sklonuj repozytorium `git clone`
+2. `npm install` - zainstaluj paczki
+3. utwórz plik `.env` w folderze `/backend` i dodaj w nim dwie linijki:
+```
+PORT=5000 #lub inny port
+NODE_ENV=development
+```
+4. `npm run dev` - włącz serwer
+### Docker
+**coming soon**
+### Postman
+Zamiast Postmana używamy [Bruno](https://www.usebruno.com/).
+Otwieramy folder [bruno](./backend/bruno/) jako kolekcję w programie Bruno. Testy dodawane w programie będą zapisywane w strukturze projektu.

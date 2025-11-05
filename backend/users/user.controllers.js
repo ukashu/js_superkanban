@@ -39,8 +39,6 @@ export const findUsers = (req, res) => {
     let email = String(req.query.email)
     email = email.toLowerCase()
 
-    console.log({email})
-
     const matchingUsers = mockUsers.filter((item)=>{
         return item.email.includes(email)
     })

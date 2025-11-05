@@ -3,39 +3,39 @@
 ## API plan
 Session
 ---
-`POST /register`
-`POST /login`
+`POST /api/register`
+`POST /api/login`
 
-`GET /` - ekran startowy, niezalogowanych przenieś na `/login`, zalogowanych na `/users/:userId`
+`GET /` - ekran startowy, niezalogowanych przenieś na `/api/login`, zalogowanych na `/api/users/:userId`
 
 Projects
 ---
-`GET /projects?filters` - wyświetl wszystkie projekty których jestem właścicielem lub do których jestem przypisany
+`GET /api/projects?filters` - wyświetl wszystkie projekty których jestem właścicielem lub do których jestem przypisany
 
-`POST /projects` - dodaj nowy projekt
+`POST /api/projects` - dodaj nowy projekt
 
-`PUT /projects/:projectId` - edytuj szczegóły projektu (jako właściciel lub admin)
+`PUT /api/projects/:projectId` - edytuj szczegóły projektu (jako właściciel lub admin)
 
-`DELETE /projects/:projectId` - usuń projekt (jako właściciel lub admin)
+`DELETE /api/projects/:projectId` - usuń projekt (jako właściciel lub admin)
 
 Users
 ---
-`GET /users?email=` - wyszukiwanie użytkownika
+`GET /api/users?email=` - wyszukiwanie użytkownika
 
-`GET /users/:userId` - profil użytkownika
+`GET /api/users/:userId` - profil użytkownika
 
-`PUT /users/:userId` - zmień szczegóły konta użytkownika (jako użytkownik lub admin)
+`PUT /api/users/:userId` - zmień szczegóły konta użytkownika (jako użytkownik lub admin)
 
-`DELETE /users/:userId` - usuń użytkownika (jako użytkownik lub admin)
+`DELETE /api/users/:userId` - usuń użytkownika (jako użytkownik lub admin)
 
-`GET /users/:userId/tasks?filtering` - zobacz wszystkie zadania dla użytkownika (jako użytkownik lub admin)
+`GET /api/users/:userId/tasks?filtering` - zobacz wszystkie zadania dla użytkownika (jako użytkownik lub admin)
 
 Tasks
 ---
-`GET /projects/:projectId/tasks` - zobacz wszystkie zadania dla projektu (jeżeli jesteś członkiem)
+`GET /api/projects/:projectId/tasks` - zobacz wszystkie zadania dla projektu (jeżeli jesteś członkiem)
 
-`POST /projects/:projectId/tasks` - dodaj zadanie do projektu (jeżeli jesteś właścicielem)
+`POST /api/projects/:projectId/tasks` - dodaj zadanie do projektu (jeżeli jesteś właścicielem)
 
-`PUT /projects/:projectId/tasks/:taskId` - zmien szczegóły zadania (jeżeli jesteś właścicielem)
+`PUT /api/projects/:projectId/tasks/:taskId` - zmien szczegóły zadania (jeżeli jesteś właścicielem)
 
-`DELETE /projects/:projectId/tasks/:taskId` - usuń zadanie (jeżeli jesteś właścicielem)
+`DELETE /api/projects/:projectId/tasks/:taskId` - usuń zadanie (jeżeli jesteś właścicielem)

@@ -6,6 +6,8 @@ import projectRoutes from "./projects/project.routes.js"
 const app = express()
 const PORT = Number(process.env.PORT) || 5000;
 
+app.use(express.json());
+
 app.get("/", (req, res)=>{
     res.send("API is running...")
 })

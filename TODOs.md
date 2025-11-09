@@ -13,10 +13,10 @@
     - [ ] `PUT /api/projects/:projectId/tasks/:taskId`
     - [ ] `DELETE /api/projects/:projectId/tasks/:taskId`
 ### Ola
-- [ ] utworzyć ścieżki, kontrolery i testy Bruno związane z [projektami](./README.md#projects) (bez funkcjonalności, wejście w ścieżkę wyświetla komunikat typu "Hello, world")
-    - [ ] `POST /api/projects`
-    - [ ] `PUT /api/projects/:projectId`
-    - [ ] `DELETE /api/projects/:projectId`
+- [x] utworzyć ścieżki, kontrolery i testy Bruno związane z [projektami](./README.md#projects) (bez funkcjonalności, wejście w ścieżkę wyświetla komunikat typu "Hello, world")
+    - [x] `POST /api/projects`
+    - [x] `PUT /api/projects/:projectId`
+    - [x] `DELETE /api/projects/:projectId`
 
 **Wskazówka**
 - Wykonując zadania wzorujcie się tym co ja już zrobiłem. Postanowiłem zmienić strukturę folderów w stosunku do tego co było pokazane na wykładzie - zamiast tworzyć oddzielny folder na kontrolery, oddzielny na routery itp. grupuję kontrolery, routery i inne związane z użytkownikami w folderze `/users`, wy stworzycie foldery `/projects` i `/tasks`.

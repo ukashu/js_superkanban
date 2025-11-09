@@ -1,5 +1,5 @@
 import express from "express"
-import {createProject, editProject, deleteProject} from "./project.controllers.js"
+import {getProjects, createProject, editProject, deleteProject} from "./project.controllers.js"
 
 const router = express.Router({mergeParams: true})
 
@@ -8,6 +8,7 @@ router.route("/:projectId")
 .delete(deleteProject)
 
 router.route("/")
+.get(getProjects)
 .post(createProject)
 
 export default router

@@ -1,0 +1,13 @@
+meta {
+  name: Delete Task
+  type: http
+  seq: 4
+}
+
+request {
+  method: DELETE
+  url: http://localhost:5000/api/projects/1/tasks/2
+  headers {
+    Content-Type: application/json
+  }
+}

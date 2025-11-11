@@ -1,0 +1,17 @@
+meta {
+  name: Update Task
+  type: http
+  seq: 3
+}
+
+request {
+  method: PUT
+  url: http://localhost:5000/api/projects/1/tasks/2
+  headers {
+    Content-Type: application/json
+  }
+
+  body:json {
+    "title": "Zaktualizowane zadanie"
+  }
+}

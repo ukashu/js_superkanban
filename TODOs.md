@@ -33,7 +33,6 @@
 - [ ] zinicjalizować projekt Vue
 - [ ] zaprogramować w Vue stronę wyświetlającą informacje o użytkowniku pobrane z endpointa `GET /api/users/:userId`
 ### Wiktoria
-- [ ] zaprojektować strukturę bazy danych
 - [ ] zmienić backendowe ścieżki powiązane z taskami na korzystające z bazy danych zamiast z mockowej tablicy w kodzie
     - [ ] dodać walidację
 - [ ] zaprogramować w Vue stronę wyświetlającą taski pobrane z endpointa `GET /api/projects/:projectId`

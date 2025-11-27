@@ -8,7 +8,7 @@ export const getUserProfile = (req, res) => {
         res.status(404).json({message:"Not found"})
     }
 
-    res.status(200).json({message: "Query succesful", data: mockUsers[userId-1]})
+    res.status(200).json({success: true, message: "Query succesful", data: mockUsers[userId-1]})
 }
 
 export const deleteUser = (req, res) => {
@@ -16,12 +16,12 @@ export const deleteUser = (req, res) => {
 
     // user not found
     if (mockUsers.length < userId) {
-        res.status(404).json({message:"Not found"})
+        res.status(404).json({success: false, message:"Not found"})
     }
 
     mockUsers.splice(userId-1, 1)
 
-    res.status(200).json({message: "Query succesful", userId: userId})
+    res.status(200).json({success: true, message: "Query succesful", userId: userId})
 }
 
 export const editUser = (req, res) => {
@@ -29,10 +29,10 @@ export const editUser = (req, res) => {
 
     // user not found
     if (mockUsers.length < userId) {
-        res.status(404).json({message:"Not found"})
+        res.status(404).json({success: false, message:"Not found"})
     }
 
-    res.status(200).json({message: "Query succesful", userId: userId})
+    res.status(200).json({success: true, message: "Query succesful", userId: userId})
 }
 
 export const findUsers = (req, res) => {
@@ -44,9 +44,8 @@ export const findUsers = (req, res) => {
     })
 
     if (matchingUsers.length) {
-        res.status(200).json({message: "Query succesful", users: matchingUsers})
+        res.status(200).json({success: true, message: "Query succesful", users: matchingUsers})
     } else {
-        res.status(404).json({message: "Not found"})
+        res.status(404).json({success: false, message: "Not found"})
     }
-
 }

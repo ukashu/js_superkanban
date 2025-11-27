@@ -2,6 +2,7 @@ import express from "express"
 import errorHandler from "./middleware/error.middleware.js"
 import userRoutes from "./users/user.routes.js"
 import projectRoutes from "./projects/project.routes.js"
+import db from "./db/dbInit.js"
 
 const app = express()
 const PORT = Number(process.env.PORT) || 5000;

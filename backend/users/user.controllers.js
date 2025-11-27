@@ -1,4 +1,4 @@
-import { dbGet, dbRun } from "../db/db.js"
+import { dbGet, dbRun, dbAll } from "../db/db.js"
 
 const mockUsers = [{name: "JD", email: "johndoe@email.com"}, {name: "JK", email: "jankowalski@email.com"}]
 
@@ -35,52 +35,84 @@ export const deleteUser = async (req, res) => {
     const userId = Number(req.params.userId)
 
     try {
-        const user = await dbRun(
+        const dbResult = await dbRun(
             "DELETE FROM users WHERE user_id = ?",
             userId
         )
 
-        if (!user) {
+        if (!dbResult) {
             res.status(404).json({
                 success: false,
-                message: "Not found"
+                message: "User not found"
             })
         }
 
         res.status(200).json({
             success: true,
             message: "Query succesful",
-            data: {
-                user
-            }
+            data: { dbResult }
         })
     } catch (err) {
         throw new Error(err)
     }
 }
 
-export const editUser = (req, res) => {
+export const editUser = async (req, res) => {
     const userId = Number(req.params.userId)
+    const { name, email, password, is_admin } = req_body
 
-    // user not found
-    if (mockUsers.length < userId) {
-        res.status(404).json({success: false, message:"Not found"})
+    try {
+        // TODO add updating partially
+        const dbResult = await dbRun(
+            `UPDATE users
+            SET name = ?, email = ?, password = ?, is_admin = ?
+            WHERE user_id = ?`,
+            [name, email, password, is_admin, userId]
+        )
+
+        if (dbResult.changes === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "User updated successfully",
+            data: { userId }
+        })
+    } catch (err) {
+        throw new Error(err)
     }
-
-    res.status(200).json({success: true, message: "Query succesful", userId: userId})
 }
 
-export const findUsers = (req, res) => {
-    let email = String(req.query.email)
-    email = email.toLowerCase()
+export const findUsers = async (req, res) => {
+    try {
+        let email = String(req.query.email)
+        if (!email) {
+            return res.status(400).json({ success: false, message: "Email query required" })
+        }
+        email = email.toLowerCase()
 
-    const matchingUsers = mockUsers.filter((item)=>{
-        return item.email.includes(email)
-    })
+        const users = await dbAll(
+            `SELECT user_id, name, email, is_admin
+            FROM users
+            WHERE LOWER(email) LIKE ?`,
+            [`%${email}%`]
+        )
 
-    if (matchingUsers.length) {
-        res.status(200).json({success: true, message: "Query succesful", users: matchingUsers})
-    } else {
-        res.status(404).json({success: false, message: "Not found"})
+        if (users.length === 0) {
+            return res.status(404).json({ success: false, message: "No users found" })
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Query successful",
+            data: users
+        })
+
+    } catch (err) {
+        throw new Error(err)
     }
 }

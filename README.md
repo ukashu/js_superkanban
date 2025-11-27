@@ -44,7 +44,7 @@ Tasks
 ### Wymagania
 - Node (ja używam v24.11.0)
 - NPM (ja używam 11.6.1)
-### Uruchomienie
+### Uruchomienie backendu
 1. sklonuj repozytorium `git clone`
 2. przejdź do folderu `/backend`
 3. `npm install` - zainstaluj paczki
@@ -54,6 +54,10 @@ PORT=5000 #lub inny port
 NODE_ENV=development
 ```
 5. `npm run dev` - włącz serwer
+### Uruchomienie serwera Vite (frontend)
+1. przejdź do folderu `/client`
+2. `npm install`
+3. `npm run dev`
 ### Docker
 **coming soon**
 ### Postman

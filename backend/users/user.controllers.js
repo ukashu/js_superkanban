@@ -12,14 +12,14 @@ export const getUserById = async (req, res) => {
         )
 
         if (!user) {
-            res.status(404).json({
+            return res.status(404).json({
                 success: false,
                 message: "Not found"
             })
         }
 
         // TODO we do not want to return is_admin in the response
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Query succesful",
             data: {
@@ -41,13 +41,13 @@ export const deleteUser = async (req, res) => {
         )
 
         if (!dbResult) {
-            res.status(404).json({
+            return res.status(404).json({
                 success: false,
                 message: "User not found"
             })
         }
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Query succesful",
             data: { dbResult }
@@ -106,7 +106,7 @@ export const findUsers = async (req, res) => {
             return res.status(404).json({ success: false, message: "No users found" })
         }
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Query successful",
             data: users

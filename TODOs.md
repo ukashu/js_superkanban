@@ -38,5 +38,5 @@
 - [ ] zaprogramować w Vue stronę wyświetlającą taski pobrane z endpointa `GET /api/projects/:projectId`
 ### Ola
 - [ ] zmienić backendowe ścieżki powiązane z projektami na korzystające z bazy danych zamiast z mockowej tablicy w kodzie
-    - [ ] dodać walidację
+    - [ ] dodać walidację używając express-validator
 - [ ] zaprogramować w Vue stronę wyświetlającą projekty pobrane z endpointa `GET /api/projects/:projectId`

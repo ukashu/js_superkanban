@@ -1,0 +1,24 @@
+meta {
+  name: add task
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:5000/api/projects/:projectId/tasks
+  body: json
+  auth: inherit
+}
+
+params:path {
+  projectId: 1
+}
+
+body:json {
+  {"title":"Titel","description":"desc","status":"BACKLOG","assignee_id":1}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

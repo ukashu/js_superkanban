@@ -26,11 +26,11 @@
 
 ## Na zjazd 6
 ### Łukasz
-- [ ] podłączyć do backendu bazę danych
-- [ ] zaprogramować inicjalizację bazy danych, wraz z dodaniem danych przykładowych
+- [x] podłączyć do backendu bazę danych
+- [x] zaprogramować inicjalizację bazy danych, wraz z dodaniem danych przykładowych
 - [ ] zmienić backendowe ścieżki powiązane z użytkownikami na korzystające z bazy danych zamiast z mockowej tablicy w kodzie
     - [ ] dodać walidację
-- [ ] zinicjalizować projekt Vue
+- [x] zinicjalizować projekt Vue
 - [ ] zaprogramować w Vue stronę wyświetlającą informacje o użytkowniku pobrane z endpointa `GET /api/users/:userId`
 ### Wiktoria
 - [ ] zmienić backendowe ścieżki powiązane z taskami na korzystające z bazy danych zamiast z mockowej tablicy w kodzie

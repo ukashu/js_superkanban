@@ -1,17 +1,17 @@
 ## Na zjazd 4
 ### Łukasz
-- [ ] utworzyć ścieżki i kontrolery związane z użytkownikami
+- [ ] utworzyć ścieżki, kontrolery i testy Bruno związane z użytkownikami
     - [x] `GET /api/users?email=`
     - [x] `GET /api/users/:userId`
     - [x] `PUT /api/users/:userId`
     - [x] `DELETE /api/users/:userId`
     - [ ] `GET /api/users/:userId/tasks?filtering`
 ### Wiktoria
-- [ ] utworzyć ścieżki, kontrolery i testy Bruno związane z [taskami](./README.md#tasks) (bez funkcjonalności, wejście w ścieżkę wyświetla komunikat typu "Hello, world")
-    - [ ] `GET /api/projects/:projectId/tasks`
-    - [ ] `POST /api/projects/:projectId/tasks`
-    - [ ] `PUT /api/projects/:projectId/tasks/:taskId`
-    - [ ] `DELETE /api/projects/:projectId/tasks/:taskId`
+- [x] utworzyć ścieżki, kontrolery i testy Bruno związane z [taskami](./README.md#tasks) (bez funkcjonalności, wejście w ścieżkę wyświetla komunikat typu "Hello, world")
+    - [x] `GET /api/projects/:projectId/tasks`
+    - [x] `POST /api/projects/:projectId/tasks`
+    - [x] `PUT /api/projects/:projectId/tasks/:taskId`
+    - [x] `DELETE /api/projects/:projectId/tasks/:taskId`
 ### Ola
 - [x] utworzyć ścieżki, kontrolery i testy Bruno związane z [projektami](./README.md#projects) (bez funkcjonalności, wejście w ścieżkę wyświetla komunikat typu "Hello, world")
     - [x] `POST /api/projects`
@@ -23,3 +23,21 @@
 - instrukcja uruchomienia w [README.md](./README.md#development)
 - zamiast Postmana używamy Bruno do testowania API, instrukcja w [README.md](./README.md#postman)
 - proponuję aby każdy swoje zadania robił na oddzielnych branchach
+
+## Na zjazd 6
+### Łukasz
+- [ ] podłączyć do backendu bazę danych
+- [ ] zaprogramować inicjalizację bazy danych, wraz z dodaniem danych przykładowych
+- [ ] zmienić backendowe ścieżki powiązane z użytkownikami na korzystające z bazy danych zamiast z mockowej tablicy w kodzie
+    - [ ] dodać walidację
+- [ ] zinicjalizować projekt Vue
+- [ ] zaprogramować w Vue stronę wyświetlającą informacje o użytkowniku pobrane z endpointa `GET /api/users/:userId`
+### Wiktoria
+- [ ] zaprojektować strukturę bazy danych
+- [ ] zmienić backendowe ścieżki powiązane z taskami na korzystające z bazy danych zamiast z mockowej tablicy w kodzie
+    - [ ] dodać walidację
+- [ ] zaprogramować w Vue stronę wyświetlającą taski pobrane z endpointa `GET /api/projects/:projectId`
+### Ola
+- [ ] zmienić backendowe ścieżki powiązane z projektami na korzystające z bazy danych zamiast z mockowej tablicy w kodzie
+    - [ ] dodać walidację
+- [ ] zaprogramować w Vue stronę wyświetlającą projekty pobrane z endpointa `GET /api/projects/:projectId`

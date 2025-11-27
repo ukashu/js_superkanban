@@ -1,10 +1,10 @@
 import express from "express"
-import {getUserProfile, deleteUser, editUser, findUsers} from "./user.controllers.js"
+import {getUserById, deleteUser, editUser, findUsers} from "./user.controllers.js"
 
 const router = express.Router({mergeParams: true})
 
 router.route("/:userId")
-.get(getUserProfile)
+.get(getUserById)
 .delete(deleteUser)
 .put(editUser)
 

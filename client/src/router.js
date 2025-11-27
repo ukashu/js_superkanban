@@ -4,7 +4,7 @@ import UserHomePage from './views/UserHomePage.vue'
 import ProjectPage from './views/ProjectPage.vue'
 
 const routes = [
-    { path: '/users', component: UserHomePage },
+    { path: '/users/:userId', component: UserHomePage },
     { path: '/projects/:projectId', component: ProjectPage },
 ]
 

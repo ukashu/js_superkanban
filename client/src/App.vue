@@ -2,10 +2,9 @@
 </script>
 
 <template>
-    <p><strong>Current route path:</strong> {{ $route.fullPath }}</p>
-    <nav>
-        <RouterLink to="/users">Go to User</RouterLink>
-        <RouterLink to="/projects/:projectId">Go to Project</RouterLink>
+    <nav className="navbar">
+        <RouterLink to="/users/1">Go to User</RouterLink>
+        <RouterLink to="/projects/1">Go to Project</RouterLink>
     </nav>
     <main>
         <RouterView />

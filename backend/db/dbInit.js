@@ -43,24 +43,24 @@ async function initDatabase() {
         await runOrFail(db, `
             CREATE TABLE IF NOT EXISTS projects (
                 project_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                owner_id INTEGER NOT NULL,
+                owner_id INTEGER,
                 title TEXT NOT NULL,
                 description TEXT,
-                FOREIGN KEY (owner_id) REFERENCES users(user_id)
+                FOREIGN KEY (owner_id) REFERENCES users(user_id) ON DELETE SET NULL
             );
         `)
 
         await runOrFail(db, `
             CREATE TABLE IF NOT EXISTS tasks (
                 task_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                project_id INTEGER NOT NULL,
+                project_id INTEGER,
                 assignee_id INTEGER,
                 title TEXT NOT NULL,
                 description TEXT,
                 status TEXT CHECK (status IN ('BACKLOG','DOING','REVIEW','DONE')) DEFAULT 'BACKLOG',
                 assignment_date TEXT,
-                FOREIGN KEY (project_id) REFERENCES projects(project_id),
-                FOREIGN KEY (assignee_id) REFERENCES users(user_id)
+                FOREIGN KEY (project_id) REFERENCES projects(project_id) ON DELETE SET NULL,
+                FOREIGN KEY (assignee_id) REFERENCES users(user_id) ON DELETE SET NULL
             );
         `)
 

@@ -1,39 +1,123 @@
-const mockTasks = [
-  { title: "Task 1", description: "First task" },
-  { title: "Task 2", description: "Second task" },
-];
+import db from "../db/dbInit.js";
 
-export const getTasks = (req, res) => {
-  const projectId = Number(req.params.projectId);
-  res.status(200).json({
-    message: "Hello, world! (GET tasks)",
-    projectId,
-    data: mockTasks,
+const dbAll = (sql, params = []) =>
+  new Promise((resolve, reject) => {
+    db.all(sql, params, (err, rows) => {
+      if (err) reject(err);
+      else resolve(rows);
+    });
   });
+
+const dbGet = (sql, params = []) =>
+  new Promise((resolve, reject) => {
+    db.get(sql, params, (err, row) => {
+      if (err) reject(err);
+      else resolve(row);
+    });
+  });
+
+const dbRun = (sql, params = []) =>
+  new Promise((resolve, reject) => {
+    db.run(sql, params, function (err) {
+      if (err) reject(err);
+      else resolve(this);
+    });
+  });
+
+export const getTasks = async (req, res, next) => {
+  try {
+    const projectId = Number(req.params.projectId);
+
+    const tasks = await dbAll(
+      "SELECT * FROM tasks WHERE project_id = ? ORDER BY task_id ASC",
+      [projectId]
+    );
+
+    res.status(200).json(tasks);
+  } catch (err) {
+    next(err);
+  }
 };
 
-export const createTask = (req, res) => {
-  const projectId = Number(req.params.projectId);
-  res.status(200).json({
-    message: "Hello, world! (POST task)",
-    projectId,
-  });
+export const createTask = async (req, res, next) => {
+  try {
+    const projectId = Number(req.params.projectId);
+    const { title, description, status, assignee_id } = req.body;
+
+    if (!title || title.trim() === "") {
+      return res.status(400).json({ message: "Title is required" });
+    }
+
+    const allowedStatuses = ["BACKLOG", "DOING", "REVIEW", "DONE"];
+    if (status && !allowedStatuses.includes(status)) {
+      return res.status(400).json({ message: "Invalid status" });
+    }
+
+    const result = await dbRun(
+      `INSERT INTO tasks (project_id, assignee_id, title, description, status, assignment_date)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [
+        projectId,
+        assignee_id || null,
+        title,
+        description || null,
+        status || "BACKLOG",
+        new Date().toISOString(),
+      ]
+    );
+
+    const newTask = await dbGet("SELECT * FROM tasks WHERE task_id = ?", [
+      result.lastID,
+    ]);
+
+    res.status(201).json(newTask);
+  } catch (err) {
+    next(err);
+  }
 };
 
-export const updateTask = (req, res) => {
-  const { projectId, taskId } = req.params;
-  res.status(200).json({
-    message: "Hello, world! (PUT task)",
-    projectId,
-    taskId,
-  });
+export const updateTask = async (req, res, next) => {
+  try {
+    const { projectId, taskId } = req.params;
+    const { title, description, status, assignee_id } = req.body;
+
+    const allowedStatuses = ["BACKLOG", "DOING", "REVIEW", "DONE"];
+    if (status && !allowedStatuses.includes(status)) {
+      return res.status(400).json({ message: "Invalid status" });
+    }
+
+    await dbRun(
+      `UPDATE tasks
+       SET 
+         title = COALESCE(?, title),
+         description = COALESCE(?, description),
+         status = COALESCE(?, status),
+         assignee_id = COALESCE(?, assignee_id)
+       WHERE task_id = ? AND project_id = ?`,
+      [title, description, status, assignee_id, taskId, projectId]
+    );
+
+    const updatedTask = await dbGet("SELECT * FROM tasks WHERE task_id = ?", [
+      taskId,
+    ]);
+
+    res.status(200).json(updatedTask);
+  } catch (err) {
+    next(err);
+  }
 };
 
-export const deleteTask = (req, res) => {
-  const { projectId, taskId } = req.params;
-  res.status(200).json({
-    message: "Hello, world! (DELETE task)",
-    projectId,
-    taskId,
-  });
+export const deleteTask = async (req, res, next) => {
+  try {
+    const { projectId, taskId } = req.params;
+
+    await dbRun("DELETE FROM tasks WHERE task_id = ? AND project_id = ?", [
+      taskId,
+      projectId,
+    ]);
+
+    res.status(200).json({ message: "Task deleted" });
+  } catch (err) {
+    next(err);
+  }
 };

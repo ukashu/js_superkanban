@@ -2,7 +2,7 @@ import sqlite3 from "sqlite3"
 import fs from "fs"
 import path from "path"
 
-const DB_PATH = path.join(process.cwd(), "db", `${process.env.NODE_ENV === "production" ? "prodution.sqlite" : "test.sqlite"}`)
+const DB_PATH = path.join(process.cwd(), "db", `${process.env.NODE_ENV === "production" ? "production.sqlite" : "test.sqlite"}`)
 const DB_EXISTS = fs.existsSync(DB_PATH)
 
 // create /db folder

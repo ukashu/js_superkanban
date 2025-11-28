@@ -37,9 +37,9 @@
     - [ ] dodać walidację
 - [ ] zaprogramować w Vue stronę wyświetlającą taski pobrane z endpointa `GET /api/projects/:projectId`
 ### Ola
-- [ ] zmienić backendowe ścieżki powiązane z projektami na korzystające z bazy danych zamiast z mockowej tablicy w kodzie
-    - [ ] dodać walidację używając express-validator
-- [ ] zaprogramować w Vue stronę wyświetlającą projekty pobrane z endpointa `GET /api/projects/:projectId`
+- [x] zmienić backendowe ścieżki powiązane z projektami na korzystające z bazy danych zamiast z mockowej tablicy w kodzie
+- [x] dodać walidację używając express-validator
+- [x] zaprogramować w Vue stronę wyświetlającą projekty pobrane z endpointa `GET /api/projects/:projectId`
 
 **Wskazówki**
 - struktura bazy danych widoczna w pliku `/backend/db/dbInit.js`

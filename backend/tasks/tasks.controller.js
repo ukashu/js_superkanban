@@ -9,7 +9,20 @@ export const getTasks = async (req, res, next) => {
       [projectId]
     );
 
-    res.status(200).json(tasks);
+    if (!tasks) {
+        return res.status(404).json({
+            success: false,
+            message: "Not found"
+        })
+    }
+
+    return res.status(200).json({
+        success: true,
+        message: "Query succesful",
+        data: {
+            tasks
+        }
+    })
   } catch (err) {
     next(err);
   }
@@ -62,7 +75,7 @@ export const updateTask = async (req, res, next) => {
       return res.status(400).json({ message: "Invalid status" });
     }
 
-    await dbRun(
+    const dbResult = await dbRun(
       `UPDATE tasks
        SET 
          title = COALESCE(?, title),
@@ -73,11 +86,18 @@ export const updateTask = async (req, res, next) => {
       [title, description, status, assignee_id, taskId, projectId]
     );
 
-    const updatedTask = await dbGet("SELECT * FROM tasks WHERE task_id = ?", [
-      taskId,
-    ]);
+    if (dbResult.changes === 0) {
+        return res.status(404).json({
+            success: false,
+            message: "Task not found"
+        })
+    }
 
-    res.status(200).json(updatedTask);
+    return res.status(200).json({
+        success: true,
+        message: "Task updated successfully",
+        data: { taskId }
+    })
   } catch (err) {
     next(err);
   }
@@ -87,12 +107,24 @@ export const deleteTask = async (req, res, next) => {
   try {
     const { projectId, taskId } = req.params;
 
-    await dbRun("DELETE FROM tasks WHERE task_id = ? AND project_id = ?", [
+    const dbResult = await dbRun("DELETE FROM tasks WHERE task_id = ? AND project_id = ?", [
       taskId,
       projectId,
     ]);
 
-    res.status(200).json({ message: "Task deleted" });
+    if (!dbResult) {
+        return res.status(404).json({
+            success: false,
+            message: "Task not found"
+        })
+    }
+
+    return res.status(200).json({
+        success: true,
+        message: "Query succesful",
+        data: { dbResult }
+    })
+
   } catch (err) {
     next(err);
   }

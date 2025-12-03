@@ -43,3 +43,39 @@
 
 **Wskazówki**
 - struktura bazy danych widoczna w pliku `/backend/db/dbInit.js`
+
+## Na zjazd 7
+### Backlog
+- [ ] design interfejsu
+- [ ] stworzenie komponentów bez stylingu
+    - [ ] Task - task as displayed on a kanban board
+    - [ ] KanbanBoard
+    - [ ] Backlog - list of tasks in backlog for a project (more compact tasks)
+    - [ ] ProjectDetails popup showing project details, members and description
+    - [ ] TaskEdit popup with delete option
+    - [ ] ProjectEdit popup with delete option
+    - [ ] ProjectCreate popup component
+    - [ ] Task Create popup component
+    - [ ] UpcomingTasks component
+- [ ] stworzenie Viewsów
+    - [ ] User Account/Homepage view
+    - [ ] Project view
+- [ ] filtrowanie i sortowanie tasków po stronie backendu w `/projects/:projectId/tasks` oraz `/users/:userId/tasks`
+### Łukasz
+- [ ] zmienić fetche na stosujące Composables
+- [ ] rozwinąć UserHomePage
+    - [ ] stworzyć stronę zgodną z wireframe
+        - [ ] dane użytkownika
+        - [ ] możliwość edycji danych użytkownika
+        - [ ] nadchodzące terminy tasków
+        - [ ] kanban board ze wszystkimi taskami użytkownika jako Component (póki co bez drag and drop)
+- [ ] KanbanBoard component
+- [ ] Add new route getTasksForUser `/users/:userId/tasks`
+- [ ] Add new route getProjectsForUser `/users/:userId/projects`
+### Wiktoria
+- [ ] ProjectCreate popup component
+- [ ] Task Create popup component
+- [ ] UpcomingTasks component
+### Ola
+- [ ] Task component - task as displayed on a kanban board
+- [ ] filtrowanie i sortowanie tasków po stronie backendu w `/projects/:projectId/tasks` oraz `/users/:userId/tasks`

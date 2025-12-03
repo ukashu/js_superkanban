@@ -17,7 +17,7 @@ const db = new sqlite3.Database(DB_PATH, (err) => {
 })
 
 // db interation wrapper function for error handling
-function runOrFail(sb, sql, params = []) {
+function runOrFail(db, sql, params = []) {
     return new Promise((resolve, reject) => {
         db.run(sql, params, (err) => {
             if (err) return reject(err);

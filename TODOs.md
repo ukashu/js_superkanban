@@ -60,6 +60,8 @@
 - [ ] stworzenie Viewsów
     - [ ] User Account/Homepage view
     - [ ] Project view
+- [ ] Add new route getTasksForUser `/users/:userId/tasks`
+- [ ] Add new route getProjectsForUser `/users/:userId/projects` (always project owner first, project worker second)
 - [ ] filtrowanie i sortowanie tasków po stronie backendu w `/projects/:projectId/tasks` oraz `/users/:userId/tasks`
 ### Łukasz
 - [ ] zmienić fetche na stosujące Composables
@@ -70,12 +72,13 @@
         - [ ] nadchodzące terminy tasków
         - [ ] kanban board ze wszystkimi taskami użytkownika jako Component (póki co bez drag and drop)
 - [ ] KanbanBoard component
-- [ ] Add new route getTasksForUser `/users/:userId/tasks`
 - [ ] Add new route getProjectsForUser `/users/:userId/projects`
 ### Wiktoria
 - [ ] ProjectCreate popup component
 - [ ] Task Create popup component
 - [ ] UpcomingTasks component
+- [ ] TaskBacklog component
 ### Ola
 - [ ] Task component - task as displayed on a kanban board
+- [ ] Add new route getTasksForUser `/users/:userId/tasks`
 - [ ] filtrowanie i sortowanie tasków po stronie backendu w `/projects/:projectId/tasks` oraz `/users/:userId/tasks`

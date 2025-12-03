@@ -6,12 +6,16 @@ meta {
 
 put {
   url: http://localhost:5000/api/users/:userId
-  body: none
+  body: json
   auth: inherit
 }
 
 params:path {
   userId: 1
+}
+
+body:json {
+  {"email":"shiv@example.com"}
 }
 
 settings {

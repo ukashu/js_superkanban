@@ -1,4 +1,5 @@
 import { dbGet, dbRun, dbAll } from "../db/db.js"
+import { validationResult } from "express-validator"
 
 const mockUsers = [{name: "JD", email: "johndoe@email.com"}, {name: "JK", email: "jankowalski@email.com"}]
 
@@ -59,15 +60,24 @@ export const deleteUser = async (req, res) => {
 
 export const editUser = async (req, res) => {
     const userId = Number(req.params.userId)
-    const { name, email, password, is_admin } = req_body
+    // TODO restrict updating is_admin, restrict updating password
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return next(errors)
+    }
+
+    const { username, email, password, is_admin} = req.body
 
     try {
-        // TODO add updating partially
         const dbResult = await dbRun(
             `UPDATE users
-            SET name = ?, email = ?, password = ?, is_admin = ?
+            SET 
+                name = COALESCE(?, name),
+                email = COALESCE(?, email),
+                password = COALESCE(?, password),
+                is_admin = COALESCE(?, is_admin)
             WHERE user_id = ?`,
-            [name, email, password, is_admin, userId]
+            [username, email, password, is_admin, userId]
         )
 
         if (dbResult.changes === 0) {

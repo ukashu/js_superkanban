@@ -28,7 +28,12 @@ onMounted(async () => {
     const response = await fetch(
       `/api/projects/${projectId}/tasks`
     );
-    tasks.value = await response.json();
+    if (response.ok) {
+        const resJson = await response.json();
+        if (resJson.success) {
+            tasks.value = resJson.data.tasks
+        }
+    }
   } catch (err) {
     console.error("Błąd przy pobieraniu tasków:", err);
   } finally {

@@ -1,28 +1,58 @@
 import { dbAll, dbGet, dbRun } from "../db/db.js"
 
-export const getTasks = async (req, res, next) => {
+export const getTasksForProject = async (req, res, next) => {
   try {
     const projectId = Number(req.params.projectId);
+    const { sortBy, groupBy, assigneeName } = req.query;
 
-    const tasks = await dbAll(
-      "SELECT * FROM tasks WHERE project_id = ? ORDER BY task_id ASC",
-      [projectId]
-    );
+    let query = "SELECT t.*, u.name as assignee_name FROM tasks t LEFT JOIN users u ON t.assignee_id = u.user_id WHERE t.project_id = ?";
+    const params = [projectId];
+
+    if (assigneeName) {
+      query += " AND u.name LIKE ?";
+      params.push(`%${assigneeName}%`);
+    }
+
+    if (sortBy === "assignment_date") {
+      query += " ORDER BY t.assignment_date";
+    } else {
+      query += " ORDER BY t.task_id ASC";
+    }
+
+    const tasks = await dbAll(query, params);
 
     if (!tasks) {
-        return res.status(404).json({
-            success: false,
-            message: "Not found"
-        })
+      return res.status(404).json({
+        success: false,
+        message: "Not found",
+      });
+    }
+
+    if (groupBy === "assignee") {
+      const groupedTasks = tasks.reduce((acc, task) => {
+        const key = task.assignee_id || "unassigned";
+        if (!acc[key]) {
+          acc[key] = [];
+        }
+        acc[key].push(task);
+        return acc;
+      }, {});
+      return res.status(200).json({
+        success: true,
+        message: "Query successful",
+        data: {
+          tasks: groupedTasks,
+        },
+      });
     }
 
     return res.status(200).json({
-        success: true,
-        message: "Query succesful",
-        data: {
-            tasks
-        }
-    })
+      success: true,
+      message: "Query successful",
+      data: {
+        tasks,
+      },
+    });
   } catch (err) {
     next(err);
   }

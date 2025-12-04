@@ -1,5 +1,5 @@
 import express from "express"
-import {getUserById, deleteUser, editUser, findUsers} from "./user.controllers.js"
+import {getUserById, deleteUser, editUser, findUsers, getTasksForUser} from "./user.controllers.js"
 import { body } from "express-validator"
 
 const router = express.Router({mergeParams: true})
@@ -24,6 +24,9 @@ const validateUserDetails = [
         .isBoolean().withMessage("is_admin must be true or false")
         .toBoolean(),
 ]
+
+router.route("/:userId/tasks")
+.get(getTasksForUser)
 
 router.route("/:userId")
 .get(getUserById)

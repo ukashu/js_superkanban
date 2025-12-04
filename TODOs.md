@@ -86,9 +86,9 @@
 - [ ] AssignUserToTask component
     - komponent do którego przekazywany będzie taskId, komponent ma pobierać z serwera i wyświetlać listę wszystkich pracowników, użytkownik może wtedy wybrać jednego z pracowników i po kliknięciu przycisku "Confirm" zostaje przekazany request do backendu z edycją taska (przypisanie assignee_id i zmiana statusu)
 ### Ola
-- [ ] Task component - task as displayed on a kanban board
-- [ ] Add new backend route getTasksForUser `/users/:userId/tasks`
-- [ ] filtrowanie i sortowanie tasków po stronie backendu w `/projects/:projectId/tasks` oraz `/users/:userId/tasks`
+- [x] Task component - task as displayed on a kanban board
+- [x] Add new backend route getTasksForUser `/users/:userId/tasks`
+- [x] filtrowanie i sortowanie tasków po stronie backendu w `/projects/:projectId/tasks` oraz `/users/:userId/tasks`
     - w `/users/:userId/tasks` sortowanie po assignment date bez grupowania wg projektu i sortowanie po assignment date grupowane wg projektów
     - w `/projects/:projectId/tasks` sortowanie po assignment date bez grupowania wg assignee, sortowanie po assignment date grupowane wg assignee oraz szukanie tasków przypisanych do userName podanych w query stringu
 

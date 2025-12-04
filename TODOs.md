@@ -54,8 +54,10 @@
     - [ ] ProjectDetails popup showing project details, members and description
     - [ ] TaskEdit popup with delete option
     - [ ] ProjectEdit popup with delete option
+    - [ ] UserDetailsEdit popup with delete option
     - [ ] ProjectCreate popup component
     - [ ] Task Create popup component
+    - [ ] Assign user to task popup component
     - [ ] UpcomingTasks component
 - [ ] stworzenie Viewsów
     - [ ] User Account/Homepage view
@@ -72,13 +74,24 @@
         - [ ] nadchodzące terminy tasków
         - [ ] kanban board ze wszystkimi taskami użytkownika jako Component (póki co bez drag and drop)
 - [ ] KanbanBoard component
+- [ ] EditUserData popup component
 - [ ] Add new route getProjectsForUser `/users/:userId/projects`
 ### Wiktoria
-- [ ] ProjectCreate popup component
-- [ ] Task Create popup component
-- [ ] UpcomingTasks component
-- [ ] TaskBacklog component
+- [ ] CreateProject component
+    - komponent do stworzenia nowego projektu
+- [ ] CreateTask component
+    - komponent do stworzenia nowego taska dla projektu
+- [ ] ProjectBacklog component
+    - wyświetlanie listy tasków w backlogu (ze statusem "BACKLOG") dla projektu
+- [ ] AssignUserToTask component
+    - komponent do którego przekazywany będzie taskId, komponent ma pobierać z serwera i wyświetlać listę wszystkich pracowników, użytkownik może wtedy wybrać jednego z pracowników i po kliknięciu przycisku "Confirm" zostaje przekazany request do backendu z edycją taska (przypisanie assignee_id i zmiana statusu)
 ### Ola
 - [ ] Task component - task as displayed on a kanban board
 - [ ] Add new route getTasksForUser `/users/:userId/tasks`
 - [ ] filtrowanie i sortowanie tasków po stronie backendu w `/projects/:projectId/tasks` oraz `/users/:userId/tasks`
+    - w `/users/:userId/tasks` sortowanie po assignment date bez grupowania wg projektu i sortowanie po assignment date grupowane wg projektów
+    - w `/projects/:projectId/tasks` sortowanie po assignment date bez grupowania wg assignee, sortowanie po assignment date grupowane wg assignee oraz szukanie tasków przypisanych do userName podanych w query stringu
+
+**Notatki:**
+- [Link do designu w Figmie](https://www.figma.com/design/1r6ZqHKMTm72fui7hrXOy0/js_superkanban?node-id=0-1&t=D3vBu3EETGncnLhE-1)
+- póki co chodzi o stworzenie komponentów bez większego stylizowania

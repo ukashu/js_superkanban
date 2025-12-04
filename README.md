@@ -40,6 +40,9 @@ Tasks
 
 `DELETE /api/projects/:projectId/tasks/:taskId` - usuń zadanie (jeżeli jesteś właścicielem)
 
+## Design
+[Link do figmy](https://www.figma.com/design/1r6ZqHKMTm72fui7hrXOy0/js_superkanban?node-id=0-1&t=D3vBu3EETGncnLhE-1)
+
 ## Development
 ### Wymagania
 - Node (ja używam v24.11.0)

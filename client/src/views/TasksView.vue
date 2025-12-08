@@ -16,24 +16,20 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-
-// Ustaw na ID projektu jaki chcesz pobierać
-const projectId = 1;
+import { useRoute } from "vue-router";
 
 const tasks = ref([]);
 const loading = ref(true);
 
+const route = useRoute();
+const projectId = route.params.projectId;
+
 onMounted(async () => {
   try {
     const response = await fetch(
-      `/api/projects/${projectId}/tasks`
+      `http://localhost:5000/api/projects/${projectId}/tasks`
     );
-    if (response.ok) {
-        const resJson = await response.json();
-        if (resJson.success) {
-            tasks.value = resJson.data.tasks
-        }
-    }
+    tasks.value = await response.json();
   } catch (err) {
     console.error("Błąd przy pobieraniu tasków:", err);
   } finally {

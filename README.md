@@ -66,3 +66,6 @@ NODE_ENV=development
 ### Postman
 Zamiast Postmana używamy [Bruno](https://www.usebruno.com/).
 Otwieramy folder [bruno](./backend/bruno/) jako kolekcję w programie Bruno. Testy dodawane w programie będą zapisywane w strukturze projektu.
+### Prettier
+- w celu ustanowienia jednej konwencji formatu plików dodałem do projektu moduł "Prettier" z podstawową konfiguracją oraz włączyłem formatowanie przy zapisie dla projektu (ustawienie VSCode)
+    - aby korzystać z nowej funkcjonalności należy dodać do VSCode rozszerzenie [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) oraz wykonać komendę `npm install` w folderze `backend` oraz `client`

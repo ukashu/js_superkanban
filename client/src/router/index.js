@@ -1,17 +1,17 @@
-import { createRouter, createWebHistory } from "vue-router";
-import TasksView from "../views/TasksView.vue";
+import { createRouter, createWebHistory } from "vue-router"
+import TasksView from "../views/TasksView.vue"
 
 const routes = [
-  {
-    path: "/tasks",
-    name: "Tasks",
-    component: TasksView,
-  },
-];
+    {
+        path: "/tasks",
+        name: "Tasks",
+        component: TasksView,
+    },
+]
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes,
-});
+    history: createWebHistory(),
+    routes,
+})
 
-export default router;
+export default router

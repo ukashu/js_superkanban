@@ -1,5 +1,4 @@
-<script setup>
-</script>
+<script setup></script>
 
 <template>
     <nav className="navbar">
@@ -14,5 +13,4 @@
 
 <script setup></script>
 
-<style scoped>
-</style>
+<style scoped></style>

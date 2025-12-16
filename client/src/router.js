@@ -1,13 +1,13 @@
-import { createWebHistory, createRouter } from 'vue-router'
+import { createWebHistory, createRouter } from "vue-router"
 
-import UserHomePage from './views/UserHomePage.vue'
-import ProjectPage from './views/ProjectPage.vue'
+import UserHomePage from "./views/UserHomePage.vue"
+import ProjectPage from "./views/ProjectPage.vue"
 import TasksView from "./views/TasksView.vue"
 
 const routes = [
-    { path: '/users/:userId', component: UserHomePage },
-    { path: '/projects/:projectId', component: ProjectPage },
-    { path: '/projects/:projectId/tasks', component: TasksView }
+    { path: "/users/:userId", component: UserHomePage },
+    { path: "/projects/:projectId", component: ProjectPage },
+    { path: "/projects/:projectId/tasks", component: TasksView },
 ]
 
 export const router = createRouter({
@@ -15,4 +15,4 @@ export const router = createRouter({
     routes,
 })
 
-export default router;
+export default router

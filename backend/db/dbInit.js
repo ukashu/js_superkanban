@@ -87,14 +87,39 @@ async function initDatabase() {
             `)
 
             await runOrFail(db, `
+                INSERT INTO projects (owner_id, title, description)
+                VALUES (2, 'Second Project', 'Second Project Description');
+            `);
+
+            await runOrFail(db, `
                 INSERT INTO tasks (project_id, assignee_id, title, description, assignment_date)
-                VALUES (1, 1, 'Initial Task 1 Title', 'Initial Task 1 Desc', '${new Date().toISOString()}');
+                VALUES (1, 1, 'Initial Task 1 Title', 'Initial Task 1 Desc', '${new Date("2023-01-15").toISOString()}');
             `)
 
             await runOrFail(db, `
                 INSERT INTO tasks (project_id, assignee_id, title, description, assignment_date)
-                VALUES (1, 3, 'Initial Task 2 Title', 'Initial Task 2 Desc', '${new Date().toISOString()}');
+                VALUES (1, 3, 'Initial Task 2 Title', 'Initial Task 2 Desc', '${new Date("2023-01-16").toISOString()}');
             `)
+
+            await runOrFail(db, `
+                INSERT INTO tasks (project_id, assignee_id, title, description, assignment_date)
+                VALUES (1, 1, 'Another Task for User 1', 'Another Task Desc', '${new Date("2023-01-17").toISOString()}');
+            `);
+
+            await runOrFail(db, `
+                INSERT INTO tasks (project_id, assignee_id, title, description, assignment_date)
+                VALUES (1, 2, 'Task for User 2', 'Task for User 2 Desc', '${new Date("2023-01-18").toISOString()}');
+            `);
+
+            await runOrFail(db, `
+                INSERT INTO tasks (project_id, assignee_id, title, description, assignment_date)
+                VALUES (2, 1, 'Task for User 1 in Project 2', 'Task for User 1 in Project 2 Desc', '${new Date("2023-01-19").toISOString()}');
+            `);
+
+            await runOrFail(db, `
+                INSERT INTO tasks (project_id, assignee_id, title, description, assignment_date)
+                VALUES (2, 1, 'Another Task for User 1 in Project 2', 'Another Task for User 1 in Project 2 Desc', '${new Date("2023-01-20").toISOString()}');
+            `);
         }
 
     } catch (err) {

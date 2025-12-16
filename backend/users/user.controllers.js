@@ -129,3 +129,55 @@ export const findUsers = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getTasksForUser = async (req, res, next) => {
+    const { userId } = req.params
+    const { sortBy, groupBy } = req.query;
+    try {
+        let query = "SELECT t.*, p.title as project_name FROM tasks t JOIN projects p ON t.project_id = p.project_id WHERE t.assignee_id = ?";
+        const params = [userId];
+
+        if (sortBy === "assignment_date") {
+            query += " ORDER BY t.assignment_date";
+        } else {
+            query += " ORDER BY t.task_id ASC";
+        }
+
+        const tasks = await dbAll(query, params);
+
+        if (!tasks) {
+            return res.status(404).json({
+                success: false,
+                message: "Not found"
+            });
+        }
+
+        if (groupBy === "project") {
+            const groupedTasks = tasks.reduce((acc, task) => {
+                const key = task.project_id || "unassigned";
+                if (!acc[key]) {
+                    acc[key] = [];
+                }
+                acc[key].push(task);
+                return acc;
+            }, {});
+            return res.status(200).json({
+                success: true,
+                message: "Query successful",
+                data: {
+                    tasks: groupedTasks
+                }
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Query successful",
+            data: {
+                tasks
+            }
+        })
+    } catch (err) {
+        next(err)
+    }
+}

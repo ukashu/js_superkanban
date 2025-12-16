@@ -5,11 +5,7 @@
     <div v-if="loading">Ładowanie...</div>
 
     <div v-else>
-      <div v-for="task in tasks" :key="task.task_id" class="task-item">
-        <h3>{{ task.title }}</h3>
-        <p>{{ task.description }}</p>
-        <small>Status: {{ task.status }}</small>
-      </div>
+      <Task v-for="task in tasks" :key="task.task_id" :task="task" />
     </div>
   </div>
 </template>
@@ -17,6 +13,10 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import Task from "../components/Task.vue";
+
+// Ustaw na ID projektu jaki chcesz pobierać
+const projectId = 1;
 
 const tasks = ref([]);
 const loading = ref(true);

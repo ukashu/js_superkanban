@@ -1,0 +1,20 @@
+meta {
+  name: get tasks for project (filter by assigneeName)
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:5000/api/projects/:projectId/tasks?assigneeName=Shiv
+  body: none
+  auth: inherit
+}
+
+params:path {
+  projectId: 1
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

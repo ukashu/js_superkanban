@@ -1,6 +1,8 @@
 <script setup>
 import Task from "./Task.vue"
-import { ref, onMounted, computed } from "vue"
+import { ref, onMounted, computed, defineEmits } from "vue"
+
+defineEmits(["drop-task"])
 
 const props = defineProps({
     projectId: [Number, String],
@@ -47,7 +49,12 @@ onMounted(async () => {
 <template>
     <div v-if="loading">Loading tasks...</div>
     <div v-else-if="error" class="error">{{ error }}</div>
-    <div v-else-if="tasks">
+    <div
+        v-else-if="tasks"
+        class="kanban"
+        @dragover.prevent
+        @drop="$emit('drop-task')"
+    >
         <table>
             <tbody>
                 <tr>

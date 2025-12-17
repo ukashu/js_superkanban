@@ -2,7 +2,12 @@
     <div>
         <p>BACKLOG</p>
         <ul>
-            <li v-for="task in backlog">
+            <li
+                v-for="task in backlog"
+                :key="task.task_id"
+                draggable="true"
+                @dragstart="$emit('drag-task', task.task_id)"
+            >
                 {{ task.title }}
             </li>
         </ul>
@@ -10,8 +15,9 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue"
-import Task from "./Task.vue"
+import { ref, computed, onMounted, defineEmits } from "vue"
+
+defineEmits(["drag-task"])
 
 const props = defineProps({
     projectId: {

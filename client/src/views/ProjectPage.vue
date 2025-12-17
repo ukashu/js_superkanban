@@ -52,6 +52,15 @@ onMounted(async () => {
         loading.value = false
     }
 })
+
+const draggedTaskId = ref(null)
+function onDragTask(taskId) {
+    draggedTaskId.value = taskId
+}
+function onDropTask() {
+    selectedTaskId.value = draggedTaskId.value
+    showAssignPopup.value = true
+}
 </script>
 
 <template>
@@ -69,21 +78,25 @@ onMounted(async () => {
                 :projectId="projectId"
                 @refresh="onRefresh"
             />
+            <AssignUserToTask
+                v-if="showAssignPopup"
+                :projectId="projectId"
+                :taskId="selectedTaskId"
+                @assigned="onAssigned"
+            />
             <div class="project-tasks">
                 <ProjectBacklog
                     :key="reloadBacklogKey"
                     :projectId="projectId"
-                    @assign="openAssignUser"
+                    @drag-task="onDragTask"
                     class="project-backlog"
                 />
 
-                <AssignUserToTask
-                    v-if="showAssignPopup"
+                <ProjectKanban
                     :projectId="projectId"
-                    :taskId="selectedTaskId"
-                    @assigned="onAssigned"
+                    class="project-kanban"
+                    @drop-task="onDropTask"
                 />
-                <ProjectKanban :projectId="projectId" class="project-kanban" />
             </div>
             <div class="project-controls">
                 <button @click="showAddTaskPopup = !showAddTaskPopup">

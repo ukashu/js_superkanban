@@ -5,6 +5,7 @@ import { useRoute } from "vue-router"
 import CreateTask from "../components/CreateTask.vue"
 import ProjectBacklog from "../components/ProjectBacklog.vue"
 import AssignUserToTask from "../components/AssignUserToTask.vue"
+import ProjectKanban from "../components/ProjectKanban.vue"
 
 const project = ref(null)
 const loading = ref(true)
@@ -71,6 +72,7 @@ onMounted(async () => {
                 :taskId="selectedTaskId"
                 @assigned="onAssigned"
             />
+            <ProjectKanban :projectId="projectId" />
         </div>
 
         <div v-else>No project data found.</div>

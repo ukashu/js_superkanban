@@ -58,7 +58,7 @@ onMounted(async () => {
                 <template v-for="assignee in assignees">
                     <tr colspan="3">
                         {{
-                            assignee.name
+                            assignee.id ? assignee.name : "unassigned"
                         }}
                     </tr>
                     <tr

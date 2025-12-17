@@ -31,7 +31,8 @@ onMounted(async () => {
         const response = await fetch(
             `http://localhost:5000/api/projects/${projectId}/tasks`,
         )
-        tasks.value = await response.json()
+        const json = await response.json()
+        tasks.value = json.data.tasks
     } catch (err) {
         console.error("Błąd przy pobieraniu tasków:", err)
     } finally {

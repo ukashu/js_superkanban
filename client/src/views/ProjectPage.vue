@@ -12,6 +12,7 @@ const loading = ref(true)
 const error = ref(null)
 
 const showAssignPopup = ref(false)
+const showAddTaskPopup = ref(false)
 const selectedTaskId = ref(null)
 
 const reloadBacklogKey = ref(0)
@@ -27,6 +28,11 @@ function openAssignUser(taskId) {
 function onAssigned() {
     showAssignPopup.value = false
     reloadBacklogKey.value++
+}
+
+function onRefresh() {
+    showAddTaskPopup.value = false
+    reloadBacklogKey++
 }
 
 onMounted(async () => {
@@ -58,23 +64,50 @@ onMounted(async () => {
             <h1>{{ project.title }}</h1>
             <p>{{ project.description }}</p>
 
-            <CreateTask :projectId="projectId" @refresh="reloadBacklogKey++" />
-
-            <ProjectBacklog
-                :key="reloadBacklogKey"
+            <CreateTask
+                v-if="showAddTaskPopup"
                 :projectId="projectId"
-                @assign="openAssignUser"
+                @refresh="onRefresh"
             />
+            <div class="project-tasks">
+                <ProjectBacklog
+                    :key="reloadBacklogKey"
+                    :projectId="projectId"
+                    @assign="openAssignUser"
+                    class="project-backlog"
+                />
 
-            <AssignUserToTask
-                v-if="showAssignPopup"
-                :projectId="projectId"
-                :taskId="selectedTaskId"
-                @assigned="onAssigned"
-            />
-            <ProjectKanban :projectId="projectId" />
+                <AssignUserToTask
+                    v-if="showAssignPopup"
+                    :projectId="projectId"
+                    :taskId="selectedTaskId"
+                    @assigned="onAssigned"
+                />
+                <ProjectKanban :projectId="projectId" class="project-kanban" />
+            </div>
+            <div class="project-controls">
+                <button @click="showAddTaskPopup = !showAddTaskPopup">
+                    Add task
+                </button>
+            </div>
         </div>
 
         <div v-else>No project data found.</div>
     </div>
 </template>
+<style>
+.project-tasks {
+    background-color: red;
+    display: flex;
+}
+
+.project-backlog {
+    background-color: green;
+    flex: 1;
+}
+
+.project-kanban {
+    background-color: rgb(141, 63, 63);
+    flex: 3;
+}
+</style>

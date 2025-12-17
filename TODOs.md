@@ -126,3 +126,5 @@
 - [ ] w get tasks for project group by zmienić żeby struktura odpowiedzi była taka sama jak innych, po prostu posortowane po assignee
 - [ ] zmienić backend żeby data to zawsze była raw data, nie np. key "tasks" i dopiero wtedy array of tasks
 - [x] naprawić dodawanie taska
+- [ ] Styling
+  - [ ] zmienić CreateTask na popup

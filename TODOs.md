@@ -128,3 +128,20 @@
 - [x] naprawić dodawanie taska
 - [ ] Styling
   - [ ] zmienić CreateTask na popup
+
+### Łukasz
+
+- [ ] zabezpieczenie ścieżek w backendzie
+- [ ] połączyć frontend z backendem w kontekście uwierzytelniania i autoryzacji
+
+### Wiktoria
+
+- [ ] strona Login (email, password)
+- [ ] strona Register (username, email, password)
+      Nie ma jeszcze mechanizmu rejestracji/logowania więc strony Login i Register powinny tylko wysyłać do serwera wpisane dane (endpointy `/api/session/login` oraz `/api/session/register` - póki co nie ma ich na serwerze)
+
+### Ola
+
+- [ ] mechanizm rejestracji i logowania w backendzie za pomocą JsonWebToken
+- [ ] authenticate Middleware - middleware do sprawdzania poprawności JWT wysłanego z klienta, odszyfrowywanie go i dodanie do `req`
+      Nowe ścieżki i kontrolery w folderze `/sessions`

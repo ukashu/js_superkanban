@@ -1,6 +1,7 @@
 <template>
     <div>
         <h3>Assign user to task {{ taskId }}</h3>
+        <input v-model="searchEmail" type="text" @input="findUser" />
 
         <div v-if="loadingUsers">Loading users...</div>
 
@@ -29,16 +30,8 @@ export default {
             selectedUser: "",
             loadingUsers: true,
             message: "",
+            searchEmail: "",
         }
-    },
-
-    async mounted() {
-        const res = await fetch(
-            `http://localhost:5000/api/projects/${this.projectId}/tasks`,
-        )
-        const json = await res.json()
-        this.users = json.data
-        this.loadingUsers = false
     },
 
     methods: {
@@ -58,6 +51,16 @@ export default {
             const json = await res.json()
             this.message = json.message || "Assigned!"
             this.$emit("assigned")
+        },
+
+        async findUser() {
+            console.log("finding new")
+            const res = await fetch(
+                `http://localhost:5000/api/users?email=${this.searchEmail}`,
+            )
+            const json = await res.json()
+            this.users = json.data
+            this.loadingUsers = false
         },
     },
 }

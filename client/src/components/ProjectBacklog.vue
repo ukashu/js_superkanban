@@ -1,30 +1,45 @@
-<script>
-export default {
-    props: ["projectId"],
+<template>
+    <div>
+        <p>BACKLOG</p>
+        <ul>
+            <li v-for="task in backlog">
+                {{ task.title }}
+            </li>
+        </ul>
+    </div>
+</template>
 
-    data() {
-        return {
-            tasks: [],
-            loading: true,
-        }
+<script setup>
+import { ref, computed, onMounted } from "vue"
+import Task from "./Task.vue"
+
+const props = defineProps({
+    projectId: {
+        type: [String, Number],
+        required: true,
     },
+})
 
-    computed: {
-        backlog() {
-            return this.tasks.filter((t) => t.status === "BACKLOG")
-        },
-    },
+const tasks = ref([])
+const loading = ref(true)
 
-    async mounted() {
-        console.log("Backlog projectId =", this.projectId)
+const backlog = computed(() =>
+    tasks.value.filter((t) => t.status === "BACKLOG"),
+)
 
+onMounted(async () => {
+    console.log("Backlog projectId = ", props.projectId)
+
+    try {
         const res = await fetch(
-            `http://localhost:5000/api/projects/${this.projectId}/tasks`,
+            `http://localhost:5000/api/projects/${props.projectId}/tasks`,
         )
-
         const json = await res.json()
-        this.tasks = json.data.tasks
-        this.loading = false
-    },
-}
+        tasks.value = json.data.tasks
+    } catch (err) {
+        console.error("Błąd przy pobieraniu tasków do backlogu:", err)
+    } finally {
+        loading.value = false
+    }
+})
 </script>

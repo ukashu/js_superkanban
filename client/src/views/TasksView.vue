@@ -7,6 +7,7 @@
         <div v-else>
             <Task v-for="task in tasks" :key="task.task_id" :task="task" />
         </div>
+        <ProjectBacklog :project-id="projectId" />
     </div>
 </template>
 
@@ -14,15 +15,16 @@
 import { ref, onMounted } from "vue"
 import { useRoute } from "vue-router"
 import Task from "../components/Task.vue"
+import ProjectBacklog from "../components/ProjectBacklog.vue"
 
 // Ustaw na ID projektu jaki chcesz pobierać
-const projectId = 1
+let projectId = 1
 
 const tasks = ref([])
 const loading = ref(true)
 
 const route = useRoute()
-const projectId = route.params.projectId
+projectId = route.params.projectId
 
 onMounted(async () => {
     try {

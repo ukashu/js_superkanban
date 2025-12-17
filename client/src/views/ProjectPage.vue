@@ -93,6 +93,7 @@ function onDropTask() {
                 />
 
                 <ProjectKanban
+                    :key="reloadBacklogKey"
                     :projectId="projectId"
                     class="project-kanban"
                     @drop-task="onDropTask"

@@ -38,14 +38,12 @@ onMounted(async () => {
         <table>
             <tbody>
                 <tr>
-                    <th>BACKLOG</th>
                     <th>IN PROGRESS</th>
                     <th>REVIEW</th>
                     <th>DONE</th>
                 </tr>
                 <tr v-for="task in tasks">
-                    <td><Task v-if="task.status === 'BACKLOG'" :task /></td>
-                    <td><Task v-if="task.status === 'IN PROGRESS'" :task /></td>
+                    <td><Task v-if="task.status === 'DOING'" :task /></td>
                     <td><Task v-if="task.status === 'REVIEW'" :task /></td>
                     <td><Task v-if="task.status === 'DONE'" :task /></td>
                 </tr>

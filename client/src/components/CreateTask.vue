@@ -30,21 +30,25 @@ export default {
 
     methods: {
         async createTask() {
-            const res = await fetch(
-                `http://localhost:5000/api/projects/${this.projectId}/tasks`,
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        title: this.title,
-                        description: this.description,
-                    }),
-                },
-            )
+            try {
+                const res = await fetch(
+                    `http://localhost:5000/api/projects/${this.projectId}/tasks`,
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            title: this.title,
+                            description: this.description,
+                        }),
+                    },
+                )
 
-            const json = await res.json()
-            this.message = json.message || "Task created!"
-            this.$emit("refresh")
+                const json = await res.json()
+                this.message = json.message || "Task created!"
+                this.$emit("refresh")
+            } catch (err) {
+                console.log("Error creating task: ", err)
+            }
         },
     },
 }

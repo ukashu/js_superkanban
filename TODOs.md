@@ -124,4 +124,4 @@
 ### Backlog
 
 - [ ] w get tasks for project group by zmienić żeby struktura odpowiedzi była taka sama jak innych, po prostu posortowane po assignee
-- [ ] naprawić dodawanie taska
+- [x] naprawić dodawanie taska

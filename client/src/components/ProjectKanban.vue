@@ -1,6 +1,6 @@
 <script setup>
 import Task from "./Task.vue"
-import { ref, onMounted } from "vue"
+import { ref, onMounted, computed } from "vue"
 
 const props = defineProps({
     projectId: [Number, String],
@@ -9,6 +9,19 @@ const props = defineProps({
 const tasks = ref(null)
 const error = ref(null)
 const loading = ref(true)
+
+const assignees = computed(() => {
+    if (tasks.value) {
+        return new Map(
+            tasks.value.map((t) => [
+                t.assignee_id,
+                { id: t.assignee_id, name: t.assignee_name },
+            ]),
+        ).values()
+    } else {
+        return []
+    }
+})
 
 onMounted(async () => {
     console.log("Backlog projectId = ", props.projectId)
@@ -42,11 +55,23 @@ onMounted(async () => {
                     <th>REVIEW</th>
                     <th>DONE</th>
                 </tr>
-                <tr v-for="task in tasks">
-                    <td><Task v-if="task.status === 'DOING'" :task /></td>
-                    <td><Task v-if="task.status === 'REVIEW'" :task /></td>
-                    <td><Task v-if="task.status === 'DONE'" :task /></td>
-                </tr>
+                <template v-for="assignee in assignees">
+                    <tr colspan="3">
+                        {{
+                            assignee.name
+                        }}
+                    </tr>
+                    <tr
+                        v-for="task in tasks.filter(
+                            (t) => t.assignee_id === assignee.id,
+                        )"
+                        :key="task.task_id"
+                    >
+                        <td><Task v-if="task.status === 'DOING'" :task /></td>
+                        <td><Task v-if="task.status === 'REVIEW'" :task /></td>
+                        <td><Task v-if="task.status === 'DONE'" :task /></td>
+                    </tr>
+                </template>
             </tbody>
         </table>
     </div>

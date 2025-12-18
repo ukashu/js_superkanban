@@ -142,6 +142,6 @@
 
 ### Ola
 
-- [ ] mechanizm rejestracji i logowania w backendzie za pomocą JsonWebToken
-- [ ] authenticate Middleware - middleware do sprawdzania poprawności JWT wysłanego z klienta, odszyfrowywanie go i dodanie do `req`
+- [x] mechanizm rejestracji i logowania w backendzie za pomocą JsonWebToken
+- [x] authenticate Middleware - middleware do sprawdzania poprawności JWT wysłanego z klienta, odszyfrowywanie go i dodanie do `req`
       Nowe ścieżki i kontrolery w folderze `/sessions`

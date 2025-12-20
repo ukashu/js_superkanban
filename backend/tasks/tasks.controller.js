@@ -9,6 +9,14 @@ export const getTasksForProject = async (req, res, next) => {
             "SELECT t.*, u.name as assignee_name FROM tasks t LEFT JOIN users u ON t.assignee_id = u.user_id WHERE t.project_id = ?"
         const params = [projectId]
 
+        const projectOwner = await dbAll("SELECT owner_id FROM projects WHERE project_id = ?", projectId)
+        if (!projectOwner || projectOwner.user_id != req.user) {
+            return res.status(403).json({
+                success: false,
+                message: "You don't have access to this resource"
+            })
+        }
+
         if (assigneeName) {
             query += " AND u.name LIKE ?"
             params.push(`%${assigneeName}%`)

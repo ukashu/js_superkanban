@@ -11,7 +11,11 @@ const app = express()
 const PORT = Number(process.env.PORT) || 5000
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+    origin: "http://localhost:5173",
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ["GET","POST","PUT","DELETE"]
+}))
 
 app.get("/", (req, res) => {
     res.send("API is running...")

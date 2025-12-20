@@ -21,8 +21,9 @@ const submitLogin = async () => {
             body: JSON.stringify(payload),
         })
 
-        const data = await response.json()
-        console.log("LOGIN response:", data)
+        const jsonResponse = await response.json()
+        localStorage.setItem('token', jsonResponse.data.token)
+        console.log("LOGIN response:", jsonResponse)
     } catch (error) {
         console.error("LOGIN error:", error)
     }

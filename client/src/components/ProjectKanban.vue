@@ -1,6 +1,7 @@
 <script setup>
 import Task from "./Task.vue"
 import { ref, onMounted, computed, defineEmits } from "vue"
+import { authFetch } from "../helpers/helpers";
 
 defineEmits(["drop-task"])
 
@@ -29,7 +30,7 @@ onMounted(async () => {
     console.log("Backlog projectId = ", props.projectId)
 
     try {
-        const res = await fetch(
+        const res = await authFetch(
             `http://localhost:5000/api/projects/${props.projectId}/tasks`,
         )
         if (!res.ok) {

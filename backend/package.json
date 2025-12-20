@@ -8,7 +8,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node --watch --env-file=.env server"
+    "dev": "node --watch --env-file=.env server",
+    "test:clean-register": "sqlite3 db/test.sqlite \"DELETE FROM users WHERE email = 'bruno@example.com'\""
   },
   "dependencies": {
     "cors": "^2.8.5",

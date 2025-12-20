@@ -3,6 +3,7 @@ import errorHandler from "./middleware/error.middleware.js"
 import userRoutes from "./users/user.routes.js"
 import projectRoutes from "./projects/project.routes.js"
 import taskRoutes from "./tasks/tasks.routes.js"
+import sessionRoutes from "./sessions/session.routes.js"
 import db from "./db/dbInit.js"
 import cors from "cors"
 
@@ -16,6 +17,7 @@ app.get("/", (req, res) => {
     res.send("API is running...")
 })
 
+app.use("/api/session", sessionRoutes)
 app.use("/api/projects/:projectId/tasks", taskRoutes)
 app.use("/api/users", userRoutes)
 app.use("/api/projects", projectRoutes)

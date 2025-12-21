@@ -132,12 +132,13 @@
 ### Łukasz
 
 - [ ] zabezpieczenie ścieżek w backendzie
-- [ ] połączyć frontend z backendem w kontekście uwierzytelniania i autoryzacji
+- [x] połączyć frontend z backendem w kontekście uwierzytelniania i autoryzacji
+- [x] mechanika dodawania taska do pracownika poprzez przeciągnięcie taska w widoku projektu 
 
 ### Wiktoria
 
-- [ ] strona Login (email, password)
-- [ ] strona Register (username, email, password)
+- [x] strona Login (email, password)
+- [x] strona Register (username, email, password)
       Nie ma jeszcze mechanizmu rejestracji/logowania więc strony Login i Register powinny tylko wysyłać do serwera wpisane dane (endpointy `/api/session/login` oraz `/api/session/register` - póki co nie ma ich na serwerze)
 
 ### Ola
@@ -145,3 +146,6 @@
 - [x] mechanizm rejestracji i logowania w backendzie za pomocą JsonWebToken
 - [x] authenticate Middleware - middleware do sprawdzania poprawności JWT wysłanego z klienta, odszyfrowywanie go i dodanie do `req`
       Nowe ścieżki i kontrolery w folderze `/sessions`
+## Uwagi
+- można dodac refresh_token ale nie trzeba może być JWT, ale może wyższa ocena
+- rola zapisana w JWT?

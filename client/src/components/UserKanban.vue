@@ -54,6 +54,7 @@ onMounted(async () => {
         <h3>IN PROGRESS</h3>
         <h3>REVIEW</h3>
         <h3>DONE</h3>
+        <div class="review-dropzone"><p>DROP ZONE</p></div>
         <template v-for="project in projects">
             <p class="separator">
                 {{ project.id ? project.name : "uncategorized" }}
@@ -72,10 +73,17 @@ onMounted(async () => {
     background-color: red;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    position: relative;
 }
 .separator {
     grid-column-start: 1;
     grid-column-end: 4;
+}
+.review-dropzone {
+    position: absolute;
+    width: 33.3%;
+    height: 100%;
+    left: 33.3%;
 }
 .DOING {
     grid-column: 1;

@@ -10,7 +10,12 @@ export const authenticateToken = async (req, res, next) => {
     console.log(token)
 
     if (token == null) {
-        return res.sendStatus(401)
+        res.status(401)
+        // TODO nie wiem czy tutaj nie trzeba mieć takiego samego formatu jak w error.middleware
+        return res.json({
+            success: false,
+            message: "Unauthorized",
+        })
     }
 
     try {
@@ -21,12 +26,20 @@ export const authenticateToken = async (req, res, next) => {
         )
 
         if (!user) {
-            return res.sendStatus(403)
+            res.status(403)
+            return res.json({
+                success: false,
+                message: "Access denied",
+            })
         }
 
         req.user = user
         next()
     } catch (err) {
-        return res.sendStatus(403)
+        res.status(403)
+        return res.json({
+            success: false,
+            message: "Access denied",
+        })
     }
 }

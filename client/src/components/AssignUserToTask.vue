@@ -14,6 +14,7 @@
             </select>
 
             <button @click="assign">Confirm</button>
+            <!-- cancel button -->
         </div>
 
         <p v-if="message">{{ message }}</p>
@@ -36,6 +37,7 @@ export default {
 
     methods: {
         async assign() {
+            // TODO if selectedUser is null return error
             const res = await fetch(
                 `http://localhost:5000/api/projects/${this.projectId}/tasks/${this.taskId}`,
                 {

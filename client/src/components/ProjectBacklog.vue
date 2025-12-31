@@ -40,7 +40,11 @@ onMounted(async () => {
         const res = await fetch(
             `http://localhost:5000/api/projects/${props.projectId}/tasks`,
         )
+        console.log(res)
         const json = await res.json()
+        if (!json.success) {
+            throw new Error(json.message)
+        }
         tasks.value = json.data.tasks
     } catch (err) {
         console.error("Błąd przy pobieraniu tasków do backlogu:", err)

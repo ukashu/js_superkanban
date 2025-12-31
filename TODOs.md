@@ -91,19 +91,19 @@
     - [ ] możliwość edycji danych użytkownika
     - [ ] nadchodzące terminy tasków
     - [ ] kanban board ze wszystkimi taskami użytkownika jako Component (póki co bez drag and drop)
-- [ ] KanbanBoard component
+- [x] KanbanBoard component
 - [ ] EditUserData popup component
 - [ ] Add new route getProjectsForUser `/users/:userId/projects`
 
 ### Wiktoria
 
-- [ ] CreateProject component
+- [x] CreateProject component
   - komponent do stworzenia nowego projektu
-- [ ] CreateTask component
+- [x] CreateTask component
   - komponent do stworzenia nowego taska dla projektu
-- [ ] ProjectBacklog component
+- [x] ProjectBacklog component
   - wyświetlanie listy tasków w backlogu (ze statusem "BACKLOG") dla projektu
-- [ ] AssignUserToTask component
+- [x] AssignUserToTask component
   - komponent do którego przekazywany będzie taskId, komponent ma pobierać z serwera i wyświetlać listę wszystkich pracowników, użytkownik może wtedy wybrać jednego z pracowników i po kliknięciu przycisku "Confirm" zostaje przekazany request do backendu z edycją taska (przypisanie assignee_id i zmiana statusu)
 
 ### Ola
@@ -133,7 +133,7 @@
 
 - [ ] zabezpieczenie ścieżek w backendzie
 - [x] połączyć frontend z backendem w kontekście uwierzytelniania i autoryzacji
-- [x] mechanika dodawania taska do pracownika poprzez przeciągnięcie taska w widoku projektu 
+- [x] mechanika dodawania taska do pracownika poprzez przeciągnięcie taska w widoku projektu
 
 ### Wiktoria
 
@@ -146,6 +146,42 @@
 - [x] mechanizm rejestracji i logowania w backendzie za pomocą JsonWebToken
 - [x] authenticate Middleware - middleware do sprawdzania poprawności JWT wysłanego z klienta, odszyfrowywanie go i dodanie do `req`
       Nowe ścieżki i kontrolery w folderze `/sessions`
+
 ## Uwagi
+
 - można dodac refresh_token ale nie trzeba może być JWT, ale może wyższa ocena
 - rola zapisana w JWT?
+
+## Na zjazd 9
+
+### Backlog
+
+- [ ] Dodać user homepage ŁUKASZ
+  - [ ] user kanban
+  - [ ] user details
+- [ ] bug: nie widać tasków w backlogu w ProjectKanban
+- [ ] zabezpieczenie wszystkich ścieżek w backendzie które powinny być chronione OLA
+- [ ] dodanie wysyłania JWT w frontendzie tam gdzie frontend requestuje chronione zasoby (według wzoru z `ProjectKanban.vue`) OLA
+- [ ] edit user details WIKA
+- [ ] make login/register redirect to user home WIKA
+- [ ] extending Project homepage ŁUKASZ
+  - [ ] dodać listę projektów zmieniającą listę tasków
+- [ ] dodać opcje sortowania/filtracji w frontendzie WIKA
+  - [ ] w project kanban
+  - [ ] w user kanban
+- [ ] usunąć niepotrzebne części ŁUKASZ
+  - [ ] Tasks frontend route
+- [ ] zmienić fetche na composables ŁUKASZ
+- [ ] poprawne wyświetlanie errorów w UI (np. w popupach) ŁUKASZ
+
+Part 2
+
+- [ ] zmienić table na grid w kanbanie ŁUKASZ
+- [ ] dodać funkcjonalność popup dla odpowiednich elementów UI
+- [ ] dodać styling
+
+## Na zjazd 10
+
+### Backlog
+
+- [ ] zmienić sposób wyświetlania errorów (lub np. Unauthorized), dodać error view redirect

@@ -136,6 +136,9 @@ export const findUsers = async (req, res, next) => {
 export const getTasksForUser = async (req, res, next) => {
     const { userId } = req.params
     const { sortBy, groupBy } = req.query
+
+    // TODO zabezpieczyc sciezke if userId != authenticated user
+
     try {
         let query =
             "SELECT t.*, p.title as project_name FROM tasks t JOIN projects p ON t.project_id = p.project_id WHERE t.assignee_id = ?"

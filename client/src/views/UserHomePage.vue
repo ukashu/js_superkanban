@@ -1,9 +1,9 @@
 <script setup>
 import { ref, onMounted } from "vue"
 import { useRoute } from "vue-router"
+import UserKanban from "../components/UserKanban.vue"
 
 const user = ref(null)
-const tasks = ref([])
 const route = useRoute()
 
 onMounted(async () => {
@@ -18,13 +18,6 @@ onMounted(async () => {
                 user.value = resJson.data.user
             }
         }
-
-        /*
-        const tasksRes = await fetch(`/api/users/${userId}/tasks`)
-        if (tasksRes.ok) {
-            tasks.value = await tasksRes.json()
-        }
-        */
     } catch (err) {
         console.log({ err })
     }
@@ -39,12 +32,7 @@ onMounted(async () => {
         <p>Id: {{ user.user_id }}</p>
     </section>
 
-    <section v-if="tasks.length">
-        <h2>Your Tasks</h2>
-        <ul>
-            <li v-for="task in tasks" :key="task.id">
-                {{ task.title }} - {{ task.description }}
-            </li>
-        </ul>
+    <section v-if="user">
+        <UserKanban :userId="user.user_id" />
     </section>
 </template>

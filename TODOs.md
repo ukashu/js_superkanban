@@ -157,9 +157,10 @@
 ### Backlog
 
 - [ ] Dodać user homepage ŁUKASZ
-  - [ ] user kanban
+  - [x] user kanban
+  - [ ] zmiana statusu tasks poprzez przeciągnięcie
   - [ ] user details
-- [x] bug: nie widać tasków w backlogu w ProjectKanban
+- [x] bug: nie widać tasków w backlogu w ProjectKanban ŁUKASZ
 - [ ] zabezpieczenie wszystkich ścieżek w backendzie które powinny być chronione OLA
 - [ ] dodanie wysyłania JWT w frontendzie tam gdzie frontend requestuje chronione zasoby (według wzoru z `ProjectKanban.vue`) OLA
 - [ ] edit user details WIKA

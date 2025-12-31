@@ -51,31 +51,39 @@ onMounted(async () => {
     <div v-if="loading">Loading tasks...</div>
     <div v-else-if="error" class="error">{{ error }}</div>
     <div v-else-if="tasks" class="kanban">
-        <table>
-            <tbody>
-                <tr>
-                    <th>IN PROGRESS</th>
-                    <th>REVIEW</th>
-                    <th>DONE</th>
-                </tr>
-                <template v-for="project in projects">
-                    <tr colspan="3">
-                        {{
-                            project.id ? project.name : "uncategorized"
-                        }}
-                    </tr>
-                    <tr
-                        v-for="task in tasks.filter(
-                            (t) => t.project_id === project.id,
-                        )"
-                        :key="task.task_id"
-                    >
-                        <td><Task v-if="task.status === 'DOING'" :task /></td>
-                        <td><Task v-if="task.status === 'REVIEW'" :task /></td>
-                        <td><Task v-if="task.status === 'DONE'" :task /></td>
-                    </tr>
-                </template>
-            </tbody>
-        </table>
+        <h3>IN PROGRESS</h3>
+        <h3>REVIEW</h3>
+        <h3>DONE</h3>
+        <template v-for="project in projects">
+            <p class="separator">
+                {{ project.id ? project.name : "uncategorized" }}
+            </p>
+            <template
+                v-for="task in tasks.filter((t) => t.project_id === project.id)"
+                :key="task.task_id"
+            >
+                <Task :class="task.status" :task />
+            </template>
+        </template>
     </div>
 </template>
+<style>
+.kanban {
+    background-color: red;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.separator {
+    grid-column-start: 1;
+    grid-column-end: 4;
+}
+.DOING {
+    grid-column: 1;
+}
+.REVIEW {
+    grid-column: 2;
+}
+.DONE {
+    grid-column: 3;
+}
+</style>

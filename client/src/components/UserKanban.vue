@@ -13,20 +13,27 @@ const tasks = ref(null)
 const error = ref(null)
 const loading = ref(true)
 
-const projects = computed(() => {
-    if (tasks.value) {
-        return new Map(
-            tasks.value.map((t) => [
-                t.project_id,
-                { id: t.project_id, name: t.project_name },
-            ]),
-        ).values()
-    } else {
-        return []
-    }
+const projectsWithTasks = computed(() => {
+    if (!tasks.value) return []
+
+    const map = new Map()
+
+    tasks.value.forEach((t) => {
+        if (!map.has(t.project_id)) {
+            map.set(t.project_id, {
+                projectId: t.project_id,
+                projectName: t.project_name,
+                tasks: [],
+            })
+        }
+        map.get(t.project_id).tasks.push(t)
+    })
+
+    return Array.from(map.values())
 })
 
-onMounted(async () => {
+const loadTasks = async () => {
+    loading.value = true
     console.log("Backlog userId = ", props.userId)
 
     try {
@@ -45,7 +52,47 @@ onMounted(async () => {
     } finally {
         loading.value = false
     }
-})
+}
+
+onMounted(loadTasks)
+
+const draggedTask = ref(null) // id: number, status: 'DOING'|'REVIEW'|'DONE'
+
+const changeTaskStatus = async (e, newStatus) => {
+    if (newStatus != draggedTask.value.status) {
+        try {
+            const res = await fetch(
+                `http://localhost:5000/api/projects/${draggedTask.value.projectId}/tasks/${draggedTask.value.id}`,
+                {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ status: newStatus }),
+                },
+            )
+            if (!res.ok) {
+                throw new Error("Failed to update task status")
+            }
+            const json = await res.json()
+            console.log(json)
+            loadTasks()
+        } catch (err) {
+            error.value = err.message
+        }
+    }
+    console.log({ draggedTask: draggedTask.value })
+    draggedTask.value = null
+}
+
+const dragStart = (task) => {
+    draggedTask.value = {
+        id: task.task_id,
+        status: task.status,
+        projectId: task.project_id,
+    }
+}
+const dragEnd = () => {
+    draggedTask.value = null
+}
 </script>
 <template>
     <div v-if="loading">Loading tasks...</div>
@@ -54,16 +101,41 @@ onMounted(async () => {
         <h3>IN PROGRESS</h3>
         <h3>REVIEW</h3>
         <h3>DONE</h3>
-        <div class="review-dropzone"><p>DROP ZONE</p></div>
-        <template v-for="project in projects">
+        <div
+            class="review-dropzone"
+            :class="{ droppable: draggedTask?.status === 'DOING' }"
+            @dragover.prevent="dragEnter"
+            @dragleave.prevent="dragLeave"
+            @drop="changeTaskStatus($event, 'REVIEW')"
+        >
+            <p>DROP ZONE</p>
+        </div>
+        <div
+            class="doing-dropzone"
+            :class="{ droppable: draggedTask?.status === 'REVIEW' }"
+            @dragover.prevent="dragEnter"
+            @dragleave.prevent="dragLeave"
+            @drop="changeTaskStatus($event, 'DOING')"
+        >
+            <p>DROP ZONE</p>
+        </div>
+        <template
+            v-for="project in projectsWithTasks"
+            :key="project.project_id"
+        >
             <p class="separator">
-                {{ project.id ? project.name : "uncategorized" }}
+                {{ project.projectName || "uncategorized" }}
             </p>
-            <template
-                v-for="task in tasks.filter((t) => t.project_id === project.id)"
-                :key="task.task_id"
-            >
-                <Task :class="task.status" :task />
+            <template v-for="task in project.tasks" :key="task.task_id">
+                <Task
+                    :draggable="
+                        task.status === 'DOING' || task.status === 'REVIEW'
+                    "
+                    @dragstart="dragStart(task)"
+                    @dragend.prevent="dragEnd"
+                    :class="task.status"
+                    :task
+                />
             </template>
         </template>
     </div>
@@ -85,13 +157,25 @@ onMounted(async () => {
     height: 100%;
     left: 33.3%;
 }
+.doing-dropzone {
+    position: absolute;
+    width: 33.3%;
+    height: 100%;
+    left: 0;
+}
+.droppable {
+    border: 10px solid white;
+}
 .DOING {
     grid-column: 1;
+    z-index: 1;
 }
 .REVIEW {
     grid-column: 2;
+    z-index: 1;
 }
 .DONE {
     grid-column: 3;
+    z-index: 1;
 }
 </style>

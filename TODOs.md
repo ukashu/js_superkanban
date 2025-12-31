@@ -158,9 +158,11 @@
 
 - [ ] Dodać user homepage ŁUKASZ
   - [x] user kanban
-  - [ ] zmiana statusu tasks poprzez przeciągnięcie
+  - [x] zmiana statusu tasks poprzez przeciągnięcie
+    - [ ] może zmienić z refetcha po zmianie statusu na optimistic update?
   - [ ] user details
 - [x] bug: nie widać tasków w backlogu w ProjectKanban ŁUKASZ
+- [ ] bug: reloadBacklogKey could cause overflow issues?
 - [ ] zabezpieczenie wszystkich ścieżek w backendzie które powinny być chronione OLA
 - [ ] dodanie wysyłania JWT w frontendzie tam gdzie frontend requestuje chronione zasoby (według wzoru z `ProjectKanban.vue`) OLA
 - [ ] edit user details WIKA

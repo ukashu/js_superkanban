@@ -16,6 +16,7 @@
 
 <script setup>
 import { ref, computed, onMounted, defineEmits } from "vue"
+import { authFetch } from "../helpers/helpers"
 
 defineEmits(["drag-task"])
 
@@ -37,9 +38,12 @@ onMounted(async () => {
     console.log("Backlog projectId = ", props.projectId)
 
     try {
-        const res = await fetch(
+        const res = await authFetch(
             `http://localhost:5000/api/projects/${props.projectId}/tasks`,
         )
+        if (!res.ok) {
+            throw new Error("Failed to fetch backlog tasks")
+        }
         console.log(res)
         const json = await res.json()
         if (!json.success) {

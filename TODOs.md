@@ -179,6 +179,9 @@
   - [x] Tasks frontend route
 - [ ] zmienić fetche na composables ŁUKASZ
 - [ ] poprawne wyświetlanie errorów w UI (np. w popupach) ŁUKASZ
+- [ ] dodanie listy projektów w ProjectView
+- [ ] dodanie fetch composable i użycie w ProjectKanban
+- [ ] kliknięcie na projekt z listy projektów zmienia zawartośc ProjectKanban
 
 ### Łukasz
 
@@ -207,10 +210,3 @@
 - [ ] przeniesienie taska z powrotem do backlogu (w widoku projektu)
 - [ ] dodać funkcjonalność popup dla odpowiednich elementów UI
 - [ ] paginacja tasków w kanbanie
-
-## Dzis
-
-- [x] drop zones w ProjectKanban
-- [ ] dodanie listy projektów w ProjectView
-- [ ] dodanie fetch composable i użycie w ProjectKanban
-- [ ] kliknięcie na projekt z listy projektów zmienia zawartośc ProjectKanban

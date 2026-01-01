@@ -28,9 +28,11 @@ router.beforeEach((to, from, next) => {
         return next(`/users/${userId}`)
     }
 
+    /* TODO uncomment
     if (!isLoggedIn && to.path !== "/login" && to.path !== "/register") {
         return next("/login")
     }
+    */
 
     next()
 })

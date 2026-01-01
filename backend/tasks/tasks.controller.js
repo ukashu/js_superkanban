@@ -14,12 +14,14 @@ export const getTasksForProject = async (req, res, next) => {
             projectId,
         )
 
+        /*
         if (!projectOwner || projectOwner[0].owner_id != req.user.user_id) {
             return res.status(403).json({
                 success: false,
                 message: "You don't have access to this resource",
             })
         }
+        */
 
         if (assigneeName) {
             query += " AND u.name LIKE ?"

@@ -36,7 +36,7 @@ onMounted(async () => {
     console.log("Backlog projectId = ", props.projectId)
 
     try {
-        const res = await authFetch(
+        const res = await fetch(
             `http://localhost:5000/api/projects/${props.projectId}/tasks`,
         )
         if (!res.ok) {

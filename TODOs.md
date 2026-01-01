@@ -162,6 +162,8 @@
     - [ ] może zmienić z refetcha po zmianie statusu na optimistic update?
   - [ ] user details
 - [x] bug: nie widać tasków w backlogu w ProjectKanban ŁUKASZ
+- [x] zmienić table na grid w kanbanie ŁUKASZ
+- [ ] usuwanie tasków/projektów
 - [ ] bug: reloadBacklogKey could cause overflow issues?
 - [ ] zabezpieczenie wszystkich ścieżek w backendzie które powinny być chronione OLA
 - [ ] dodanie wysyłania JWT w frontendzie tam gdzie frontend requestuje chronione zasoby (według wzoru z `ProjectKanban.vue`) OLA
@@ -173,20 +175,42 @@
 - [ ] dodać opcje sortowania/filtracji w frontendzie WIKA
   - [ ] w project kanban
   - [ ] w user kanban
-- [ ] usunąć niepotrzebne części ŁUKASZ
-  - [ ] Tasks frontend route
+- [x] usunąć niepotrzebne części ŁUKASZ
+  - [x] Tasks frontend route
 - [ ] zmienić fetche na composables ŁUKASZ
 - [ ] poprawne wyświetlanie errorów w UI (np. w popupach) ŁUKASZ
 
-Part 2
+### Łukasz
 
-- [ ] zmienić table na grid w kanbanie ŁUKASZ
-- [ ] dodać funkcjonalność popup dla odpowiednich elementów UI
-- [ ] dodać styling
+- [x] dodać kanban tasków dla użytkownika
+- [x] funkcjonalność zmiany statusu taska poprzez przeciągnięcie go
+- [x] zmienić table na grid w kanbanach
+
+### Ola
+
+- [ ] dodać listę projektów użytkownika w ProjectPage
+  - układ zgodny z designem z Figmy
+  - dodać ścieżkę w backendzie do pobrania projektów dla usera
+  - kliknięcie w projekt z listy powinno zmienić taski wyświetlane w ProjectBacklog i ProjectKanban
+
+### Wiktoria
+
+- [ ] edit user details component
+- [ ] przycisk i funkcjonalność Logout
+  - wylogowanie polega na usunięciu wartości `token` i `user_id` z localStorage
 
 ## Na zjazd 10
 
 ### Backlog
 
-- [ ] zmienić sposób wyświetlania errorów (lub np. Unauthorized), dodać error view redirect
+- [ ] zmienić sposób wyświetlania errorów (lub np. Unauthorized), dodać error view redirect (lub inny sposób)
 - [ ] przeniesienie taska z powrotem do backlogu (w widoku projektu)
+- [ ] dodać funkcjonalność popup dla odpowiednich elementów UI
+- [ ] paginacja tasków w kanbanie
+
+## Dzis
+
+- [x] drop zones w ProjectKanban
+- [ ] dodanie listy projektów w ProjectView
+- [ ] dodanie fetch composable i użycie w ProjectKanban
+- [ ] kliknięcie na projekt z listy projektów zmienia zawartośc ProjectKanban

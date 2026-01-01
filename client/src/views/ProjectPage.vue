@@ -18,7 +18,8 @@ const selectedTaskId = ref(null)
 const reloadBacklogKey = ref(0)
 
 const route = useRoute()
-const projectId = route.params.projectId
+const userId = route.params.userId
+const projectId = 1
 
 function openAssignUser(taskId) {
     selectedTaskId.value = taskId

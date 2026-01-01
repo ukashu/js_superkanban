@@ -9,7 +9,7 @@ import RegisterView from "./views/RegisterView.vue"
 const routes = [
     { path: "/", redirect: "/login" },
     { path: "/users/:userId", component: UserHomePage },
-    { path: "/projects/:projectId", component: ProjectPage },
+    { path: "/users/:userId/projects", component: ProjectPage },
     { path: "/login", component: LoginView },
     { path: "/register", component: RegisterView },
 ]

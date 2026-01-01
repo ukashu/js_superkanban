@@ -119,10 +119,7 @@ const dragEnd = () => {
         >
             <p>DROP ZONE</p>
         </div>
-        <template
-            v-for="project in projectsWithTasks"
-            :key="project.project_id"
-        >
+        <template v-for="project in projectsWithTasks" :key="project.projectId">
             <p class="separator">
                 {{ project.projectName || "uncategorized" }}
             </p>

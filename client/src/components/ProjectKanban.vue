@@ -1,7 +1,7 @@
 <script setup>
 import Task from "./Task.vue"
 import { ref, onMounted, computed, defineEmits } from "vue"
-import { authFetch } from "../helpers/helpers";
+import { authFetch } from "../helpers/helpers"
 
 defineEmits(["drop-task"])
 
@@ -56,31 +56,48 @@ onMounted(async () => {
         @dragover.prevent
         @drop="$emit('drop-task')"
     >
-        <table>
-            <tbody>
-                <tr>
-                    <th>IN PROGRESS</th>
-                    <th>REVIEW</th>
-                    <th>DONE</th>
-                </tr>
-                <template v-for="assignee in assignees">
-                    <tr colspan="3">
-                        {{
-                            assignee.id ? assignee.name : "unassigned"
-                        }}
-                    </tr>
-                    <tr
-                        v-for="task in tasks.filter(
-                            (t) => t.assignee_id === assignee.id,
-                        )"
-                        :key="task.task_id"
-                    >
-                        <td><Task v-if="task.status === 'DOING'" :task /></td>
-                        <td><Task v-if="task.status === 'REVIEW'" :task /></td>
-                        <td><Task v-if="task.status === 'DONE'" :task /></td>
-                    </tr>
-                </template>
-            </tbody>
-        </table>
+        <h3>IN PROGRESS</h3>
+        <h3>REVIEW</h3>
+        <h3>DONE</h3>
+        <template v-for="assignee in assignees">
+            <p class="separator">
+                {{ assignee.id ? assignee.name : "unassigned" }}
+            </p>
+            <template
+                v-for="task in tasks.filter(
+                    (t) => t.assignee_id === assignee.id,
+                )"
+                :key="task.task_id"
+            >
+                <Task :class="task.status" :task />
+            </template>
+        </template>
     </div>
 </template>
+<style>
+.kanban {
+    background-color: red;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    position: relative;
+}
+.separator {
+    grid-column-start: 1;
+    grid-column-end: 4;
+}
+.droppable {
+    border: 10px solid white;
+}
+.DOING {
+    grid-column: 1;
+    z-index: 1;
+}
+.REVIEW {
+    grid-column: 2;
+    z-index: 1;
+}
+.DONE {
+    grid-column: 3;
+    z-index: 1;
+}
+</style>

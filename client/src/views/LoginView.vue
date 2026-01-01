@@ -22,7 +22,8 @@ const submitLogin = async () => {
         })
 
         const jsonResponse = await response.json()
-        localStorage.setItem('token', jsonResponse.data.token)
+        localStorage.setItem("token", jsonResponse.data.token)
+        localStorage.setItem("user_id", jsonResponse.data.user.id)
         console.log("LOGIN response:", jsonResponse)
     } catch (error) {
         console.error("LOGIN error:", error)
@@ -34,12 +35,7 @@ const submitLogin = async () => {
     <h1>Login</h1>
 
     <form @submit.prevent="submitLogin">
-        <input
-            type="email"
-            placeholder="Email"
-            v-model="email"
-            required
-        />
+        <input type="email" placeholder="Email" v-model="email" required />
 
         <input
             type="password"

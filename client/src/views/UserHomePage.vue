@@ -2,6 +2,7 @@
 import { ref, onMounted } from "vue"
 import { useRoute } from "vue-router"
 import UserKanban from "../components/UserKanban.vue"
+import UserEdit from "../components/UserEdit.vue"
 
 const user = ref(null)
 const route = useRoute()
@@ -30,6 +31,10 @@ onMounted(async () => {
         <p>Username: {{ user.name }}</p>
         <p>Email: {{ user.email }}</p>
         <p>Id: {{ user.user_id }}</p>
+    </section>
+
+    <section v-if="user">
+    <UserEdit :user="user" />
     </section>
 
     <section v-if="user">

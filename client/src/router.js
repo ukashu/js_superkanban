@@ -23,16 +23,15 @@ router.beforeEach((to, from, next) => {
     const isLoggedIn = !!localStorage.getItem("token")
     const userId = localStorage.getItem("user_id")
 
+    // root
     if (to.path === "/") {
-        if (!isLoggedIn) return next("/login")
-        return next(`/users/${userId}`)
+        return isLoggedIn ? next(`/users/${userId}`) : next("/login")
     }
 
-    /* TODO uncomment
-    if (!isLoggedIn && to.path !== "/login" && to.path !== "/register") {
+    // 🔐 auth guard
+    if (!isLoggedIn && !["/login", "/register"].includes(to.path)) {
         return next("/login")
     }
-    */
 
     next()
 })

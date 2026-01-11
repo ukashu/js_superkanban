@@ -188,3 +188,25 @@ export const getTasksForUser = async (req, res, next) => {
         next(err)
     }
 }
+
+export const getProjectsForUser = async (req, res, next) => {
+    const { userId } = req.params
+
+    try {
+        const projects = await dbAll(
+            `SELECT DISTINCT p.* 
+             FROM projects p
+             LEFT JOIN tasks t ON p.project_id = t.project_id
+             WHERE p.owner_id = ? OR t.assignee_id = ?
+             ORDER BY CASE WHEN p.owner_id = ? THEN 0 ELSE 1 END, p.title`,
+            [userId, userId, userId],
+        )
+
+        return res.status(200).json({
+            success: true,
+            data: { projects },
+        })
+    } catch (err) {
+        next(err)
+    }
+}

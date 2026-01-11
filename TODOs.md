@@ -191,7 +191,7 @@
 
 ### Ola
 
-- [ ] dodać listę projektów użytkownika w ProjectPage
+- [x] dodać listę projektów użytkownika w ProjectPage
   - układ zgodny z designem z Figmy
   - dodać ścieżkę w backendzie do pobrania projektów dla usera, Vue powinien pobierać tę listę `onMounted`
   - kliknięcie w projekt z listy powinno zmienić taski wyświetlane w ProjectBacklog i ProjectKanban

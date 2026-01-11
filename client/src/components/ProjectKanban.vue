@@ -1,9 +1,11 @@
 <script setup>
 import Task from "./Task.vue"
-import { ref, onMounted, computed, defineEmits } from "vue"
-import { authFetch } from "../helpers/helpers"
+import { ref, onMounted, computed, defineEmits, watch } from "vue"
+import ProgressSpinner from "primevue/progressspinner"
+import Message from "primevue/message"
+import Divider from "primevue/divider"
 
-defineEmits(["drop-task"])
+const emit = defineEmits(["drop-task"])
 
 const props = defineProps({
     projectId: [Number, String],
@@ -32,26 +34,24 @@ const assigneesWithTasks = computed(() => {
     return Array.from(map.values())
 })
 
-onMounted(async () => {
-    console.log("Backlog projectId = ", props.projectId)
-
+const loadTasks = async () => {
     try {
-        const res = await fetch(
-            `http://localhost:5000/api/projects/${props.projectId}/tasks`,
-        )
+        const res = await fetch(`/api/projects/${props.projectId}/tasks`)
         if (!res.ok) {
             throw new Error("Failed to fetch tasks")
         }
 
         const json = await res.json()
-        console.log(json)
         tasks.value = json.data.tasks
     } catch (err) {
         error.value = err.message
     } finally {
         loading.value = false
     }
-})
+}
+
+onMounted(loadTasks)
+watch(() => props.projectId, loadTasks)
 
 const draggedTask = ref(null) // id: number, status: 'DOING'|'REVIEW'|'DONE'
 
@@ -59,7 +59,7 @@ const changeTaskStatus = async (e, newStatus) => {
     if (newStatus != draggedTask.value.status) {
         try {
             const res = await fetch(
-                `http://localhost:5000/api/projects/${draggedTask.value.projectId}/tasks/${draggedTask.value.id}`,
+                `/api/projects/${draggedTask.value.projectId}/tasks/${draggedTask.value.id}`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
@@ -71,12 +71,11 @@ const changeTaskStatus = async (e, newStatus) => {
             }
             const json = await res.json()
             console.log(json)
-            //loadTasks()
+            loadTasks()
         } catch (err) {
             error.value = err.message
         }
     }
-    console.log({ draggedTask: draggedTask.value })
     draggedTask.value = null
 }
 
@@ -92,101 +91,172 @@ const dragEnd = () => {
 }
 </script>
 <template>
-    <div v-if="loading">Loading tasks...</div>
-    <div v-else-if="error" class="error">{{ error }}</div>
-    <div v-else-if="tasks" class="kanban">
-        <h3>IN PROGRESS</h3>
-        <h3>REVIEW</h3>
-        <h3>DONE</h3>
-        <div
-            class="doing-dropzone"
-            @dragover.prevent
-            @dragleave.prevent
-            @drop="$emit('drop-task')"
-        >
-            <p>DROP ZONE</p>
+    <div v-if="loading" class="flex justify-center p-4">
+        <ProgressSpinner />
+    </div>
+    <div v-else-if="error" class="p-4">
+        <Message severity="error">{{ error }}</Message>
+    </div>
+    <div v-else-if="tasks" class="kanban-wrapper">
+        <div class="grid grid-cols-3 gap-4 mb-4 text-center font-bold">
+            <div class="bg-blue-100 p-2 rounded">IN PROGRESS</div>
+            <div class="bg-yellow-100 p-2 rounded">REVIEW</div>
+            <div class="bg-green-100 p-2 rounded">DONE</div>
         </div>
-        <div
-            class="review-dropzone"
-            :class="{ droppable: draggedTask?.status === 'DONE' }"
-            @dragover.prevent
-            @dragleave.prevent
-            @drop="changeTaskStatus($event, 'REVIEW')"
-        >
-            <p>DROP ZONE</p>
-        </div>
-        <div
-            class="done-dropzone"
-            :class="{ droppable: draggedTask?.status === 'REVIEW' }"
-            @dragover.prevent
-            @dragleave.prevent
-            @drop="changeTaskStatus($event, 'DONE')"
-        >
-            <p>DROP ZONE</p>
-        </div>
-        <template
-            v-for="assignee in assigneesWithTasks"
-            :key="assignee.assigneeId"
-        >
-            <p class="separator">
-                {{ assignee.assigneeId ? assignee.assigneeName : "unassigned" }}
-            </p>
-            <template v-for="task in assignee.tasks" :key="task.task_id">
-                <Task
-                    :draggable="
-                        task.status === 'REVIEW' || task.status === 'DONE'
-                    "
-                    @dragstart="dragStart(task)"
-                    @dragend.prevent="dragEnd"
-                    :class="task.status"
-                    :task
-                />
+
+        <div class="kanban-board relative">
+            <!-- Dropzones -->
+            <div
+                class="dropzone doing-dropzone"
+                :class="{
+                    'active-zone':
+                        draggedTask && draggedTask.status !== 'DOING',
+                }"
+                @dragover.prevent
+                @drop="
+                    draggedTask
+                        ? changeTaskStatus($event, 'DOING')
+                        : $emit('drop-task')
+                "
+            ></div>
+            <div
+                class="dropzone review-dropzone"
+                :class="{ 'active-zone': draggedTask?.status === 'DONE' }"
+                @dragover.prevent
+                @drop="changeTaskStatus($event, 'REVIEW')"
+            ></div>
+            <div
+                class="dropzone done-dropzone"
+                :class="{ 'active-zone': draggedTask?.status === 'REVIEW' }"
+                @dragover.prevent
+                @drop="changeTaskStatus($event, 'DONE')"
+            ></div>
+
+            <template
+                v-for="assignee in assigneesWithTasks"
+                :key="assignee.assigneeId"
+            >
+                <div class="assignee-separator col-span-3">
+                    <Divider align="left">
+                        <span class="p-tag">{{
+                            assignee.assigneeId
+                                ? assignee.assigneeName
+                                : "Unassigned"
+                        }}</span>
+                    </Divider>
+                </div>
+                <template v-for="task in assignee.tasks" :key="task.task_id">
+                    <div :class="['task-item', task.status]">
+                        <Task
+                            :draggable="true"
+                            @dragstart="dragStart(task)"
+                            @dragend="dragEnd"
+                            :task="task"
+                        />
+                    </div>
+                </template>
             </template>
-        </template>
+        </div>
     </div>
 </template>
-<style>
-.kanban {
-    background-color: red;
+<style scoped>
+.kanban-board {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
     position: relative;
+    min-height: 500px;
 }
-.separator {
-    grid-column-start: 1;
-    grid-column-end: 4;
+
+.col-span-3 {
+    grid-column: 1 / 4;
 }
-.doing-dropzone {
+
+.task-item.DOING {
+    grid-column: 1;
+}
+.task-item.REVIEW {
+    grid-column: 2;
+}
+.task-item.DONE {
+    grid-column: 3;
+}
+
+.dropzone {
     position: absolute;
-    width: 33.3%;
-    height: 100%;
+    top: 0;
+    bottom: 0;
+    z-index: 0;
+}
+
+.doing-dropzone {
     left: 0;
+    width: 33.33%;
 }
 .review-dropzone {
-    position: absolute;
-    width: 33.3%;
-    height: 100%;
-    left: 33.3%;
+    left: 33.33%;
+    width: 33.33%;
 }
 .done-dropzone {
-    position: absolute;
-    width: 33.3%;
-    height: 100%;
-    left: 66.6%;
+    left: 66.66%;
+    width: 33.33%;
 }
-.droppable {
-    border: 10px solid white;
+
+.active-zone {
+    background-color: rgba(255, 255, 200, 0.3);
+    border: 2px dashed #ecc94b;
+    z-index: 10;
 }
-.DOING {
-    grid-column: 1;
-    z-index: 1;
+
+.task-item {
+    z-index: 20;
+    position: relative;
 }
-.REVIEW {
-    grid-column: 2;
-    z-index: 1;
+
+/* Utility classes */
+.grid {
+    display: grid;
 }
-.DONE {
-    grid-column: 3;
-    z-index: 1;
+.grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.gap-4 {
+    gap: 1rem;
+}
+.mb-4 {
+    margin-bottom: 1rem;
+}
+.text-center {
+    text-align: center;
+}
+.font-bold {
+    font-weight: bold;
+}
+.bg-blue-100 {
+    background-color: #ebf8ff;
+    color: #2c5282;
+}
+.bg-yellow-100 {
+    background-color: #fffff0;
+    color: #744210;
+}
+.bg-green-100 {
+    background-color: #f0fff4;
+    color: #276749;
+}
+.p-2 {
+    padding: 0.5rem;
+}
+.rounded {
+    border-radius: 0.25rem;
+}
+.flex {
+    display: flex;
+}
+.justify-center {
+    justify-content: center;
+}
+.p-4 {
+    padding: 1rem;
 }
 </style>

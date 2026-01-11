@@ -1,9 +1,12 @@
 <script setup>
 import Task from "./Task.vue"
-import { ref, onMounted, computed, defineEmits } from "vue"
+import { ref, onMounted, computed } from "vue"
 import { authFetch } from "../helpers/helpers"
+import ProgressSpinner from 'primevue/progressspinner';
+import Message from 'primevue/message';
+import Divider from 'primevue/divider';
 
-defineEmits(["drop-task"])
+const emit = defineEmits(["drop-task"])
 
 const props = defineProps({
     userId: [Number, String],
@@ -38,7 +41,7 @@ const loadTasks = async () => {
 
     try {
         const res = await authFetch(
-            `http://localhost:5000/api/users/${props.userId}/tasks`,
+            `/api/users/${props.userId}/tasks`,
         )
         if (!res.ok) {
             throw new Error("Failed to fetch tasks")
@@ -62,7 +65,7 @@ const changeTaskStatus = async (e, newStatus) => {
     if (newStatus != draggedTask.value.status) {
         try {
             const res = await fetch(
-                `http://localhost:5000/api/projects/${draggedTask.value.projectId}/tasks/${draggedTask.value.id}`,
+                `/api/projects/${draggedTask.value.projectId}/tasks/${draggedTask.value.id}`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
@@ -95,84 +98,119 @@ const dragEnd = () => {
 }
 </script>
 <template>
-    <div v-if="loading">Loading tasks...</div>
-    <div v-else-if="error" class="error">{{ error }}</div>
-    <div v-else-if="tasks" class="kanban">
-        <h3>IN PROGRESS</h3>
-        <h3>REVIEW</h3>
-        <h3>DONE</h3>
-        <div
-            class="review-dropzone"
-            :class="{ droppable: draggedTask?.status === 'DOING' }"
-            @dragover.prevent="dragEnter"
-            @dragleave.prevent="dragLeave"
-            @drop="changeTaskStatus($event, 'REVIEW')"
-        >
-            <p>DROP ZONE</p>
+    <div v-if="loading" class="flex justify-center p-4">
+        <ProgressSpinner />
+    </div>
+    <div v-else-if="error" class="p-4">
+        <Message severity="error">{{ error }}</Message>
+    </div>
+    <div v-else-if="tasks" class="kanban-wrapper">
+        <div class="grid grid-cols-3 gap-4 mb-4 text-center font-bold">
+            <div class="bg-blue-100 p-2 rounded">IN PROGRESS</div>
+            <div class="bg-yellow-100 p-2 rounded">REVIEW</div>
+            <div class="bg-green-100 p-2 rounded">DONE</div>
         </div>
-        <div
-            class="doing-dropzone"
-            :class="{ droppable: draggedTask?.status === 'REVIEW' }"
-            @dragover.prevent="dragEnter"
-            @dragleave.prevent="dragLeave"
-            @drop="changeTaskStatus($event, 'DOING')"
-        >
-            <p>DROP ZONE</p>
-        </div>
-        <template v-for="project in projectsWithTasks" :key="project.projectId">
-            <p class="separator">
-                {{ project.projectName || "uncategorized" }}
-            </p>
-            <template v-for="task in project.tasks" :key="task.task_id">
-                <Task
-                    :draggable="
-                        task.status === 'DOING' || task.status === 'REVIEW'
-                    "
-                    @dragstart="dragStart(task)"
-                    @dragend.prevent="dragEnd"
-                    :class="task.status"
-                    :task
-                />
+        
+        <div class="kanban-board relative">
+            <!-- Dropzones -->
+            <div
+                class="dropzone review-dropzone"
+                :class="{ 'active-zone': draggedTask?.status === 'DOING' }"
+                @dragover.prevent
+                @drop="changeTaskStatus($event, 'REVIEW')"
+            ></div>
+            <div
+                class="dropzone doing-dropzone"
+                :class="{ 'active-zone': draggedTask?.status === 'REVIEW' }"
+                @dragover.prevent
+                @drop="changeTaskStatus($event, 'DOING')"
+            ></div>
+
+            <template v-for="project in projectsWithTasks" :key="project.projectId">
+                <div class="project-separator col-span-3">
+                    <Divider align="left">
+                        <span class="p-tag">{{ project.projectName || "Uncategorized" }}</span>
+                    </Divider>
+                </div>
+                <template v-for="task in project.tasks" :key="task.task_id">
+                    <div :class="['task-item', task.status]">
+                        <Task
+                            :draggable="task.status === 'DOING' || task.status === 'REVIEW'"
+                            @dragstart="dragStart(task)"
+                            @dragend="dragEnd"
+                            :task="task"
+                        />
+                    </div>
+                </template>
             </template>
-        </template>
+        </div>
     </div>
 </template>
-<style>
-.kanban {
-    background-color: red;
+<style scoped>
+.kanban-board {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    position: relative;
+    min-height: 500px;
+}
+
+.col-span-3 {
+    grid-column: 1 / 4;
+}
+
+.task-item.DOING { grid-column: 1; }
+.task-item.REVIEW { grid-column: 2; }
+.task-item.DONE { grid-column: 3; }
+
+.dropzone {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 0;
+    pointer-events: none; /* Let clicks pass through unless active? No, native DnD handles it */
+}
+/* When dragging, we want dropzones to be targets. 
+   Pointer events should be auto for dropzones when they are needed.
+   But they are overlays. If they are on top, they block clicks on tasks?
+   Tasks are Z-index 1 usually.
+*/
+
+.review-dropzone {
+    left: 33.33%;
+    width: 33.33%;
+}
+
+.doing-dropzone {
+    left: 0;
+    width: 33.33%;
+}
+
+.active-zone {
+    background-color: rgba(255, 255, 200, 0.3);
+    border: 2px dashed #ecc94b;
+    pointer-events: auto; /* Enable dropping */
+    z-index: 10;
+}
+
+.task-item {
+    z-index: 20; /* Keep tasks above dropzones */
     position: relative;
 }
-.separator {
-    grid-column-start: 1;
-    grid-column-end: 4;
-}
-.review-dropzone {
-    position: absolute;
-    width: 33.3%;
-    height: 100%;
-    left: 33.3%;
-}
-.doing-dropzone {
-    position: absolute;
-    width: 33.3%;
-    height: 100%;
-    left: 0;
-}
-.droppable {
-    border: 10px solid white;
-}
-.DOING {
-    grid-column: 1;
-    z-index: 1;
-}
-.REVIEW {
-    grid-column: 2;
-    z-index: 1;
-}
-.DONE {
-    grid-column: 3;
-    z-index: 1;
-}
+
+/* Utility classes */
+.grid { display: grid; }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.gap-4 { gap: 1rem; }
+.mb-4 { margin-bottom: 1rem; }
+.text-center { text-align: center; }
+.font-bold { font-weight: bold; }
+.bg-blue-100 { background-color: #ebf8ff; color: #2c5282; }
+.bg-yellow-100 { background-color: #fffff0; color: #744210; }
+.bg-green-100 { background-color: #f0fff4; color: #276749; }
+.p-2 { padding: 0.5rem; }
+.rounded { border-radius: 0.25rem; }
+.flex { display: flex; }
+.justify-center { justify-content: center; }
+.p-4 { padding: 1rem; }
 </style>

@@ -1,8 +1,9 @@
 <script setup>
 import { ref, onMounted } from "vue"
 import { useRoute } from "vue-router"
-import Card from 'primevue/card';
+import Card from "primevue/card"
 import UserKanban from "../components/UserKanban.vue"
+import UserEdit from "../components/UserEdit.vue"
 
 const user = ref(null)
 const route = useRoute()
@@ -31,12 +32,22 @@ onMounted(async () => {
             <template #title>Profile</template>
             <template #content>
                 <div class="flex flex-col gap-2">
-                    <div><span class="font-bold">Username:</span> {{ user.name }}</div>
-                    <div><span class="font-bold">Email:</span> {{ user.email }}</div>
-                    <div><span class="font-bold">Id:</span> {{ user.user_id }}</div>
+                    <div>
+                        <span class="font-bold">Username:</span> {{ user.name }}
+                    </div>
+                    <div>
+                        <span class="font-bold">Email:</span> {{ user.email }}
+                    </div>
+                    <div>
+                        <span class="font-bold">Id:</span> {{ user.user_id }}
+                    </div>
                 </div>
             </template>
         </Card>
+
+        <section v-if="user">
+            <UserEdit :user="user" />
+        </section>
 
         <section v-if="user">
             <UserKanban :userId="user.user_id" />
@@ -45,10 +56,22 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.flex { display: flex; }
-.flex-col { flex-direction: column; }
-.gap-4 { gap: 1rem; }
-.gap-2 { gap: 0.5rem; }
-.mb-4 { margin-bottom: 1rem; }
-.font-bold { font-weight: bold; }
+.flex {
+    display: flex;
+}
+.flex-col {
+    flex-direction: column;
+}
+.gap-4 {
+    gap: 1rem;
+}
+.gap-2 {
+    gap: 0.5rem;
+}
+.mb-4 {
+    margin-bottom: 1rem;
+}
+.font-bold {
+    font-weight: bold;
+}
 </style>

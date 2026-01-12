@@ -198,8 +198,8 @@
 
 ### Wiktoria
 
-- [ ] stworzyć komponent Vue do edycji danych użytkownika
-- [ ] przycisk i funkcjonalność Logout w Vue
+- [x] stworzyć komponent Vue do edycji danych użytkownika
+- [x] przycisk i funkcjonalność Logout w Vue
   - wylogowanie polega na usunięciu wartości `token` i `user_id` z localStorage
 
 ## Na zjazd 10

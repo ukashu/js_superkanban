@@ -1,45 +1,63 @@
+<script setup>
+import { ref } from "vue";
+import InputText from 'primevue/inputtext';
+import Textarea from 'primevue/textarea';
+import Button from 'primevue/button';
+
+const title = ref("");
+const description = ref("");
+const message = ref("");
+
+async function submitForm() {
+    try {
+        const res = await fetch("/api/projects", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                title: title.value,
+                description: description.value,
+            }),
+        });
+
+        const json = await res.json();
+        message.value = json.message || "Created!";
+        if (res.ok) {
+            title.value = "";
+            description.value = "";
+        }
+    } catch (err) {
+        console.error(err);
+        message.value = "Error creating project";
+    }
+}
+</script>
+
 <template>
-    <div class="create-project">
-        <h2>Create New Project</h2>
+    <div class="flex flex-col gap-4">
+        <h2 class="text-xl font-bold">Create New Project</h2>
 
-        <form @submit.prevent="submitForm">
-            <label>Project title:</label>
-            <input v-model="title" required />
+        <div class="flex flex-col gap-2">
+            <label for="p-title" class="font-bold">Project Title</label>
+            <InputText id="p-title" v-model="title" required />
+        </div>
 
-            <label>Description:</label>
-            <textarea v-model="description"></textarea>
+        <div class="flex flex-col gap-2">
+            <label for="p-desc" class="font-bold">Description</label>
+            <Textarea id="p-desc" v-model="description" rows="3" />
+        </div>
 
-            <button type="submit">Create</button>
-        </form>
+        <Button label="Create" @click="submitForm" />
 
-        <p v-if="message">{{ message }}</p>
+        <p v-if="message" class="text-green-600">{{ message }}</p>
     </div>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            title: "",
-            description: "",
-            message: "",
-        }
-    },
-
-    methods: {
-        async submitForm() {
-            const res = await fetch("http://localhost:5000/api/projects", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    title: this.title,
-                    description: this.description,
-                }),
-            })
-
-            const json = await res.json()
-            this.message = json.message || "Created!"
-        },
-    },
-}
-</script>
+<style scoped>
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.gap-4 { gap: 1rem; }
+.gap-2 { gap: 0.5rem; }
+.text-xl { font-size: 1.25rem; }
+.font-bold { font-weight: bold; }
+.text-green-600 { color: #059669; }
+</style>

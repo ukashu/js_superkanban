@@ -5,6 +5,7 @@ import {
     editUser,
     findUsers,
     getTasksForUser,
+    getProjectsForUser,
 } from "./user.controllers.js"
 import { body } from "express-validator"
 
@@ -39,6 +40,7 @@ const validateUserDetails = [
 ]
 
 router.route("/:userId/tasks").get(getTasksForUser)
+router.route("/:userId/projects").get(getProjectsForUser)
 
 router.route("/:userId").get(getUserById).delete(deleteUser).put(editUser)
 

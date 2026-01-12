@@ -156,29 +156,29 @@
 
 ### Backlog
 
-- [ ] Dodać user homepage ŁUKASZ
+- [ ] Dodać user homepage
   - [x] user kanban
   - [x] zmiana statusu tasks poprzez przeciągnięcie
     - [ ] może zmienić z refetcha po zmianie statusu na optimistic update?
   - [ ] user details
-- [x] bug: nie widać tasków w backlogu w ProjectKanban ŁUKASZ
-- [x] zmienić table na grid w kanbanie ŁUKASZ
+- [x] bug: nie widać tasków w backlogu w ProjectKanban
+- [x] zmienić table na grid w kanbanie
 - [ ] usuwanie tasków/projektów
 - [ ] bug: reloadBacklogKey could cause overflow issues?
-- [ ] zabezpieczenie wszystkich ścieżek w backendzie które powinny być chronione OLA
-- [ ] dodanie wysyłania JWT w frontendzie tam gdzie frontend requestuje chronione zasoby (według wzoru z `ProjectKanban.vue`) OLA
-- [ ] edit user details WIKA
-- [ ] dodać logout WIKA
-- [ ] make login/register redirect to user home WIKA
-- [ ] extending Project homepage ŁUKASZ
+- [ ] zabezpieczenie wszystkich ścieżek w backendzie które powinny być chronione
+- [ ] dodanie wysyłania JWT w frontendzie tam gdzie frontend requestuje chronione zasoby (według wzoru z `ProjectKanban.vue`)
+- [ ] edit user details
+- [ ] dodać logout
+- [ ] make login/register redirect to user home
+- [ ] extending Project homepage
   - [ ] dodać listę projektów zmieniającą listę tasków
-- [ ] dodać opcje sortowania/filtracji w frontendzie WIKA
+- [ ] dodać opcje sortowania/filtracji w frontendzie
   - [ ] w project kanban
   - [ ] w user kanban
-- [x] usunąć niepotrzebne części ŁUKASZ
+- [x] usunąć niepotrzebne części
   - [x] Tasks frontend route
-- [ ] zmienić fetche na composables ŁUKASZ
-- [ ] poprawne wyświetlanie errorów w UI (np. w popupach) ŁUKASZ
+- [ ] zmienić fetche na composables
+- [ ] poprawne wyświetlanie errorów w UI (np. w popupach)
 - [ ] dodanie listy projektów w ProjectView
 - [ ] dodanie fetch composable i użycie w ProjectKanban
 - [ ] kliknięcie na projekt z listy projektów zmienia zawartośc ProjectKanban

@@ -7,11 +7,11 @@ import ProjectBacklog from "../components/ProjectBacklog.vue"
 import AssignUserToTask from "../components/AssignUserToTask.vue"
 import ProjectKanban from "../components/ProjectKanban.vue"
 
-import Listbox from 'primevue/listbox';
-import Dialog from 'primevue/dialog';
-import Button from 'primevue/button';
-import ProgressSpinner from 'primevue/progressspinner';
-import Message from 'primevue/message';
+import Listbox from "primevue/listbox"
+import Dialog from "primevue/dialog"
+import Button from "primevue/button"
+import ProgressSpinner from "primevue/progressspinner"
+import Message from "primevue/message"
 
 const projects = ref([])
 const currentProjectId = ref(null)
@@ -52,8 +52,8 @@ async function fetchUserProjects() {
         if (json.success) {
             projects.value = json.data.projects
             if (projects.value.length > 0) {
-                 selectedProject.value = projects.value[0];
-                 selectProject(projects.value[0].project_id)
+                selectedProject.value = projects.value[0]
+                selectProject(projects.value[0].project_id)
             } else {
                 loading.value = false
                 error.value = "No projects found for this user."
@@ -70,16 +70,14 @@ async function selectProject(id) {
     loading.value = true
     error.value = null
     try {
-        const res = await fetch(
-            `/api/projects/${id}`,
-        )
+        const res = await fetch(`/api/projects/${id}`)
         if (!res.ok) {
             throw new Error("Failed to fetch project")
         }
 
         const json = await res.json()
         project.value = json.data
-        reloadBacklogKey.value++ 
+        reloadBacklogKey.value++
     } catch (err) {
         error.value = err.message
     } finally {
@@ -90,9 +88,9 @@ async function selectProject(id) {
 // Watch for listbox selection change
 watch(selectedProject, (newVal) => {
     if (newVal && newVal.project_id) {
-        selectProject(newVal.project_id);
+        selectProject(newVal.project_id)
     }
-});
+})
 
 onMounted(() => {
     fetchUserProjects()
@@ -109,19 +107,21 @@ function onDropTask() {
 </script>
 
 <template>
-    <div class="flex h-screen overflow-hidden">
-        <aside class="w-64 bg-gray-50 border-r border-gray-200 p-4 overflow-y-auto">
+    <div class="flex h-full overflow-hidden">
+        <aside
+            class="w-64 bg-gray-50 border-r border-gray-200 p-4 overflow-y-auto"
+        >
             <h3 class="text-xl font-bold mb-4 text-gray-900">My Projects</h3>
-            <Listbox 
-                v-model="selectedProject" 
-                :options="projects" 
-                optionLabel="title" 
-                class="w-full" 
-                listStyle="max-height: 250px"
+            <Listbox
+                v-model="selectedProject"
+                :options="projects"
+                optionLabel="title"
+                class="w-full"
+                listStyle="maxheight: 250px"
             />
         </aside>
 
-        <main class="flex-1 p-4 overflow-y-auto bg-white">
+        <main class="flex-1 p-4 bg-white">
             <div v-if="loading && !project" class="flex justify-center mt-10">
                 <ProgressSpinner />
             </div>
@@ -130,18 +130,28 @@ function onDropTask() {
                 <Message severity="error">{{ error }}</Message>
             </div>
 
-            <div v-else-if="project" class="flex flex-col h-full">
+            <div v-else-if="project" class="flex flex-col h-full min-h-0">
                 <div class="flex justify-between items-center mb-6">
                     <div>
-                        <h1 class="text-3xl font-bold text-gray-900">{{ project.title }}</h1>
+                        <h1 class="text-3xl font-bold text-gray-900">
+                            {{ project.title }}
+                        </h1>
                         <p class="text-gray-600">{{ project.description }}</p>
                     </div>
-                    <Button label="Add Task" icon="pi pi-plus" @click="showAddTaskPopup = true" />
+                    <Button
+                        label="Add Task"
+                        icon="pi pi-plus"
+                        @click="showAddTaskPopup = true"
+                    />
                 </div>
 
                 <div class="grid grid-cols-4 gap-6 flex-1 min-h-0">
-                    <div class="col-span-1 bg-gray-50 p-4 rounded-lg overflow-y-auto border border-gray-200">
-                        <h2 class="text-lg font-semibold mb-4 text-gray-900">Backlog</h2>
+                    <div
+                        class="col-span-1 bg-gray-50 p-4 rounded-lg overflow-y-auto border border-gray-200"
+                    >
+                        <h2 class="text-lg font-semibold mb-4 text-gray-900">
+                            Backlog
+                        </h2>
                         <ProjectBacklog
                             :key="currentProjectId + '-' + reloadBacklogKey"
                             :projectId="currentProjectId"
@@ -150,8 +160,12 @@ function onDropTask() {
                         />
                     </div>
 
-                    <div class="col-span-3 bg-gray-50 p-4 rounded-lg overflow-y-auto border border-gray-200">
-                        <h2 class="text-lg font-semibold mb-4 text-gray-900">Kanban Board</h2>
+                    <div
+                        class="col-span-3 bg-gray-50 p-4 rounded-lg overflow-y-auto border border-gray-200"
+                    >
+                        <h2 class="text-lg font-semibold mb-4 text-gray-900">
+                            Kanban Board
+                        </h2>
                         <ProjectKanban
                             :key="currentProjectId + '-' + reloadBacklogKey"
                             :projectId="currentProjectId"
@@ -162,18 +176,27 @@ function onDropTask() {
                 </div>
             </div>
 
-            <div v-else class="text-center mt-10 text-gray-500">Select a project to view details.</div>
+            <div v-else class="text-center mt-10 text-gray-500">
+                Select a project to view details.
+            </div>
         </main>
-        
+
         <!-- Dialogs -->
-        <Dialog v-model:visible="showAddTaskPopup" modal header="Create Task" :style="{ width: '50vw' }">
-            <CreateTask
-                :projectId="currentProjectId"
-                @refresh="onRefresh"
-            />
+        <Dialog
+            v-model:visible="showAddTaskPopup"
+            modal
+            header="Create Task"
+            :style="{ width: '50vw' }"
+        >
+            <CreateTask :projectId="currentProjectId" @refresh="onRefresh" />
         </Dialog>
-        
-        <Dialog v-model:visible="showAssignPopup" modal header="Assign User" :style="{ width: '40vw' }">
+
+        <Dialog
+            v-model:visible="showAssignPopup"
+            modal
+            header="Assign User"
+            :style="{ width: '40vw' }"
+        >
             <AssignUserToTask
                 :projectId="currentProjectId"
                 :taskId="selectedTaskId"
@@ -184,41 +207,121 @@ function onDropTask() {
 </template>
 
 <style scoped>
-.h-screen { height: 100vh; }
-.overflow-hidden { overflow: hidden; }
-.w-64 { width: 16rem; }
-.bg-gray-50 { background-color: #f9fafb; }
-.border-r { border-right-width: 1px; }
-.border-gray-200 { border-color: #e5e7eb; }
-.p-4 { padding: 1rem; }
-.overflow-y-auto { overflow-y: auto; }
-.text-xl { font-size: 1.25rem; }
-.font-bold { font-weight: bold; }
-.mb-4 { margin-bottom: 1rem; }
-.w-full { width: 100%; }
-.flex-1 { flex: 1; }
-.bg-white { background-color: #ffffff; }
-.flex { display: flex; }
-.justify-center { justify-content: center; }
-.mt-10 { margin-top: 2.5rem; }
-.flex-col { flex-direction: column; }
-.h-full { height: 100%; }
-.justify-between { justify-content: space-between; }
-.items-center { align-items: center; }
-.mb-6 { margin-bottom: 1.5rem; }
-.text-3xl { font-size: 1.875rem; }
-.text-gray-600 { color: #4b5563; }
-.grid { display: grid; }
-.grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.gap-6 { gap: 1.5rem; }
-.min-h-0 { min-height: 0; }
-.col-span-1 { grid-column: span 1 / span 1; }
-.rounded-lg { border-radius: 0.5rem; }
-.border { border-width: 1px; }
-.text-lg { font-size: 1.125rem; }
-.font-semibold { font-weight: 600; }
-.col-span-3 { grid-column: span 3 / span 3; }
-.text-center { text-align: center; }
-.text-gray-500 { color: #6b7280; }
-.text-gray-900 { color: #111827; }
+.h-screen {
+    height: 100vh;
+}
+.h-full {
+    height: 100%;
+}
+.min-h-0 {
+    min-height: 0;
+}
+.overflow-hidden {
+    overflow: hidden;
+}
+.w-64 {
+    width: 16rem;
+}
+.bg-gray-50 {
+    background-color: #f9fafb;
+}
+.border-r {
+    border-right-width: 1px;
+}
+.border-gray-200 {
+    border-color: #e5e7eb;
+}
+.p-4 {
+    padding: 1rem;
+}
+.overflow-y-auto {
+    overflow-y: auto;
+}
+.text-xl {
+    font-size: 1.25rem;
+}
+.font-bold {
+    font-weight: bold;
+}
+.mb-4 {
+    margin-bottom: 1rem;
+}
+.w-full {
+    width: 100%;
+}
+.flex-1 {
+    flex: 1;
+}
+.bg-white {
+    background-color: #ffffff;
+}
+.flex {
+    display: flex;
+}
+.justify-center {
+    justify-content: center;
+}
+.mt-10 {
+    margin-top: 2.5rem;
+}
+.flex-col {
+    flex-direction: column;
+}
+.h-full {
+    height: 100%;
+}
+.justify-between {
+    justify-content: space-between;
+}
+.items-center {
+    align-items: center;
+}
+.mb-6 {
+    margin-bottom: 1.5rem;
+}
+.text-3xl {
+    font-size: 1.875rem;
+}
+.text-gray-600 {
+    color: #4b5563;
+}
+.grid {
+    display: grid;
+}
+.grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.gap-6 {
+    gap: 1.5rem;
+}
+.min-h-0 {
+    min-height: 0;
+}
+.col-span-1 {
+    grid-column: span 1 / span 1;
+}
+.rounded-lg {
+    border-radius: 0.5rem;
+}
+.border {
+    border-width: 1px;
+}
+.text-lg {
+    font-size: 1.125rem;
+}
+.font-semibold {
+    font-weight: 600;
+}
+.col-span-3 {
+    grid-column: span 3 / span 3;
+}
+.text-center {
+    text-align: center;
+}
+.text-gray-500 {
+    color: #6b7280;
+}
+.text-gray-900 {
+    color: #111827;
+}
 </style>

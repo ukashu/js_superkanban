@@ -168,6 +168,7 @@ const dragEnd = () => {
     gap: 1rem;
     position: relative;
     min-height: 500px;
+    overflow-y: scroll;
 }
 
 .task-row {

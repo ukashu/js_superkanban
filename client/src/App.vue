@@ -37,42 +37,48 @@ const items = ref([
 </script>
 
 <template>
-    <div class="card">
-        <Menubar :model="items">
-            <template #item="{ item, props, hasSubmenu }">
-                <router-link
-                    v-if="item.route"
-                    v-slot="{ href, navigate }"
-                    :to="item.route"
-                    custom
-                >
-                    <a :href="href" v-bind="props.action" @click="navigate">
+    <div class="app-layout">
+        <div class="card">
+            <Menubar :model="items">
+                <template #item="{ item, props, hasSubmenu }">
+                    <router-link
+                        v-if="item.route"
+                        v-slot="{ href, navigate }"
+                        :to="item.route"
+                        custom
+                    >
+                        <a :href="href" v-bind="props.action" @click="navigate">
+                            <span :class="item.icon" />
+                            <span class="ml-2">{{ item.label }}</span>
+                        </a>
+                    </router-link>
+                    <a
+                        v-else
+                        :href="item.url"
+                        :target="item.target"
+                        v-bind="props.action"
+                    >
                         <span :class="item.icon" />
                         <span class="ml-2">{{ item.label }}</span>
+                        <span
+                            v-if="hasSubmenu"
+                            class="pi pi-fw pi-angle-down ml-2"
+                        />
                     </a>
-                </router-link>
-                <a
-                    v-else
-                    :href="item.url"
-                    :target="item.target"
-                    v-bind="props.action"
-                >
-                    <span :class="item.icon" />
-                    <span class="ml-2">{{ item.label }}</span>
-                    <span
-                        v-if="hasSubmenu"
-                        class="pi pi-fw pi-angle-down ml-2"
+                </template>
+                <template #end>
+                    <Button
+                        label="Logout"
+                        icon="pi pi-sign-out"
+                        @click="logout"
                     />
-                </a>
-            </template>
-            <template #end>
-                <Button label="Logout" icon="pi pi-sign-out" @click="logout" />
-            </template>
-        </Menubar>
+                </template>
+            </Menubar>
+        </div>
+        <main class="app-content p-4">
+            <RouterView />
+        </main>
     </div>
-    <main class="p-4">
-        <RouterView />
-    </main>
 </template>
 
 <style scoped>
@@ -81,5 +87,15 @@ const items = ref([
 }
 .p-4 {
     padding: 1rem;
+}
+.app-layout {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.app-content {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
 }
 </style>

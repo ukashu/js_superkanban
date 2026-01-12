@@ -28,7 +28,7 @@ const assigneesWithTasks = computed(() => {
                 tasks: [],
             })
         }
-        map.get(t.assignee_id).tasks.push(t)
+        if (t.status != "BACKLOG") map.get(t.assignee_id).tasks.push(t)
     })
 
     return Array.from(map.values())

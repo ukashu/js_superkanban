@@ -146,13 +146,15 @@ const dragEnd = () => {
                     </Divider>
                 </div>
                 <template v-for="task in assignee.tasks" :key="task.task_id">
-                    <div :class="['task-item', task.status]">
-                        <Task
-                            :draggable="true"
-                            @dragstart="dragStart(task)"
-                            @dragend="dragEnd"
-                            :task="task"
-                        />
+                    <div class="task-row col-span-3">
+                        <div :class="['task-item', task.status]">
+                            <Task
+                                :draggable="true"
+                                @dragstart="dragStart(task)"
+                                @dragend="dragEnd"
+                                :task="task"
+                            />
+                        </div>
                     </div>
                 </template>
             </template>
@@ -166,6 +168,11 @@ const dragEnd = () => {
     gap: 1rem;
     position: relative;
     min-height: 500px;
+}
+
+.task-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
 }
 
 .col-span-3 {

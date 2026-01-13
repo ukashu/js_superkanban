@@ -3,6 +3,7 @@ import { ref, onMounted, watch } from "vue"
 import { useRoute } from "vue-router"
 
 import CreateTask from "../components/CreateTask.vue"
+import CreateProject from "../components/CreateProject.vue"
 import ProjectBacklog from "../components/ProjectBacklog.vue"
 import AssignUserToTask from "../components/AssignUserToTask.vue"
 import ProjectKanban from "../components/ProjectKanban.vue"
@@ -22,6 +23,7 @@ const error = ref(null)
 
 const showAssignPopup = ref(false)
 const showAddTaskPopup = ref(false)
+const showAddProjectPopup = ref(false)
 const selectedTaskId = ref(null)
 
 const reloadBacklogKey = ref(0)
@@ -109,7 +111,7 @@ function onDropTask() {
 <template>
     <div class="flex h-full overflow-hidden">
         <aside
-            class="w-64 bg-gray-50 border-r border-gray-200 p-4 overflow-y-auto"
+            class="w-64 h-full bg-gray-200 flex flex-col border-r border-gray-200 p-4 overflow-y-auto"
         >
             <h3 class="text-xl font-bold mb-4 text-gray-900">My Projects</h3>
             <Listbox
@@ -118,6 +120,12 @@ function onDropTask() {
                 optionLabel="title"
                 class="w-full"
                 listStyle="maxheight: 250px"
+            />
+            <Button
+                label="New Project"
+                icon="pi pi-plus"
+                class="mt-auto"
+                @click="showAddProjectPopup = true"
             />
         </aside>
 
@@ -189,6 +197,15 @@ function onDropTask() {
             :style="{ width: '50vw' }"
         >
             <CreateTask :projectId="currentProjectId" @refresh="onRefresh" />
+        </Dialog>
+
+        <Dialog
+            v-model:visible="showAddProjectPopup"
+            modal
+            header="Create Project"
+            :style="{ width: '50vw' }"
+        >
+            <CreateProject @refresh="onRefresh" />
         </Dialog>
 
         <Dialog

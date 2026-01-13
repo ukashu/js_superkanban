@@ -186,9 +186,10 @@
 - [x] naprawić błąd: dwa taski w jednym rzędzie
 - [x] cała strona nie powinna się scrollować, tylko kanban, backlog i project list
 - [x] napraw podświetlanie stref zrzutu tasków
-- [ ] przycisk Add project
+- [x] dodaj tailwind
+- [x] przycisk Add project
 - [ ] zmienić edycję użytkownika na popup
-- [ ] dodaj tailwind
+- [ ] owner_id przy tworzeniu taska powinien być brany z JWT w backendzie
 
 ### Łukasz
 
@@ -198,6 +199,7 @@
 - [x] naprawić błąd: dwa taski w jednym rzędzie
 - [x] cała strona nie powinna się scrollować, tylko kanban, backlog i project list
 - [x] napraw podświetlanie stref zrzutu tasków
+- [x] dodaj tailwind
 
 ### Ola
 

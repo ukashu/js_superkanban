@@ -198,8 +198,10 @@
 - [x] zmienić table na grid w kanbanach
 - [x] naprawić błąd: dwa taski w jednym rzędzie
 - [x] cała strona nie powinna się scrollować, tylko kanban, backlog i project list
-- [x] napraw podświetlanie stref zrzutu tasków
-- [x] dodaj tailwind
+- [x] naprawić podświetlanie stref zrzutu tasków
+- [x] dodać tailwind do projektu
+- [x] przycisk Add project wyświetlający popup do dodania nowego projektu
+- [ ] najechanie kursorem na task oraz projekt powinno wyświetlić szczegóły ich dotyczące
 
 ### Ola
 
@@ -207,18 +209,27 @@
   - układ zgodny z designem z Figmy
   - dodać ścieżkę w backendzie do pobrania projektów dla usera, Vue powinien pobierać tę listę `onMounted`
   - kliknięcie w projekt z listy powinno zmienić taski wyświetlane w ProjectBacklog i ProjectKanban
+- [x] dodanie component library do projektu
+- [ ] zmienić edycję danych użytkownika na popup wyświetlany po kliknięciu przycisku
+- [ ] usuwanie tasków (w widoku projektu)
+  - najlepiej poprzez przeciągnięcie i upuszczenie w strefie usuwania
 
 ### Wiktoria
 
 - [x] stworzyć komponent Vue do edycji danych użytkownika
 - [x] przycisk i funkcjonalność Logout w Vue
   - wylogowanie polega na usunięciu wartości `token` i `user_id` z localStorage
+- [ ] po udanym logowaniu/rejestracji przenieść użytkownika na stronę domową użytkownika `/users/<USER_ID>`
+- [ ] przy kliknięciu przycisku "User" w nawigacji id użytkownika powinno byc brane z localstorage, obecnie jest chyba hardkodowane user_id 1 w `App.vue`
+- [ ] przycisk "Logout" powiniem być widzialny tylko dla zalogowanych użytkowników, przyciski "Login" i "Register" tylko dla niezalogowanych
 
 ## Na zjazd 10
 
 ### Backlog
 
-- [ ] zmienić sposób wyświetlania errorów (lub np. Unauthorized), dodać error view redirect (lub inny sposób)
+- [ ] zmienić fetche na używające composables
+- [ ] sprawdzić czy errory z backendu wyświetlają się w poprawny sposób, jeżeli nie - naprawić
 - [ ] przeniesienie taska z powrotem do backlogu (w widoku projektu)
-- [ ] dodać funkcjonalność popup dla odpowiednich elementów UI
 - [ ] paginacja tasków w kanbanie
+- [ ] dodać restrykcje związane z rolami
+- [ ] owner_id przy tworzeniu taska powinien być brany z JWT w backendzie

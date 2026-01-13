@@ -28,7 +28,7 @@ router.beforeEach((to, from, next) => {
         return isLoggedIn ? next(`/users/${userId}`) : next("/login")
     }
 
-    // 🔐 auth guard
+    // auth guard
     if (!isLoggedIn && !["/login", "/register"].includes(to.path)) {
         return next("/login")
     }

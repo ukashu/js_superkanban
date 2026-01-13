@@ -202,6 +202,8 @@
 - [x] dodać tailwind do projektu
 - [x] przycisk Add project wyświetlający popup do dodania nowego projektu
 - [ ] najechanie kursorem na task oraz projekt powinno wyświetlić szczegóły ich dotyczące
+- [ ] usuwanie tasków (w widoku projektu)
+  - najlepiej poprzez przeciągnięcie i upuszczenie w strefie usuwania, strefa usuwania może pojawiać się pod backlogiem kiedy task jest podniesiony
 
 ### Ola
 
@@ -211,8 +213,6 @@
   - kliknięcie w projekt z listy powinno zmienić taski wyświetlane w ProjectBacklog i ProjectKanban
 - [x] dodanie component library do projektu
 - [ ] zmienić edycję danych użytkownika na popup wyświetlany po kliknięciu przycisku
-- [ ] usuwanie tasków (w widoku projektu)
-  - najlepiej poprzez przeciągnięcie i upuszczenie w strefie usuwania, strefa usuwania może pojawiać się pod backlogiem kiedy task jest podniesiony
 
 ### Wiktoria
 

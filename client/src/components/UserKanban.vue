@@ -104,9 +104,9 @@ const dragEnd = () => {
     </div>
     <div v-else-if="tasks" class="kanban-wrapper">
         <div class="grid grid-cols-3 gap-4 mb-4 text-center font-bold">
-            <div class="bg-blue-100 p-2 rounded">IN PROGRESS</div>
-            <div class="bg-yellow-100 p-2 rounded">REVIEW</div>
-            <div class="bg-green-100 p-2 rounded">DONE</div>
+            <div class="custom-bg-blue-100 p-2 rounded">IN PROGRESS</div>
+            <div class="custom-bg-yellow-100 p-2 rounded">REVIEW</div>
+            <div class="custom-bg-green-100 p-2 rounded">DONE</div>
         </div>
 
         <div class="kanban-board relative">
@@ -208,5 +208,18 @@ const dragEnd = () => {
 .task-item {
     z-index: 20; /* Keep tasks above dropzones */
     position: relative;
+}
+
+.custom-bg-blue-100 {
+    background-color: #ebf8ff;
+    color: #2c5282;
+}
+.custom-bg-yellow-100 {
+    background-color: #fffff0;
+    color: #744210;
+}
+.custom-bg-green-100 {
+    background-color: #f0fff4;
+    color: #276749;
 }
 </style>

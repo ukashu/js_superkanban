@@ -24,12 +24,21 @@ onMounted(async () => {
         console.log({ err })
     }
 })
+
+const onUserUpdated = (updatedUser) => {
+    user.value = { ...user.value, ...updatedUser }
+}
 </script>
 
 <template>
     <div class="flex flex-col gap-4">
         <Card v-if="user" class="mb-4">
-            <template #title>Profile</template>
+            <template #title>
+                <div class="flex items-center justify-center gap-2">
+                    Profile
+                    <UserEdit :user="user" @user-updated="onUserUpdated" />
+                </div>
+            </template>
             <template #content>
                 <div class="flex flex-col gap-2">
                     <div>
@@ -44,10 +53,6 @@ onMounted(async () => {
                 </div>
             </template>
         </Card>
-
-        <section v-if="user">
-            <UserEdit :user="user" />
-        </section>
 
         <section v-if="user">
             <UserKanban :userId="user.user_id" />

@@ -21,14 +21,16 @@ const assigneesWithTasks = computed(() => {
     const map = new Map()
 
     tasks.value.forEach((t) => {
-        if (!map.has(t.assignee_id)) {
-            map.set(t.assignee_id, {
-                assigneeId: t.assignee_id,
-                assigneeName: t.assignee_name,
-                tasks: [],
-            })
+        if (t.status != "BACKLOG") {
+            if (!map.has(t.assignee_id)) {
+                map.set(t.assignee_id, {
+                    assigneeId: t.assignee_id,
+                    assigneeName: t.assignee_name,
+                    tasks: [],
+                })
+            }
+            map.get(t.assignee_id).tasks.push(t)
         }
-        if (t.status != "BACKLOG") map.get(t.assignee_id).tasks.push(t)
     })
 
     return Array.from(map.values())

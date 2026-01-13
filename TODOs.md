@@ -212,7 +212,7 @@
 - [x] dodanie component library do projektu
 - [ ] zmienić edycję danych użytkownika na popup wyświetlany po kliknięciu przycisku
 - [ ] usuwanie tasków (w widoku projektu)
-  - najlepiej poprzez przeciągnięcie i upuszczenie w strefie usuwania
+  - najlepiej poprzez przeciągnięcie i upuszczenie w strefie usuwania, strefa usuwania może pojawiać się pod backlogiem kiedy task jest podniesiony
 
 ### Wiktoria
 

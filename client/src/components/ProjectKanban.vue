@@ -110,7 +110,7 @@ const dragEnd = () => {
                 class="dropzone doing-dropzone"
                 :class="{
                     'active-zone':
-                        draggedTask && draggedTask.status !== 'DOING',
+                        draggedTask && draggedTask?.status !== 'DOING',
                 }"
                 @dragover.prevent
                 @drop="
@@ -121,13 +121,19 @@ const dragEnd = () => {
             ></div>
             <div
                 class="dropzone review-dropzone"
-                :class="{ 'active-zone': draggedTask?.status === 'DONE' }"
+                :class="{
+                    'active-zone':
+                        draggedTask && draggedTask?.status !== 'REVIEW',
+                }"
                 @dragover.prevent
                 @drop="changeTaskStatus($event, 'REVIEW')"
             ></div>
             <div
                 class="dropzone done-dropzone"
-                :class="{ 'active-zone': draggedTask?.status === 'REVIEW' }"
+                :class="{
+                    'active-zone':
+                        draggedTask && draggedTask?.status !== 'DONE',
+                }"
                 @dragover.prevent
                 @drop="changeTaskStatus($event, 'DONE')"
             ></div>
@@ -168,7 +174,7 @@ const dragEnd = () => {
     gap: 1rem;
     position: relative;
     min-height: 500px;
-    overflow-y: scroll;
+    overflow: auto;
 }
 
 .task-row {

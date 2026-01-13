@@ -183,11 +183,21 @@
 - [ ] dodanie fetch composable i użycie w ProjectKanban
 - [ ] kliknięcie na projekt z listy projektów zmienia zawartośc ProjectKanban
 
+- [x] naprawić błąd: dwa taski w jednym rzędzie
+- [x] cała strona nie powinna się scrollować, tylko kanban, backlog i project list
+- [x] napraw podświetlanie stref zrzutu tasków
+- [ ] przycisk Add project
+- [ ] zmienić edycję użytkownika na popup
+- [ ] dodaj tailwind
+
 ### Łukasz
 
 - [x] dodać kanban tasków dla użytkownika
 - [x] funkcjonalność zmiany statusu taska poprzez przeciągnięcie go
 - [x] zmienić table na grid w kanbanach
+- [x] naprawić błąd: dwa taski w jednym rzędzie
+- [x] cała strona nie powinna się scrollować, tylko kanban, backlog i project list
+- [x] napraw podświetlanie stref zrzutu tasków
 
 ### Ola
 

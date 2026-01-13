@@ -57,7 +57,7 @@ const loadTasks = async () => {
 
 onMounted(loadTasks)
 
-const draggedTask = ref(null) // id: number, status: 'DOING'|'REVIEW'|'DONE'
+const draggedTask = ref(null)
 
 const changeTaskStatus = async (e, newStatus) => {
     if (newStatus != draggedTask.value.status) {
@@ -110,7 +110,6 @@ const dragEnd = () => {
         </div>
 
         <div class="kanban-board relative">
-            <!-- Dropzones -->
             <div
                 class="dropzone review-dropzone"
                 :class="{ 'active-zone': draggedTask?.status === 'DOING' }"
@@ -180,13 +179,8 @@ const dragEnd = () => {
     top: 0;
     bottom: 0;
     z-index: 0;
-    pointer-events: none; /* Let clicks pass through unless active? No, native DnD handles it */
+    pointer-events: none;
 }
-/* When dragging, we want dropzones to be targets. 
-   Pointer events should be auto for dropzones when they are needed.
-   But they are overlays. If they are on top, they block clicks on tasks?
-   Tasks are Z-index 1 usually.
-*/
 
 .review-dropzone {
     left: 33.33%;
@@ -201,12 +195,12 @@ const dragEnd = () => {
 .active-zone {
     background-color: rgba(255, 255, 200, 0.3);
     border: 2px dashed #ecc94b;
-    pointer-events: auto; /* Enable dropping */
+    pointer-events: auto;
     z-index: 10;
 }
 
 .task-item {
-    z-index: 20; /* Keep tasks above dropzones */
+    z-index: 20;
     position: relative;
 }
 

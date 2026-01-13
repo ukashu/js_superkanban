@@ -55,7 +55,7 @@ const loadTasks = async () => {
 onMounted(loadTasks)
 watch(() => props.projectId, loadTasks)
 
-const draggedTask = ref(null) // id: number, status: 'DOING'|'REVIEW'|'DONE'
+const draggedTask = ref(null)
 
 const changeTaskStatus = async (e, newStatus) => {
     if (newStatus != draggedTask.value.status) {
@@ -107,7 +107,6 @@ const dragEnd = () => {
         </div>
 
         <div class="kanban-board relative">
-            <!-- Dropzones -->
             <div
                 class="dropzone doing-dropzone"
                 :class="{

@@ -78,7 +78,7 @@ function onDragEnd() {
 <style scoped>
 .backlog-item {
     background-color: #ffffff;
-    color: #374151; /* Dark gray text for readability */
+    color: #374151;
     border: 1px solid #e5e7eb;
     border-radius: 6px;
     padding: 0.75rem 1rem;
@@ -86,15 +86,15 @@ function onDragEnd() {
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     cursor: move;
     transition: all 0.2s ease;
-    user-select: none; /* Prevent text selection while dragging */
+    user-select: none;
 }
 
 .backlog-item:hover {
-    background-color: #f9fafb; /* Light gray on hover */
+    background-color: #f9fafb;
     box-shadow:
         0 4px 6px -1px rgba(0, 0, 0, 0.1),
         0 2px 4px -1px rgba(0, 0, 0, 0.06);
     border-color: #d1d5db;
-    transform: translateY(-1px); /* Slight lift effect */
+    transform: translateY(-1px);
 }
 </style>

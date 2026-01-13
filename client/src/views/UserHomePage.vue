@@ -55,23 +55,4 @@ onMounted(async () => {
     </div>
 </template>
 
-<style scoped>
-.flex {
-    display: flex;
-}
-.flex-col {
-    flex-direction: column;
-}
-.gap-4 {
-    gap: 1rem;
-}
-.gap-2 {
-    gap: 0.5rem;
-}
-.mb-4 {
-    margin-bottom: 1rem;
-}
-.font-bold {
-    font-weight: bold;
-}
-</style>
+<style scoped></style>

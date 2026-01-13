@@ -2,9 +2,9 @@
 import Task from "./Task.vue"
 import { ref, onMounted, computed } from "vue"
 import { authFetch } from "../helpers/helpers"
-import ProgressSpinner from 'primevue/progressspinner';
-import Message from 'primevue/message';
-import Divider from 'primevue/divider';
+import ProgressSpinner from "primevue/progressspinner"
+import Message from "primevue/message"
+import Divider from "primevue/divider"
 
 const emit = defineEmits(["drop-task"])
 
@@ -40,9 +40,7 @@ const loadTasks = async () => {
     console.log("Backlog userId = ", props.userId)
 
     try {
-        const res = await authFetch(
-            `/api/users/${props.userId}/tasks`,
-        )
+        const res = await authFetch(`/api/users/${props.userId}/tasks`)
         if (!res.ok) {
             throw new Error("Failed to fetch tasks")
         }
@@ -110,7 +108,7 @@ const dragEnd = () => {
             <div class="bg-yellow-100 p-2 rounded">REVIEW</div>
             <div class="bg-green-100 p-2 rounded">DONE</div>
         </div>
-        
+
         <div class="kanban-board relative">
             <!-- Dropzones -->
             <div
@@ -126,16 +124,24 @@ const dragEnd = () => {
                 @drop="changeTaskStatus($event, 'DOING')"
             ></div>
 
-            <template v-for="project in projectsWithTasks" :key="project.projectId">
+            <template
+                v-for="project in projectsWithTasks"
+                :key="project.projectId"
+            >
                 <div class="project-separator col-span-3">
                     <Divider align="left">
-                        <span class="p-tag">{{ project.projectName || "Uncategorized" }}</span>
+                        <span class="p-tag">{{
+                            project.projectName || "Uncategorized"
+                        }}</span>
                     </Divider>
                 </div>
                 <template v-for="task in project.tasks" :key="task.task_id">
                     <div :class="['task-item', task.status]">
                         <Task
-                            :draggable="task.status === 'DOING' || task.status === 'REVIEW'"
+                            :draggable="
+                                task.status === 'DOING' ||
+                                task.status === 'REVIEW'
+                            "
                             @dragstart="dragStart(task)"
                             @dragend="dragEnd"
                             :task="task"
@@ -159,9 +165,15 @@ const dragEnd = () => {
     grid-column: 1 / 4;
 }
 
-.task-item.DOING { grid-column: 1; }
-.task-item.REVIEW { grid-column: 2; }
-.task-item.DONE { grid-column: 3; }
+.task-item.DOING {
+    grid-column: 1;
+}
+.task-item.REVIEW {
+    grid-column: 2;
+}
+.task-item.DONE {
+    grid-column: 3;
+}
 
 .dropzone {
     position: absolute;
@@ -197,20 +209,4 @@ const dragEnd = () => {
     z-index: 20; /* Keep tasks above dropzones */
     position: relative;
 }
-
-/* Utility classes */
-.grid { display: grid; }
-.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.gap-4 { gap: 1rem; }
-.mb-4 { margin-bottom: 1rem; }
-.text-center { text-align: center; }
-.font-bold { font-weight: bold; }
-.bg-blue-100 { background-color: #ebf8ff; color: #2c5282; }
-.bg-yellow-100 { background-color: #fffff0; color: #744210; }
-.bg-green-100 { background-color: #f0fff4; color: #276749; }
-.p-2 { padding: 0.5rem; }
-.rounded { border-radius: 0.25rem; }
-.flex { display: flex; }
-.justify-center { justify-content: center; }
-.p-4 { padding: 1rem; }
 </style>

@@ -1,38 +1,35 @@
 <script setup>
-import { ref } from "vue";
-import InputText from 'primevue/inputtext';
-import Textarea from 'primevue/textarea';
-import Button from 'primevue/button';
+import { ref } from "vue"
+import InputText from "primevue/inputtext"
+import Textarea from "primevue/textarea"
+import Button from "primevue/button"
 
-const props = defineProps(["projectId"]);
-const emit = defineEmits(["refresh"]);
+const props = defineProps(["projectId"])
+const emit = defineEmits(["refresh"])
 
-const title = ref("");
-const description = ref("");
-const message = ref("");
+const title = ref("")
+const description = ref("")
+const message = ref("")
 
 async function createTask() {
     try {
-        const res = await fetch(
-            `/api/projects/${props.projectId}/tasks`,
-            {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    title: title.value,
-                    description: description.value,
-                }),
-            },
-        );
+        const res = await fetch(`/api/projects/${props.projectId}/tasks`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                title: title.value,
+                description: description.value,
+            }),
+        })
 
-        const json = await res.json();
-        message.value = json.message || "Task created!";
-        title.value = "";
-        description.value = "";
-        emit("refresh");
+        const json = await res.json()
+        message.value = json.message || "Task created!"
+        title.value = ""
+        description.value = ""
+        emit("refresh")
     } catch (err) {
-        console.log("Error creating task: ", err);
-        message.value = "Error creating task";
+        console.log("Error creating task: ", err)
+        message.value = "Error creating task"
     }
 }
 </script>
@@ -55,11 +52,4 @@ async function createTask() {
     </div>
 </template>
 
-<style scoped>
-.flex { display: flex; }
-.flex-col { flex-direction: column; }
-.gap-4 { gap: 1rem; }
-.gap-2 { gap: 0.5rem; }
-.font-bold { font-weight: bold; }
-.text-green-600 { color: #059669; }
-</style>
+<style scoped></style>

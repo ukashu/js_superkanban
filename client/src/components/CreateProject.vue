@@ -1,12 +1,12 @@
 <script setup>
-import { ref } from "vue";
-import InputText from 'primevue/inputtext';
-import Textarea from 'primevue/textarea';
-import Button from 'primevue/button';
+import { ref } from "vue"
+import InputText from "primevue/inputtext"
+import Textarea from "primevue/textarea"
+import Button from "primevue/button"
 
-const title = ref("");
-const description = ref("");
-const message = ref("");
+const title = ref("")
+const description = ref("")
+const message = ref("")
 
 async function submitForm() {
     try {
@@ -17,17 +17,17 @@ async function submitForm() {
                 title: title.value,
                 description: description.value,
             }),
-        });
+        })
 
-        const json = await res.json();
-        message.value = json.message || "Created!";
+        const json = await res.json()
+        message.value = json.message || "Created!"
         if (res.ok) {
-            title.value = "";
-            description.value = "";
+            title.value = ""
+            description.value = ""
         }
     } catch (err) {
-        console.error(err);
-        message.value = "Error creating project";
+        console.error(err)
+        message.value = "Error creating project"
     }
 }
 </script>
@@ -52,12 +52,4 @@ async function submitForm() {
     </div>
 </template>
 
-<style scoped>
-.flex { display: flex; }
-.flex-col { flex-direction: column; }
-.gap-4 { gap: 1rem; }
-.gap-2 { gap: 0.5rem; }
-.text-xl { font-size: 1.25rem; }
-.font-bold { font-weight: bold; }
-.text-green-600 { color: #059669; }
-</style>
+<style scoped></style>

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, defineEmits } from "vue"
-import ProgressSpinner from 'primevue/progressspinner';
+import ProgressSpinner from "primevue/progressspinner"
 
 const emit = defineEmits(["drag-task", "drag-end"])
 
@@ -14,17 +14,13 @@ const props = defineProps({
 const tasks = ref([])
 const loading = ref(true)
 
-const backlog = computed(() =>
-    tasks.value.filter((t) => !t.assignee_id),
-)
+const backlog = computed(() => tasks.value.filter((t) => !t.assignee_id))
 
 onMounted(async () => {
     console.log("Backlog projectId = ", props.projectId)
 
     try {
-        const res = await fetch(
-            `/api/projects/${props.projectId}/tasks`,
-        )
+        const res = await fetch(`/api/projects/${props.projectId}/tasks`)
         if (!res.ok) {
             throw new Error("Failed to fetch backlog tasks")
         }
@@ -42,14 +38,14 @@ onMounted(async () => {
 })
 
 function onDragStart(event, task) {
-    event.dataTransfer.dropEffect = 'move';
-    event.dataTransfer.effectAllowed = 'move';
-    event.dataTransfer.setData('text/plain', task.task_id.toString());
-    emit('drag-task', task.task_id);
+    event.dataTransfer.dropEffect = "move"
+    event.dataTransfer.effectAllowed = "move"
+    event.dataTransfer.setData("text/plain", task.task_id.toString())
+    emit("drag-task", task.task_id)
 }
 
 function onDragEnd() {
-    emit('drag-end');
+    emit("drag-end")
 }
 </script>
 
@@ -59,7 +55,10 @@ function onDragEnd() {
             <ProgressSpinner style="width: 50px; height: 50px" />
         </div>
         <div v-else class="flex-1 overflow-y-auto pr-2">
-            <div v-if="backlog.length === 0" class="text-gray-500 text-center italic mt-4">
+            <div
+                v-if="backlog.length === 0"
+                class="text-gray-500 text-center italic mt-4"
+            >
                 No tasks in backlog
             </div>
             <div
@@ -77,20 +76,6 @@ function onDragEnd() {
 </template>
 
 <style scoped>
-.h-full { height: 100%; }
-.flex { display: flex; }
-.flex-col { flex-direction: column; }
-.justify-center { justify-content: center; }
-.p-4 { padding: 1rem; }
-.flex-1 { flex: 1; }
-.overflow-y-auto { overflow-y: auto; }
-.pr-2 { padding-right: 0.5rem; }
-.text-gray-500 { color: #6b7280; }
-.text-center { text-align: center; }
-.italic { font-style: italic; }
-.mt-4 { margin-top: 1rem; }
-.font-bold { font-weight: bold; }
-
 .backlog-item {
     background-color: #ffffff;
     color: #374151; /* Dark gray text for readability */
@@ -106,7 +91,9 @@ function onDragEnd() {
 
 .backlog-item:hover {
     background-color: #f9fafb; /* Light gray on hover */
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
     border-color: #d1d5db;
     transform: translateY(-1px); /* Slight lift effect */
 }

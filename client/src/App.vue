@@ -82,12 +82,6 @@ const items = ref([
 </template>
 
 <style scoped>
-.ml-2 {
-    margin-left: 0.5rem;
-}
-.p-4 {
-    padding: 1rem;
-}
 .app-layout {
     height: 100%;
     display: flex;

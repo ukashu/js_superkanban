@@ -99,9 +99,9 @@ const dragEnd = () => {
     </div>
     <div v-else-if="tasks" class="kanban-wrapper">
         <div class="grid grid-cols-3 gap-4 mb-4 text-center font-bold">
-            <div class="bg-blue-100 p-2 rounded">IN PROGRESS</div>
-            <div class="bg-yellow-100 p-2 rounded">REVIEW</div>
-            <div class="bg-green-100 p-2 rounded">DONE</div>
+            <div class="custom-bg-blue-100 p-2 rounded">IN PROGRESS</div>
+            <div class="custom-bg-yellow-100 p-2 rounded">REVIEW</div>
+            <div class="custom-bg-green-100 p-2 rounded">DONE</div>
         </div>
 
         <div class="kanban-board relative">
@@ -227,50 +227,16 @@ const dragEnd = () => {
     position: relative;
 }
 
-/* Utility classes */
-.grid {
-    display: grid;
-}
-.grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-.gap-4 {
-    gap: 1rem;
-}
-.mb-4 {
-    margin-bottom: 1rem;
-}
-.text-center {
-    text-align: center;
-}
-.font-bold {
-    font-weight: bold;
-}
-.bg-blue-100 {
+.custom-bg-blue-100 {
     background-color: #ebf8ff;
     color: #2c5282;
 }
-.bg-yellow-100 {
+.custom-bg-yellow-100 {
     background-color: #fffff0;
     color: #744210;
 }
-.bg-green-100 {
+.custom-bg-green-100 {
     background-color: #f0fff4;
     color: #276749;
-}
-.p-2 {
-    padding: 0.5rem;
-}
-.rounded {
-    border-radius: 0.25rem;
-}
-.flex {
-    display: flex;
-}
-.justify-center {
-    justify-content: center;
-}
-.p-4 {
-    padding: 1rem;
 }
 </style>

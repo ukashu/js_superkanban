@@ -190,6 +190,8 @@
 - [x] przycisk Add project
 - [ ] zmienić edycję użytkownika na popup
 - [ ] owner_id przy tworzeniu taska powinien być brany z JWT w backendzie
+- [ ] usuwanie tasków (w widoku projektu)
+  - najlepiej poprzez przeciągnięcie i upuszczenie w strefie usuwania, strefa usuwania może pojawiać się pod backlogiem kiedy task jest podniesiony
 
 ### Łukasz
 
@@ -202,8 +204,7 @@
 - [x] dodać tailwind do projektu
 - [x] przycisk Add project wyświetlający popup do dodania nowego projektu
 - [ ] najechanie kursorem na task oraz projekt powinno wyświetlić szczegóły ich dotyczące
-- [ ] usuwanie tasków (w widoku projektu)
-  - najlepiej poprzez przeciągnięcie i upuszczenie w strefie usuwania, strefa usuwania może pojawiać się pod backlogiem kiedy task jest podniesiony
+- [ ] naprawa scrollowania w User Home
 
 ### Ola
 

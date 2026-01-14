@@ -16,7 +16,6 @@ const loadingUsers = ref(false)
 async function findUser() {
     loadingUsers.value = true
     try {
-        // Debounce could be added here if needed, but keeping it simple as per original
         const res = await fetch(`/api/users?email=${searchEmail.value}`)
         const json = await res.json()
         users.value = json.data
@@ -95,15 +94,6 @@ async function assign() {
                 </template>
                 <template #value="slotProps">
                     <div v-if="slotProps.value" class="flex flex-col">
-                        <!-- slotProps.value is the user_id (optionValue), we need to find the user object to display details if we want rich display, 
-                              but standard dropdown behavior displays the optionLabel (email) if not templated or simple string.
-                              Actually, standard Dropdown displays optionLabel.
-                              To display rich content for selected value, we need to find the option. 
-                              However, `slotProps.value` is just the ID. 
-                              Let's just let it display the email (default behavior) or customize if we had the object.
-                              If `optionValue` is set, `v-model` is the value. 
-                              Let's stick to default display for selected item (email) to avoid complexity finding the object again.
-                         -->
                         <span>{{
                             users.find((u) => u.user_id === slotProps.value)
                                 ?.email || slotProps.value

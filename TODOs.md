@@ -205,6 +205,9 @@
 - [x] przycisk Add project wyświetlający popup do dodania nowego projektu
 - [ ] najechanie kursorem na task oraz projekt powinno wyświetlić szczegóły ich dotyczące
 - [ ] naprawa scrollowania w User Home
+- [x] bug: `/` przenosi na `/login` nawet jeżeli użytkownik jest zalogowany
+- [ ] bug: logowanie złymi danymi łamie stronę
+- [ ] responsywność
 
 ### Ola
 
@@ -213,16 +216,16 @@
   - dodać ścieżkę w backendzie do pobrania projektów dla usera, Vue powinien pobierać tę listę `onMounted`
   - kliknięcie w projekt z listy powinno zmienić taski wyświetlane w ProjectBacklog i ProjectKanban
 - [x] dodanie component library do projektu
-- [ ] zmienić edycję danych użytkownika na popup wyświetlany po kliknięciu przycisku
+- [x] zmienić edycję danych użytkownika na popup wyświetlany po kliknięciu przycisku
 
 ### Wiktoria
 
 - [x] stworzyć komponent Vue do edycji danych użytkownika
 - [x] przycisk i funkcjonalność Logout w Vue
   - wylogowanie polega na usunięciu wartości `token` i `user_id` z localStorage
-- [ ] po udanym logowaniu/rejestracji przenieść użytkownika na stronę domową użytkownika `/users/<USER_ID>`
-- [ ] przy kliknięciu przycisku "User" w nawigacji id użytkownika powinno byc brane z localstorage, obecnie jest chyba hardkodowane user_id 1 w `App.vue`
-- [ ] przycisk "Logout" powiniem być widzialny tylko dla zalogowanych użytkowników, przyciski "Login" i "Register" tylko dla niezalogowanych
+- [x] po udanym logowaniu/rejestracji przenieść użytkownika na stronę domową użytkownika `/users/<USER_ID>`
+- [x] przy kliknięciu przycisku "User" w nawigacji id użytkownika powinno byc brane z localstorage, obecnie jest chyba hardkodowane user_id 1 w `App.vue`
+- [x] przycisk "Logout" powiniem być widzialny tylko dla zalogowanych użytkowników, przyciski "Login" i "Register" tylko dla niezalogowanych
 
 ## Na zjazd 10
 
@@ -234,3 +237,4 @@
 - [ ] paginacja tasków w kanbanie
 - [ ] dodać restrykcje związane z rolami
 - [ ] owner_id przy tworzeniu taska powinien być brany z JWT w backendzie
+- [ ] pokazywać w ProjectPage w których projektach użytkownik jest właścicielem a w któ©ych pracownikiem

@@ -7,7 +7,7 @@ import LoginView from "./views/LoginView.vue"
 import RegisterView from "./views/RegisterView.vue"
 
 const routes = [
-    { path: "/", redirect: "/login" },
+    { path: "/", },
     { path: "/users/:userId", component: UserHomePage },
     { path: "/users/:userId/projects", component: ProjectPage },
     { path: "/login", component: LoginView },

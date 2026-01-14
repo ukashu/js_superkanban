@@ -9,12 +9,12 @@ const router = useRouter()
 const userId = ref(null)
 const isLoggedIn = ref(false)
 const refreshAuth = () => {
-  userId.value = localStorage.getItem("user_id")
-  isLoggedIn.value = !!localStorage.getItem("token")
+    userId.value = localStorage.getItem("user_id")
+    isLoggedIn.value = !!localStorage.getItem("token")
 }
 
 onMounted(() => {
-  refreshAuth()
+    refreshAuth()
 })
 
 const logout = () => {
@@ -27,28 +27,30 @@ const logout = () => {
 const items = computed(() => {
     if (isLoggedIn.value) {
         return [
-        {
-            label: "User",
-            icon: "pi pi-user",
-            route: `/users/${userId.value}`,
-        },
-        {
-            label: "Projects",
-            icon: "pi pi-folder",
-            route: `/users/${userId.value}/projects`,
-        },]
+            {
+                label: "User",
+                icon: "pi pi-user",
+                route: `/users/${userId.value}`,
+            },
+            {
+                label: "Projects",
+                icon: "pi pi-folder",
+                route: `/users/${userId.value}/projects`,
+            },
+        ]
     } else {
         return [
-        {
-            label: "Login",
-            icon: "pi pi-sign-in",
-            route: "/login",
-        },
-        {
-            label: "Register",
-            icon: "pi pi-user-plus",
-            route: "/register",
-        },]
+            {
+                label: "Login",
+                icon: "pi pi-sign-in",
+                route: "/login",
+            },
+            {
+                label: "Register",
+                icon: "pi pi-user-plus",
+                route: "/register",
+            },
+        ]
     }
 })
 </script>

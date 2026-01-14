@@ -57,9 +57,9 @@ const onUserUpdated = (updatedUser) => {
             </template>
         </Card>
 
-    <section v-if="user">
-        <UserEdit :user="user" />
-    </section>
+        <section v-if="user">
+            <UserEdit :user="user" />
+        </section>
 
         <section v-if="user">
             <UserKanban :userId="user.user_id" />

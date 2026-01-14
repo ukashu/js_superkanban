@@ -1,39 +1,56 @@
 <script setup>
-import { ref } from "vue"
+import { ref, computed, onMounted } from "vue"
 import Menubar from "primevue/menubar"
 import Button from "primevue/button"
 import { useRouter } from "vue-router"
 
 const router = useRouter()
 
+const userId = ref(null)
+const isLoggedIn = ref(false)
+const refreshAuth = () => {
+  userId.value = localStorage.getItem("user_id")
+  isLoggedIn.value = !!localStorage.getItem("token")
+}
+
+onMounted(() => {
+  refreshAuth()
+})
+
 const logout = () => {
     localStorage.removeItem("token")
     localStorage.removeItem("user_id")
+    isLoggedIn.value = false
     router.push("/login")
 }
 
-const items = ref([
-    {
-        label: "User",
-        icon: "pi pi-user",
-        route: "/users/1",
-    },
-    {
-        label: "Projects",
-        icon: "pi pi-folder",
-        route: "/users/1/projects",
-    },
-    {
-        label: "Login",
-        icon: "pi pi-sign-in",
-        route: "/login",
-    },
-    {
-        label: "Register",
-        icon: "pi pi-user-plus",
-        route: "/register",
-    },
-])
+const items = computed(() => {
+    if (isLoggedIn.value) {
+        return [
+        {
+            label: "User",
+            icon: "pi pi-user",
+            route: `/users/${userId.value}`,
+        },
+        {
+            label: "Projects",
+            icon: "pi pi-folder",
+            route: `/users/${userId.value}/projects`,
+        },]
+    } else {
+        return [
+        {
+            label: "Login",
+            icon: "pi pi-sign-in",
+            route: "/login",
+        },
+        {
+            label: "Register",
+            icon: "pi pi-user-plus",
+            route: "/register",
+        },]
+    }
+})
 </script>
 
 <template>
@@ -68,6 +85,7 @@ const items = ref([
                 </template>
                 <template #end>
                     <Button
+                        v-if="isLoggedIn"
                         label="Logout"
                         icon="pi pi-sign-out"
                         @click="logout"

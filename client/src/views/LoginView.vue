@@ -4,6 +4,7 @@ import Card from "primevue/card"
 import InputText from "primevue/inputtext"
 import Button from "primevue/button"
 
+const router = useRouter() 
 const email = ref("")
 const password = ref("")
 
@@ -25,9 +26,19 @@ const submitLogin = async () => {
         })
 
         const jsonResponse = await response.json()
-        localStorage.setItem("token", jsonResponse.data.token)
-        localStorage.setItem("user_id", jsonResponse.data.user.id)
-        console.log("LOGIN response:", jsonResponse)
+
+        const userId = jsonResponse.data.user.id
+        const token = jsonResponse.data.token
+
+        localStorage.setItem("token", token)
+        localStorage.setItem("user_id", userId)
+
+        console.log("Redirecting userId:", userId)
+
+        await router.push(`/users/${userId}`)
+
+        location.reload()
+
     } catch (error) {
         console.error("LOGIN error:", error)
     }

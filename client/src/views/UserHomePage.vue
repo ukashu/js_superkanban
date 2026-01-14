@@ -9,7 +9,10 @@ const user = ref(null)
 const route = useRoute()
 
 onMounted(async () => {
+    console.log("UserHomePage current route:", route.fullPath)
+    console.log("UserHomePage params:", route.params)
     const userId = route.params.userId
+    console.log("UserHomePage userId:", userId)
 
     try {
         const userRes = await fetch(`/api/users/${userId}`)
@@ -45,9 +48,9 @@ onMounted(async () => {
             </template>
         </Card>
 
-        <section v-if="user">
-            <UserEdit :user="user" />
-        </section>
+    <section v-if="user">
+        <UserEdit :user="user" />
+    </section>
 
         <section v-if="user">
             <UserKanban :userId="user.user_id" />

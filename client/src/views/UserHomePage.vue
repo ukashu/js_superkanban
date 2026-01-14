@@ -34,7 +34,7 @@ const onUserUpdated = (updatedUser) => {
 </script>
 
 <template>
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col h-full gap-4">
         <Card v-if="user" class="mb-4">
             <template #title>
                 <div class="flex items-center justify-center gap-2">
@@ -61,7 +61,7 @@ const onUserUpdated = (updatedUser) => {
             <UserEdit :user="user" />
         </section>
 
-        <section v-if="user">
+        <section v-if="user" class="flex-1 min-h-0 flex flex-col">
             <UserKanban :userId="user.user_id" />
         </section>
     </div>

@@ -102,7 +102,7 @@ const dragEnd = () => {
     <div v-else-if="error" class="p-4">
         <Message severity="error">{{ error }}</Message>
     </div>
-    <div v-else-if="tasks" class="kanban-wrapper">
+    <div v-else-if="tasks" class="flex flex-col h-full">
         <div class="grid grid-cols-3 gap-4 mb-4 text-center font-bold">
             <div class="custom-bg-blue-100 p-2 rounded">IN PROGRESS</div>
             <div class="custom-bg-yellow-100 p-2 rounded">REVIEW</div>
@@ -157,7 +157,10 @@ const dragEnd = () => {
     grid-template-columns: 1fr 1fr 1fr;
     gap: 1rem;
     position: relative;
-    min-height: 500px;
+
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
 }
 
 .col-span-3 {

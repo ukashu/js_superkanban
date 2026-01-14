@@ -204,7 +204,7 @@
 - [x] dodać tailwind do projektu
 - [x] przycisk Add project wyświetlający popup do dodania nowego projektu
 - [ ] najechanie kursorem na task oraz projekt powinno wyświetlić szczegóły ich dotyczące
-- [ ] naprawa scrollowania w User Home
+- [x] naprawa scrollowania w User Home
 - [x] bug: `/` przenosi na `/login` nawet jeżeli użytkownik jest zalogowany
 - [ ] bug: logowanie złymi danymi łamie stronę
 - [ ] responsywność

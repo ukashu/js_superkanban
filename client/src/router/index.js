@@ -4,7 +4,7 @@ import UserHomePage from "../views/UserHomePage.vue"
 import LoginView from "../views/LoginView.vue"
 import RegisterView from "../views/RegisterView.vue"
 
-onst routes = [
+const routes = [
   {
     path: "/tasks",
     name: "Tasks",

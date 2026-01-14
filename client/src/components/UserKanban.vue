@@ -102,7 +102,7 @@ const dragEnd = () => {
     <div v-else-if="error" class="p-4">
         <Message severity="error">{{ error }}</Message>
     </div>
-    <div v-else-if="tasks" class="flex flex-col h-full">
+    <div v-else-if="tasks" class="flex flex-col min-h-0">
         <div class="grid grid-cols-3 gap-4 mb-4 text-center font-bold">
             <div class="custom-bg-blue-100 p-2 rounded">IN PROGRESS</div>
             <div class="custom-bg-yellow-100 p-2 rounded">REVIEW</div>

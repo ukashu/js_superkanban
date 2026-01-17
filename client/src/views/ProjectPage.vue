@@ -109,24 +109,37 @@ function onDropTask() {
 </script>
 
 <template>
-    <div class="flex h-full overflow-hidden">
+    <div class="flex flex-col sm:flex-row h-full min-h-0">
         <aside
-            class="w-64 h-full bg-gray-200 flex flex-col border-r border-gray-200 p-4 overflow-y-auto"
+            class="sm:w-64 sm:h-full shrink-0 max-h-[20vh] sm:max-h-none bg-gray-200 flex flex-row sm:flex-col gap-2 border-r border-gray-200 p-4 overflow-y-auto"
         >
-            <h3 class="text-xl font-bold mb-4 text-gray-900">My Projects</h3>
-            <Listbox
-                v-model="selectedProject"
-                :options="projects"
-                optionLabel="title"
-                class="w-full"
-                listStyle="maxheight: 250px"
-            />
-            <Button
-                label="New Project"
-                icon="pi pi-plus"
-                class="mt-auto"
-                @click="showAddProjectPopup = true"
-            />
+            <div class="flex flex-col flex-1">
+                <h3 class="text-xl font-bold mb-4 text-gray-900">
+                    My Projects
+                </h3>
+                <Listbox
+                    v-model="selectedProject"
+                    :options="projects"
+                    optionLabel="title"
+                    class="w-full"
+                    listStyle="maxheight: 250px"
+                />
+            </div>
+            <div class="flex flex-col">
+                <Button
+                    label="New Project"
+                    icon="pi pi-plus"
+                    class="mt-auto"
+                    @click="showAddProjectPopup = true"
+                />
+                <div class="sm:hidden">
+                    <Button
+                        label="Add Task"
+                        icon="pi pi-plus"
+                        @click="showAddTaskPopup = true"
+                    />
+                </div>
+            </div>
         </aside>
 
         <main class="flex-1 p-4 bg-white">
@@ -139,7 +152,7 @@ function onDropTask() {
             </div>
 
             <div v-else-if="project" class="flex flex-col h-full min-h-0">
-                <div class="flex justify-between items-center mb-6">
+                <div class="hidden sm:flex justify-between items-center mb-6">
                     <div>
                         <h1 class="text-3xl font-bold text-gray-900">
                             {{ project.title }}

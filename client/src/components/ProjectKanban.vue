@@ -81,6 +81,27 @@ const changeTaskStatus = async (e, newStatus) => {
     draggedTask.value = null
 }
 
+const changeNonDragTaskStatus = async (task, newStatus) => {
+    try {
+        const res = await fetch(
+            `/api/projects/${task.project_id}/tasks/${task.task_id}`,
+            {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ status: newStatus }),
+            },
+        )
+        if (!res.ok) {
+            throw new Error("Failed to update task status")
+        }
+        const json = await res.json()
+        console.log(json)
+        loadTasks()
+    } catch (err) {
+        error.value = err.message
+    }
+}
+
 const dragStart = (task) => {
     draggedTask.value = {
         id: task.task_id,
@@ -100,13 +121,15 @@ const dragEnd = () => {
         <Message severity="error">{{ error }}</Message>
     </div>
     <div v-else-if="tasks" class="kanban-wrapper">
-        <div class="grid grid-cols-3 gap-4 mb-4 text-center font-bold">
+        <div
+            class="hidden sm:grid grid-cols-3 gap-4 mb-4 text-center font-bold"
+        >
             <div class="custom-bg-blue-100 p-2 rounded">IN PROGRESS</div>
             <div class="custom-bg-yellow-100 p-2 rounded">REVIEW</div>
             <div class="custom-bg-green-100 p-2 rounded">DONE</div>
         </div>
 
-        <div class="kanban-board relative">
+        <div class="sm:grid grid-cols-3 gap-4 mb-4 text-center relative">
             <div
                 class="dropzone doing-dropzone"
                 :class="{
@@ -160,6 +183,7 @@ const dragEnd = () => {
                                 @dragstart="dragStart(task)"
                                 @dragend="dragEnd"
                                 :task="task"
+                                :change-status="changeNonDragTaskStatus"
                             />
                         </div>
                     </div>
@@ -169,15 +193,6 @@ const dragEnd = () => {
     </div>
 </template>
 <style scoped>
-.kanban-board {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
-    position: relative;
-    min-height: 500px;
-    overflow: auto;
-}
-
 .task-row {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;

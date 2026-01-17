@@ -144,7 +144,7 @@ function onDropTask() {
             </div>
         </aside>
 
-        <main class="flex-1 p-4 bg-white">
+        <main class="flex-1 p-4 bg-white overflow-y-auto min-h-0">
             <div v-if="loading && !project" class="flex justify-center mt-10">
                 <ProgressSpinner />
             </div>
@@ -168,9 +168,9 @@ function onDropTask() {
                     />
                 </div>
 
-                <div class="grid grid-cols-4 gap-6 flex-1 min-h-0">
+                <div class="sm:grid sm:grid-cols-4 gap-6 flex-1 min-h-0">
                     <div
-                        class="col-span-1 bg-gray-50 p-4 rounded-lg overflow-y-auto border border-gray-200"
+                        class="col-span-1 bg-gray-50 p-4 rounded-lg sm:overflow-y-auto border border-gray-200"
                     >
                         <h2 class="text-lg font-semibold mb-4 text-gray-900">
                             Backlog
@@ -184,13 +184,12 @@ function onDropTask() {
                         <Button
                             label="Add Task"
                             icon="pi pi-plus"
-                            class="sm:hidden"
                             @click="showAddTaskPopup = true"
                         />
                     </div>
 
                     <div
-                        class="col-span-3 bg-gray-50 p-4 rounded-lg overflow-y-auto border border-gray-200"
+                        class="col-span-3 bg-gray-50 p-4 rounded-lg sm:overflow-y-auto border border-gray-200"
                     >
                         <h2 class="text-lg font-semibold mb-4 text-gray-900">
                             Kanban Board

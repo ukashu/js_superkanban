@@ -203,11 +203,9 @@
 - [x] naprawić podświetlanie stref zrzutu tasków
 - [x] dodać tailwind do projektu
 - [x] przycisk Add project wyświetlający popup do dodania nowego projektu
-- [ ] najechanie kursorem na task oraz projekt powinno wyświetlić szczegóły ich dotyczące
 - [x] naprawa scrollowania w User Home
 - [x] bug: `/` przenosi na `/login` nawet jeżeli użytkownik jest zalogowany
-- [ ] bug: logowanie złymi danymi łamie stronę
-- [ ] responsywność
+- [x] dodać responsywność
 
 ### Ola
 
@@ -231,10 +229,12 @@
 
 ### Backlog
 
-- [ ] zmienić fetche na używające composables
+- [ ] użycie composables tam gdzie to możliwe
 - [ ] sprawdzić czy errory z backendu wyświetlają się w poprawny sposób, jeżeli nie - naprawić
 - [ ] przeniesienie taska z powrotem do backlogu (w widoku projektu)
 - [ ] paginacja tasków w kanbanie
 - [ ] dodać restrykcje związane z rolami
 - [ ] owner_id przy tworzeniu taska powinien być brany z JWT w backendzie
 - [ ] pokazywać w ProjectPage w których projektach użytkownik jest właścicielem a w któ©ych pracownikiem
+- [ ] bug: logowanie złymi danymi łamie stronę
+- [ ] najechanie kursorem na task oraz projekt powinno wyświetlić szczegóły ich dotyczące

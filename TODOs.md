@@ -238,3 +238,4 @@
 - [ ] pokazywać w ProjectPage w których projektach użytkownik jest właścicielem a w któ©ych pracownikiem
 - [ ] bug: logowanie złymi danymi łamie stronę
 - [ ] najechanie kursorem na task oraz projekt powinno wyświetlić szczegóły ich dotyczące
+- [ ] bug: dodanie nowego projektu powinno odświeżać listę projektów

@@ -8,6 +8,9 @@ const title = ref("")
 const description = ref("")
 const message = ref("")
 
+const userId = ref(null)
+userId.value = localStorage.getItem("user_id")
+
 async function submitForm() {
     try {
         const res = await fetch("/api/projects", {
@@ -16,6 +19,7 @@ async function submitForm() {
             body: JSON.stringify({
                 title: title.value,
                 description: description.value,
+                owner_id: userId.value,
             }),
         })
 

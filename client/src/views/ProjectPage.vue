@@ -111,34 +111,36 @@ function onDropTask() {
 <template>
     <div class="flex flex-col sm:flex-row h-full min-h-0">
         <aside
-            class="sm:w-64 sm:h-full shrink-0 max-h-[20vh] sm:max-h-none bg-gray-200 flex flex-row sm:flex-col gap-2 border-r border-gray-200 p-4 overflow-y-auto"
+            class="sm:w-64 sm:h-full shrink-0 max-h-[20vh] sm:max-h-none bg-gray-200 flex flex-col gap-2 border-r border-gray-200 p-4 overflow-y-auto"
         >
-            <div class="flex flex-col flex-1">
+            <div class="flex flex-row flex-1 justify-between sm:hidden">
                 <h3 class="text-xl font-bold mb-4 text-gray-900">
                     My Projects
                 </h3>
-                <Listbox
-                    v-model="selectedProject"
-                    :options="projects"
-                    optionLabel="title"
-                    class="w-full"
-                    listStyle="maxheight: 250px"
-                />
-            </div>
-            <div class="flex flex-col">
                 <Button
                     label="New Project"
                     icon="pi pi-plus"
                     class="mt-auto"
                     @click="showAddProjectPopup = true"
                 />
-                <div class="sm:hidden">
-                    <Button
-                        label="Add Task"
-                        icon="pi pi-plus"
-                        @click="showAddTaskPopup = true"
-                    />
-                </div>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-gray-900 hidden sm:block">
+                My Projects
+            </h3>
+            <Listbox
+                v-model="selectedProject"
+                :options="projects"
+                optionLabel="title"
+                class="w-full"
+                listStyle="maxheight: 250px"
+            />
+            <div class="sm:block hidden mt-auto">
+                <Button
+                    label="New Project"
+                    icon="pi pi-plus"
+                    class="mt-auto"
+                    @click="showAddProjectPopup = true"
+                />
             </div>
         </aside>
 
@@ -178,6 +180,12 @@ function onDropTask() {
                             :projectId="currentProjectId"
                             @drag-task="onDragTask"
                             class="project-backlog"
+                        />
+                        <Button
+                            label="Add Task"
+                            icon="pi pi-plus"
+                            class="sm:hidden"
+                            @click="showAddTaskPopup = true"
                         />
                     </div>
 

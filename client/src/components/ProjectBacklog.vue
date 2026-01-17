@@ -9,6 +9,10 @@ const props = defineProps({
         type: [String, Number],
         required: true,
     },
+    showAssignUserPopup: {
+        type: Function,
+        required: true,
+    },
 })
 
 const tasks = ref([])
@@ -67,6 +71,7 @@ function onDragEnd() {
                 draggable="true"
                 @dragstart="onDragStart($event, task)"
                 @dragend="onDragEnd"
+                @click="showAssignUserPopup(task.task_id)"
                 class="backlog-item"
             >
                 <span class="font-bold">{{ task.title }}</span>

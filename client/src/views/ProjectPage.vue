@@ -106,6 +106,11 @@ function onDropTask() {
     selectedTaskId.value = draggedTaskId.value
     showAssignPopup.value = true
 }
+
+function showAssignUserPopup(taskId) {
+    selectedTaskId.value = taskId
+    showAssignPopup.value = true
+}
 </script>
 
 <template>
@@ -178,6 +183,7 @@ function onDropTask() {
                         <ProjectBacklog
                             :key="currentProjectId + '-' + reloadBacklogKey"
                             :projectId="currentProjectId"
+                            :showAssignUserPopup="showAssignUserPopup"
                             @drag-task="onDragTask"
                             class="project-backlog"
                         />

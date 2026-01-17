@@ -83,7 +83,7 @@ async function initDatabase() {
                 db,
                 `
                 INSERT INTO users (name, email, password, is_admin)
-                VALUES ('Shiv', 'alice@example.com', 'hashed_password', 0);
+                VALUES ('Shiv', 'shiv@example.com', '$2b$10$3DK8iOrIhDEPVs6Th5MvNe4j7h11TFTkHAN2zMIgQ9sAyGF.PTLu2', 0);
             `,
             )
 
@@ -91,7 +91,7 @@ async function initDatabase() {
                 db,
                 `
                 INSERT INTO users (name, email, password, is_admin)
-                VALUES ('Paige', 'paige@example.com', 'hashed_password', 1);
+                VALUES ('Paige', 'paige@example.com', '$2b$10$3DK8iOrIhDEPVs6Th5MvNe4j7h11TFTkHAN2zMIgQ9sAyGF.PTLu2', 1);
             `,
             )
 
@@ -99,7 +99,7 @@ async function initDatabase() {
                 db,
                 `
                 INSERT INTO users (name, email, password)
-                VALUES ('Vindicta', 'vindicta@example.com', 'hashed_password');
+                VALUES ('Vindicta', 'vindicta@example.com', '$2b$10$3DK8iOrIhDEPVs6Th5MvNe4j7h11TFTkHAN2zMIgQ9sAyGF.PTLu2');
             `,
             )
 
@@ -122,50 +122,51 @@ async function initDatabase() {
             await runOrFail(
                 db,
                 `
-                INSERT INTO tasks (project_id, assignee_id, title, description, assignment_date)
-                VALUES (1, 1, 'Initial Task 1 Title', 'Initial Task 1 Desc', '${new Date("2023-01-15").toISOString()}');
+                INSERT INTO tasks (project_id, assignee_id, title, description, assignment_date, status)
+                VALUES (1, 1, 'Initial Task 1 Title', 'Initial Task 1 Desc', '${new Date("2023-01-15").toISOString()}', 'DOING');
             `,
             )
 
             await runOrFail(
                 db,
                 `
-                INSERT INTO tasks (project_id, assignee_id, title, description, assignment_date)
-                VALUES (1, 3, 'Initial Task 2 Title', 'Initial Task 2 Desc', '${new Date("2023-01-16").toISOString()}');
+                INSERT INTO tasks (project_id, assignee_id, title, description, assignment_date, status)
+                VALUES (1, 3, 'Initial Task 2 Title', 'Initial Task 2 Desc', '${new Date("2023-01-16").toISOString()}', 'REVIEW');
             `,
             )
 
             await runOrFail(
                 db,
                 `
-                INSERT INTO tasks (project_id, assignee_id, title, description, assignment_date)
-                VALUES (1, 1, 'Another Task for User 1', 'Another Task Desc', '${new Date("2023-01-17").toISOString()}');
+                INSERT INTO tasks (project_id, title, description, assignment_date)
+                VALUES (1, 'Test task', 'Another Task Desc', '${new Date("2023-01-17").toISOString()}');
             `,
             )
 
             await runOrFail(
                 db,
                 `
-                INSERT INTO tasks (project_id, assignee_id, title, description, assignment_date)
-                VALUES (1, 2, 'Task for User 2', 'Task for User 2 Desc', '${new Date("2023-01-18").toISOString()}');
+                INSERT INTO tasks (project_id, assignee_id, title, description, assignment_date, status)
+                VALUES (1, 2, 'Task for User 2', 'Task for User 2 Desc', '${new Date("2023-01-18").toISOString()}', 'DOING');
             `,
             )
 
             await runOrFail(
                 db,
                 `
-                INSERT INTO tasks (project_id, assignee_id, title, description, assignment_date)
-                VALUES (2, 1, 'Task for User 1 in Project 2', 'Task for User 1 in Project 2 Desc', '${new Date("2023-01-19").toISOString()}');
+                INSERT INTO tasks (project_id, assignee_id, title, description, assignment_date, status)
+                VALUES (2, 1, 'Task for User 1 in Project 2', 'Task for User 1 in Project 2 Desc', '${new Date("2023-01-19").toISOString()}', 'DONE');
             `,
             )
 
             await runOrFail(
                 db,
                 `
-                INSERT INTO tasks (project_id, assignee_id, title, description, assignment_date)
-                VALUES (2, 1, 'Another Task for User 1 in Project 2', 'Another Task for User 1 in Project 2 Desc', '${new Date("2023-01-20").toISOString()}');
+                INSERT INTO tasks (project_id, assignee_id, title, description, assignment_date, status)
+                VALUES (2, 1, 'Another Task for User 1 in Project 2', 'Another Task for User 1 in Project 2 Desc', '${new Date("2023-01-20").toISOString()}', 'DOING');
             `,
             )
+            console.log("Database initialized and seeded!")
         }
     } catch (err) {
         console.error("Database initialization failed:", err)

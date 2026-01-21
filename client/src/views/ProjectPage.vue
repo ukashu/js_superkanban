@@ -185,6 +185,7 @@ function showAssignUserPopup(taskId) {
                             :projectId="currentProjectId"
                             :showAssignUserPopup="showAssignUserPopup"
                             @drag-task="onDragTask"
+                            @refresh="onRefresh"
                             class="project-backlog"
                         />
                         <Button

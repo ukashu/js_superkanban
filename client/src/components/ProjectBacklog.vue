@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, defineEmits } from "vue"
 import ProgressSpinner from "primevue/progressspinner"
 
-const emit = defineEmits(["drag-task", "drag-end"])
+const emit = defineEmits(["drag-task", "drag-end", "refresh"])
 
 const props = defineProps({
     projectId: {
@@ -63,6 +63,7 @@ async function unassignTask(e) {
         }
         const json = await res.json()
         console.log(json)
+        emit("refresh")
     } catch (err) {
         console.error("Błąd przy unassign taska: ", err)
     }

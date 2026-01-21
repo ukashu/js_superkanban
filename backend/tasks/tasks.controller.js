@@ -141,6 +141,36 @@ export const updateTask = async (req, res, next) => {
     }
 }
 
+export const unassignTask = async (req, res, next) => {
+    try {
+        const { projectId, taskId } = req.params
+
+        const dbResult = await dbRun(
+            `UPDATE tasks
+       SET 
+         status = 'BACKLOG',
+         assignee_id = NULL
+       WHERE task_id = ? AND project_id = ?`,
+            [taskId, projectId],
+        )
+
+        if (dbResult.changes === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Task not found",
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Task unassigned successfully",
+            data: { taskId },
+        })
+    } catch (err) {
+        next(err)
+    }
+}
+
 export const deleteTask = async (req, res, next) => {
     try {
         const { projectId, taskId } = req.params

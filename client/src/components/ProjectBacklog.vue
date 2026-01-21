@@ -48,13 +48,33 @@ function onDragStart(event, task) {
     emit("drag-task", task.task_id)
 }
 
-function onDragEnd() {
-    emit("drag-end")
+async function unassignTask(e) {
+    console.log(`${e.dataTransfer.getData("text")}`)
+    try {
+        const res = await fetch(
+            `/api/projects/${props.projectId}/tasks/${e.dataTransfer.getData("text")}/unassign`,
+            {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+            },
+        )
+        if (!res.ok) {
+            throw new Error("Failed to unassign task status")
+        }
+        const json = await res.json()
+        console.log(json)
+    } catch (err) {
+        console.error("Błąd przy unassign taska: ", err)
+    }
 }
 </script>
 
 <template>
-    <div class="h-full flex flex-col">
+    <div
+        @dragover.prevent
+        @drop="unassignTask($event)"
+        class="h-full flex flex-col"
+    >
         <div v-if="loading" class="flex justify-center p-4">
             <ProgressSpinner style="width: 50px; height: 50px" />
         </div>
@@ -70,7 +90,6 @@ function onDragEnd() {
                 :key="task.task_id"
                 draggable="true"
                 @dragstart="onDragStart($event, task)"
-                @dragend="onDragEnd"
                 @click="showAssignUserPopup(task.task_id)"
                 class="backlog-item"
             >

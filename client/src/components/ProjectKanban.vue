@@ -138,15 +138,18 @@ const changeNonDragTaskStatus = async (task, newStatus) => {
     }
 }
 
-const assignTaskToUserLocal = (taskId) => {}
-
 const updateTaskStatusLocal = (taskId, newStatus) => {
     const task = tasks.value.find((t) => t.task_id === taskId)
     if (!task) return
     task.status = newStatus
 }
 
-const dragStart = (task) => {
+const dragStart = (event, task) => {
+    event.dataTransfer.dropEffect = "move"
+    event.dataTransfer.effectAllowed = "move"
+    event.dataTransfer.setData("text/plain", task.task_id.toString())
+    //emit("drag-task", task.task_id)
+
     draggedTask.value = {
         id: task.task_id,
         status: task.status,
@@ -221,7 +224,7 @@ const dragEnd = () => {
                         <div :class="['task-item', task.status]">
                             <Task
                                 :draggable="true"
-                                @dragstart="dragStart(task)"
+                                @dragstart="(e) => dragStart(e, task)"
                                 @dragend="dragEnd"
                                 :task="task"
                                 :change-status="changeNonDragTaskStatus"

@@ -12,9 +12,12 @@ const props = defineProps({
     userId: [Number, String],
 })
 
-const tasks = ref(null)
+const tasks = ref([])
 const error = ref(null)
-const loading = ref(true)
+const loading = ref(false)
+const hasMore = ref(true)
+const limit = 10
+const offset = ref(0)
 
 const projectsWithTasks = computed(() => {
     if (!tasks.value) return []
@@ -36,18 +39,24 @@ const projectsWithTasks = computed(() => {
 })
 
 const loadTasks = async () => {
+    if (loading.value || !hasMore.value) return
+
     loading.value = true
+
     console.log("Backlog userId = ", props.userId)
 
     try {
-        const res = await authFetch(`/api/users/${props.userId}/tasks`)
+        const res = await authFetch(
+            `/api/users/${props.userId}/tasks?limit=${limit}&offset=${offset.value}`,
+        )
         if (!res.ok) {
             throw new Error("Failed to fetch tasks")
         }
 
         const json = await res.json()
-        console.log(json)
-        tasks.value = json.data.tasks
+        tasks.value.push(...json.data.tasks)
+        hasMore.value = json.data.hasMore
+        offset.value += limit
     } catch (err) {
         error.value = err.message
     } finally {
@@ -55,7 +64,21 @@ const loadTasks = async () => {
     }
 }
 
-onMounted(loadTasks)
+const sentinel = ref(null)
+onMounted(() => {
+    const observer = new IntersectionObserver(
+        ([entry]) => {
+            if (entry.isIntersecting) {
+                loadTasks()
+            }
+        },
+        {
+            root: null,
+            threshold: 0.1,
+        },
+    )
+    observer.observe(sentinel.value)
+})
 
 const draggedTask = ref(null)
 
@@ -63,7 +86,7 @@ const changeTaskStatus = async (e, newStatus) => {
     if (newStatus != draggedTask.value.status) {
         try {
             const res = await fetch(
-                `/api/projects/${draggedTask.value.projectId}/tasks/${draggedTask.value.id}`,
+                `/api/projects/${draggedTask.value.projectId}/tasks/${draggedTask.value.id}&sortBy=project_id`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
@@ -117,10 +140,7 @@ const dragEnd = () => {
 }
 </script>
 <template>
-    <div v-if="loading" class="flex justify-center p-4">
-        <ProgressSpinner />
-    </div>
-    <div v-else-if="error" class="p-4">
+    <div v-if="error" class="p-4">
         <Message severity="error">{{ error }}</Message>
     </div>
     <div v-else-if="tasks" class="flex flex-col min-h-0">
@@ -174,6 +194,10 @@ const dragEnd = () => {
                     </div>
                 </template>
             </template>
+            <div ref="sentinel" class="h-10"></div>
+            <div v-if="loading" class="flex justify-center p-4">
+                <ProgressSpinner />
+            </div>
         </div>
     </div>
 </template>

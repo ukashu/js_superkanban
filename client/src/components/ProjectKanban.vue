@@ -15,7 +15,7 @@ const tasks = ref([])
 const error = ref(null)
 const loading = ref(false)
 const hasMore = ref(true)
-const limit = 2
+const limit = 10
 const offset = ref(0)
 
 const assigneesWithTasks = computed(() => {

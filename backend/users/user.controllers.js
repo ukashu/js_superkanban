@@ -136,6 +136,8 @@ export const findUsers = async (req, res, next) => {
 export const getTasksForUser = async (req, res, next) => {
     const { userId } = req.params
     const { sortBy, groupBy } = req.query
+    const limit = Number(req.query.limit) || 20
+    const offset = Number(req.query.offset) || 0
 
     // TODO zabezpieczyc sciezke if userId != authenticated user
 
@@ -146,8 +148,16 @@ export const getTasksForUser = async (req, res, next) => {
 
         if (sortBy === "assignment_date") {
             query += " ORDER BY t.assignment_date"
+        } else if (sortBy === "project_id") {
+            query +=
+                " AND t.status != 'BACKLOG' ORDER BY t.project_id ASC, t.task_id ASC"
         } else {
             query += " ORDER BY t.task_id ASC"
+        }
+
+        if (limit != null && offset != null) {
+            query += " LIMIT ? OFFSET ?"
+            params.push(limit, offset)
         }
 
         const tasks = await dbAll(query, params)
@@ -159,29 +169,12 @@ export const getTasksForUser = async (req, res, next) => {
             })
         }
 
-        if (groupBy === "project") {
-            const groupedTasks = tasks.reduce((acc, task) => {
-                const key = task.project_id || "unassigned"
-                if (!acc[key]) {
-                    acc[key] = []
-                }
-                acc[key].push(task)
-                return acc
-            }, {})
-            return res.status(200).json({
-                success: true,
-                message: "Query successful",
-                data: {
-                    tasks: groupedTasks,
-                },
-            })
-        }
-
         return res.status(200).json({
             success: true,
             message: "Query successful",
             data: {
                 tasks,
+                hasMore: tasks.length === limit,
             },
         })
     } catch (err) {

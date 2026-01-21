@@ -231,7 +231,7 @@
 
 - [ ] użycie composables tam gdzie to możliwe
 - [ ] sprawdzić czy errory z backendu wyświetlają się w poprawny sposób, jeżeli nie - naprawić
-- [ ] przeniesienie taska z powrotem do backlogu (w widoku projektu)
+- [x] przeniesienie taska z powrotem do backlogu (w widoku projektu)
 - [x] paginacja tasków w kanbanie
   - [ ] bug: kiedy taski załadowane za pierwszym razem nie przepełniają kontenera, nie doładowują się inne
   - [x] bug: reloading task list does not work

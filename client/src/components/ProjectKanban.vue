@@ -11,9 +11,12 @@ const props = defineProps({
     projectId: [Number, String],
 })
 
-const tasks = ref(null)
+const tasks = ref([])
 const error = ref(null)
-const loading = ref(true)
+const loading = ref(false)
+const hasMore = ref(true)
+const limit = 2
+const offset = ref(0)
 
 const assigneesWithTasks = computed(() => {
     if (!tasks.value) return []
@@ -37,14 +40,22 @@ const assigneesWithTasks = computed(() => {
 })
 
 const loadTasks = async () => {
+    if (loading.value || !hasMore.value) return
+
+    loading.value = true
+
     try {
-        const res = await fetch(`/api/projects/${props.projectId}/tasks`)
+        const res = await fetch(
+            `/api/projects/${props.projectId}/tasks?limit=${limit}&offset=${offset.value}&sortBy=assignee_id`,
+        )
         if (!res.ok) {
             throw new Error("Failed to fetch tasks")
         }
 
         const json = await res.json()
-        tasks.value = json.data.tasks
+        tasks.value.push(...json.data.tasks)
+        hasMore.value = json.data.hasMore
+        offset.value += limit
     } catch (err) {
         error.value = err.message
     } finally {
@@ -52,8 +63,31 @@ const loadTasks = async () => {
     }
 }
 
-onMounted(loadTasks)
-watch(() => props.projectId, loadTasks)
+watch(
+    () => props.projectId,
+    () => {
+        tasks.value = []
+        offset.value = 0
+        hasMore.value = true
+        loadTasks()
+    },
+    { immediate: true },
+)
+const sentinel = ref(null)
+onMounted(() => {
+    const observer = new IntersectionObserver(
+        ([entry]) => {
+            if (entry.isIntersecting) {
+                loadTasks()
+            }
+        },
+        {
+            root: null,
+            threshold: 0.1,
+        },
+    )
+    observer.observe(sentinel.value)
+})
 
 const draggedTask = ref(null)
 
@@ -114,10 +148,7 @@ const dragEnd = () => {
 }
 </script>
 <template>
-    <div v-if="loading" class="flex justify-center p-4">
-        <ProgressSpinner />
-    </div>
-    <div v-else-if="error" class="p-4">
+    <div v-if="error" class="p-4">
         <Message severity="error">{{ error }}</Message>
     </div>
     <div v-else-if="tasks" class="kanban-wrapper">
@@ -189,6 +220,10 @@ const dragEnd = () => {
                     </div>
                 </template>
             </template>
+            <div ref="sentinel" class="h-10"></div>
+            <div v-if="loading" class="flex justify-center p-4">
+                <ProgressSpinner />
+            </div>
         </div>
     </div>
 </template>

@@ -233,6 +233,8 @@
 - [ ] sprawdzić czy errory z backendu wyświetlają się w poprawny sposób, jeżeli nie - naprawić
 - [ ] przeniesienie taska z powrotem do backlogu (w widoku projektu)
 - [ ] paginacja tasków w kanbanie
+  - [ ] bug: kiedy taski załadowane za pierwszym razem nie przepełniają kontenera, nie doładowują się inne
+- [ ] dodatkowa filtracja w kanbanie (np po nazwie)
 - [ ] dodać restrykcje związane z rolami
 - [ ] owner_id przy tworzeniu taska powinien być brany z JWT w backendzie
 - [ ] pokazywać w ProjectPage w których projektach użytkownik jest właścicielem a w któ©ych pracownikiem

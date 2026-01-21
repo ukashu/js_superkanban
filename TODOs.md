@@ -232,9 +232,11 @@
 - [ ] użycie composables tam gdzie to możliwe
 - [ ] sprawdzić czy errory z backendu wyświetlają się w poprawny sposób, jeżeli nie - naprawić
 - [ ] przeniesienie taska z powrotem do backlogu (w widoku projektu)
-- [ ] paginacja tasków w kanbanie
+- [x] paginacja tasków w kanbanie
   - [ ] bug: kiedy taski załadowane za pierwszym razem nie przepełniają kontenera, nie doładowują się inne
-  - [ ] bug: reloading task list does not work
+  - [x] bug: reloading task list does not work
+- [x] optimistic updates przy zmianach statusu tasków
+- [ ] bug: drop zone nie zajmuje całej kolumny UserKanban
 - [ ] dodatkowa filtracja w kanbanie (np po nazwie)
 - [ ] dodać restrykcje związane z rolami
 - [ ] owner_id przy tworzeniu taska powinien być brany z JWT w backendzie

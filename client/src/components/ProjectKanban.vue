@@ -93,6 +93,7 @@ const draggedTask = ref(null)
 
 const changeTaskStatus = async (e, newStatus) => {
     if (newStatus != draggedTask.value.status) {
+        updateTaskStatusLocal(draggedTask.value.id, newStatus)
         try {
             const res = await fetch(
                 `/api/projects/${draggedTask.value.projectId}/tasks/${draggedTask.value.id}`,
@@ -116,6 +117,7 @@ const changeTaskStatus = async (e, newStatus) => {
 }
 
 const changeNonDragTaskStatus = async (task, newStatus) => {
+    updateTaskStatusLocal(task.task_id, newStatus)
     try {
         const res = await fetch(
             `/api/projects/${task.project_id}/tasks/${task.task_id}`,
@@ -134,6 +136,14 @@ const changeNonDragTaskStatus = async (task, newStatus) => {
     } catch (err) {
         error.value = err.message
     }
+}
+
+const assignTaskToUserLocal = (taskId) => {}
+
+const updateTaskStatusLocal = (taskId, newStatus) => {
+    const task = tasks.value.find((t) => t.task_id === taskId)
+    if (!task) return
+    task.status = newStatus
 }
 
 const dragStart = (task) => {

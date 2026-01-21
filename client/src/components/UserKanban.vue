@@ -47,7 +47,7 @@ const loadTasks = async () => {
 
     try {
         const res = await authFetch(
-            `/api/users/${props.userId}/tasks?limit=${limit}&offset=${offset.value}`,
+            `/api/users/${props.userId}/tasks?limit=${limit}&offset=${offset.value}&sortBy=project_id`,
         )
         if (!res.ok) {
             throw new Error("Failed to fetch tasks")
@@ -86,7 +86,7 @@ const changeTaskStatus = async (e, newStatus) => {
     if (newStatus != draggedTask.value.status) {
         try {
             const res = await fetch(
-                `/api/projects/${draggedTask.value.projectId}/tasks/${draggedTask.value.id}&sortBy=project_id`,
+                `/api/projects/${draggedTask.value.projectId}/tasks/${draggedTask.value.id}`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },

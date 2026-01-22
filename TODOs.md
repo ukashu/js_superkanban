@@ -246,3 +246,4 @@
 - [ ] najechanie kursorem na task oraz projekt powinno wyświetlić szczegóły ich dotyczące
 - [ ] bug: dodanie nowego projektu powinno odświeżać listę projektów
 - [ ] bug: taski w user kanban nie powinny wyświetlać się obok siebie
+- [ ] make project/user headers sticky in Kanban boards

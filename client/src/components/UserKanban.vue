@@ -3,6 +3,7 @@ import Task from "./Task.vue"
 import { ref, onMounted, computed, toRef } from "vue"
 import { authFetch } from "../helpers/helpers"
 import { useFetchTasks } from "../composables/useFetchTasks"
+import { useDragTask } from "../composables/useDragTask"
 import ProgressSpinner from "primevue/progressspinner"
 import Message from "primevue/message"
 import Divider from "primevue/divider"
@@ -17,6 +18,14 @@ const { tasks, loading, error, sentinel, loadTasks } = useFetchTasks(
     "userKanban",
     toRef(props, "userId"),
 )
+
+const {
+    draggedTask,
+    changeTaskStatus,
+    changeNonDragTaskStatus,
+    dragStart,
+    dragEnd,
+} = useDragTask(tasks)
 
 const projectsWithTasks = computed(() => {
     if (!tasks.value) return []
@@ -36,73 +45,6 @@ const projectsWithTasks = computed(() => {
 
     return Array.from(map.values())
 })
-
-const draggedTask = ref(null)
-
-const changeTaskStatus = async (e, newStatus) => {
-    if (newStatus != draggedTask.value.status) {
-        try {
-            updateTaskStatusLocal(draggedTask.value.id, newStatus)
-            const res = await fetch(
-                `/api/projects/${draggedTask.value.projectId}/tasks/${draggedTask.value.id}`,
-                {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ status: newStatus }),
-                },
-            )
-            if (!res.ok) {
-                throw new Error("Failed to update task status")
-            }
-            const json = await res.json()
-            console.log(json)
-            loadTasks()
-        } catch (err) {
-            error.value = err.message
-        }
-    }
-    console.log({ draggedTask: draggedTask.value })
-    draggedTask.value = null
-}
-
-const changeNonDragTaskStatus = async (task, newStatus) => {
-    updateTaskStatusLocal(task.task_id, newStatus)
-    try {
-        const res = await fetch(
-            `/api/projects/${task.project_id}/tasks/${task.task_id}`,
-            {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ status: newStatus }),
-            },
-        )
-        if (!res.ok) {
-            throw new Error("Failed to update task status")
-        }
-        const json = await res.json()
-        console.log(json)
-        loadTasks()
-    } catch (err) {
-        error.value = err.message
-    }
-}
-
-const updateTaskStatusLocal = (taskId, newStatus) => {
-    const task = tasks.value.find((t) => t.task_id === taskId)
-    if (!task) return
-    task.status = newStatus
-}
-
-const dragStart = (task) => {
-    draggedTask.value = {
-        id: task.task_id,
-        status: task.status,
-        projectId: task.project_id,
-    }
-}
-const dragEnd = () => {
-    draggedTask.value = null
-}
 </script>
 <template>
     <div v-if="error" class="p-4">
@@ -151,7 +93,7 @@ const dragEnd = () => {
                                 task.status === 'DOING' ||
                                 task.status === 'REVIEW'
                             "
-                            @dragstart="dragStart(task)"
+                            @dragstart="(e) => dragStart(e, task)"
                             @dragend="dragEnd"
                             :task="task"
                             :change-status="changeNonDragTaskStatus"

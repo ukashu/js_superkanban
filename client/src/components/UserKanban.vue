@@ -2,7 +2,7 @@
 import Task from "./Task.vue"
 import { ref, onMounted, computed, toRef } from "vue"
 import { authFetch } from "../helpers/helpers"
-import { useProjectTasks } from "../composables/useFetchTasks"
+import { useFetchTasks } from "../composables/useFetchTasks"
 import ProgressSpinner from "primevue/progressspinner"
 import Message from "primevue/message"
 import Divider from "primevue/divider"
@@ -13,7 +13,7 @@ const props = defineProps({
     userId: [Number, String],
 })
 
-const { tasks, loading, error, sentinel, loadTasks } = useProjectTasks(
+const { tasks, loading, error, sentinel, loadTasks } = useFetchTasks(
     "userKanban",
     toRef(props, "userId"),
 )

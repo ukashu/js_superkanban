@@ -1,6 +1,6 @@
 import { ref, watch, onMounted, onBeforeUnmount, computed } from "vue"
 
-export function useProjectTasks(context, groupingIdRef) {
+export function useFetchTasks(context, groupingIdRef) {
     const tasks = ref([])
     const error = ref(null)
     const loading = ref(false)

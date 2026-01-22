@@ -1,7 +1,7 @@
 <script setup>
 import Task from "./Task.vue"
 import { ref, onMounted, computed, defineEmits, watch, toRef } from "vue"
-import { useProjectTasks } from "../composables/useFetchTasks.js"
+import { useFetchTasks } from "../composables/useFetchTasks.js"
 import ProgressSpinner from "primevue/progressspinner"
 import Message from "primevue/message"
 import Divider from "primevue/divider"
@@ -12,7 +12,7 @@ const props = defineProps({
     projectId: [Number, String],
 })
 
-const { tasks, loading, error, sentinel, loadTasks } = useProjectTasks(
+const { tasks, loading, error, sentinel, loadTasks } = useFetchTasks(
     "projectKanban",
     toRef(props, "projectId"),
 )

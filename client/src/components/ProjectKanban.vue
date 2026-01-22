@@ -51,7 +51,7 @@ const assigneesWithTasks = computed(() => {
     <div v-if="error" class="p-4">
         <Message severity="error">{{ error }}</Message>
     </div>
-    <div v-else-if="tasks" class="kanban-wrapper">
+    <div v-else-if="tasks" class="h-full">
         <div
             class="hidden sm:grid grid-cols-3 gap-4 mb-4 text-center font-bold"
         >
@@ -60,7 +60,9 @@ const assigneesWithTasks = computed(() => {
             <div class="custom-bg-green-100 p-2 rounded">DONE</div>
         </div>
 
-        <div class="sm:grid grid-cols-3 gap-4 mb-4 text-center relative">
+        <div
+            class="sm:grid grid-cols-3 gap-4 mb-4 min-h-full text-center relative content-start"
+        >
             <div
                 class="dropzone doing-dropzone"
                 :class="{

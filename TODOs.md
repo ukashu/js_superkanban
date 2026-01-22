@@ -237,7 +237,7 @@
   - [ ] bug: kiedy taski załadowane za pierwszym razem nie przepełniają kontenera, nie doładowują się inne
   - [x] bug: reloading task list does not work
 - [x] optimistic updates przy zmianach statusu tasków
-- [ ] bug: drop zone nie zajmuje całej kolumny UserKanban
+- [x] bug: drop zone nie zajmuje całej kolumny UserKanban
 - [ ] dodatkowa filtracja w kanbanie (np po nazwie)
 - [ ] dodać restrykcje związane z rolami
 - [ ] owner_id przy tworzeniu taska powinien być brany z JWT w backendzie

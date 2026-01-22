@@ -50,60 +50,62 @@ const projectsWithTasks = computed(() => {
     <div v-if="error" class="p-4">
         <Message severity="error">{{ error }}</Message>
     </div>
-    <div v-else-if="tasks" class="flex flex-col min-h-0">
+    <div v-else-if="tasks" class="h-full flex flex-col min-h-0">
         <div
-            class="hidden sm:grid grid-cols-3 gap-4 mb-4 text-center font-bold"
+            class="hidden sm:grid grid-cols-3 gap-4 mb-4 text-center sticky top-0 z-30 font-bold"
         >
             <div class="custom-bg-blue-100 p-2 rounded">IN PROGRESS</div>
             <div class="custom-bg-yellow-100 p-2 rounded">REVIEW</div>
             <div class="custom-bg-green-100 p-2 rounded">DONE</div>
         </div>
 
-        <div
-            class="sm:grid sm:grid-cols-3 sm:gap-4 relative min-h-auto overflow-y-auto"
-        >
+        <div class="flex-1 min-h-0 overflow-y-auto relative">
             <div
-                class="dropzone review-dropzone"
-                :class="{ 'active-zone': draggedTask?.status === 'DOING' }"
-                @dragover.prevent
-                @drop="changeTaskStatus($event, 'REVIEW')"
-            ></div>
-            <div
-                class="dropzone doing-dropzone"
-                :class="{ 'active-zone': draggedTask?.status === 'REVIEW' }"
-                @dragover.prevent
-                @drop="changeTaskStatus($event, 'DOING')"
-            ></div>
-
-            <template
-                v-for="project in projectsWithTasks"
-                :key="project.projectId"
+                class="sm:grid sm:grid-cols-3 sm:gap-4 relative min-h-full text-center content-start"
             >
-                <div class="project-separator col-span-3">
-                    <Divider align="left">
-                        <span class="p-tag">{{
-                            project.projectName || "Uncategorized"
-                        }}</span>
-                    </Divider>
-                </div>
-                <template v-for="task in project.tasks" :key="task.task_id">
-                    <div :class="['task-item', task.status]">
-                        <Task
-                            :draggable="
-                                task.status === 'DOING' ||
-                                task.status === 'REVIEW'
-                            "
-                            @dragstart="(e) => dragStart(e, task)"
-                            @dragend="dragEnd"
-                            :task="task"
-                            :change-status="changeNonDragTaskStatus"
-                        />
+                <div
+                    class="dropzone review-dropzone"
+                    :class="{ 'active-zone': draggedTask?.status === 'DOING' }"
+                    @dragover.prevent
+                    @drop="changeTaskStatus($event, 'REVIEW')"
+                ></div>
+                <div
+                    class="dropzone doing-dropzone"
+                    :class="{ 'active-zone': draggedTask?.status === 'REVIEW' }"
+                    @dragover.prevent
+                    @drop="changeTaskStatus($event, 'DOING')"
+                ></div>
+
+                <template
+                    v-for="project in projectsWithTasks"
+                    :key="project.projectId"
+                >
+                    <div class="project-separator col-span-3">
+                        <Divider align="left">
+                            <span class="p-tag">{{
+                                project.projectName || "Uncategorized"
+                            }}</span>
+                        </Divider>
                     </div>
+                    <template v-for="task in project.tasks" :key="task.task_id">
+                        <div :class="['task-item', task.status]">
+                            <Task
+                                :draggable="
+                                    task.status === 'DOING' ||
+                                    task.status === 'REVIEW'
+                                "
+                                @dragstart="(e) => dragStart(e, task)"
+                                @dragend="dragEnd"
+                                :task="task"
+                                :change-status="changeNonDragTaskStatus"
+                            />
+                        </div>
+                    </template>
                 </template>
-            </template>
-            <div ref="sentinel" class="h-10"></div>
-            <div v-if="loading" class="flex justify-center p-4">
-                <ProgressSpinner />
+                <div ref="sentinel" class="h-10"></div>
+                <div v-if="loading" class="flex justify-center p-4">
+                    <ProgressSpinner />
+                </div>
             </div>
         </div>
     </div>
@@ -128,7 +130,6 @@ const projectsWithTasks = computed(() => {
     top: 0;
     bottom: 0;
     z-index: 0;
-    pointer-events: none;
 }
 
 .review-dropzone {
@@ -144,7 +145,6 @@ const projectsWithTasks = computed(() => {
 .active-zone {
     background-color: rgba(255, 255, 200, 0.3);
     border: 2px dashed #ecc94b;
-    pointer-events: auto;
     z-index: 10;
 }
 

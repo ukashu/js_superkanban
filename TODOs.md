@@ -230,6 +230,7 @@
 ### Backlog
 
 - [ ] użycie composables tam gdzie to możliwe
+- [ ] bug: dragging lags - if Im fast enough it works
 - [ ] sprawdzić czy errory z backendu wyświetlają się w poprawny sposób, jeżeli nie - naprawić
 - [x] przeniesienie taska z powrotem do backlogu (w widoku projektu)
 - [x] paginacja tasków w kanbanie

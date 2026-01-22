@@ -1,6 +1,7 @@
 <script setup>
 import Task from "./Task.vue"
-import { ref, onMounted, computed, defineEmits, watch } from "vue"
+import { ref, onMounted, computed, defineEmits, watch, toRef } from "vue"
+import { useProjectTasks } from "../composables/useProjectTasks.js"
 import ProgressSpinner from "primevue/progressspinner"
 import Message from "primevue/message"
 import Divider from "primevue/divider"
@@ -11,12 +12,9 @@ const props = defineProps({
     projectId: [Number, String],
 })
 
-const tasks = ref([])
-const error = ref(null)
-const loading = ref(false)
-const hasMore = ref(true)
-const limit = 10
-const offset = ref(0)
+const { tasks, loading, error, sentinel, loadTasks } = useProjectTasks(
+    toRef(props, "projectId"),
+)
 
 const assigneesWithTasks = computed(() => {
     if (!tasks.value) return []
@@ -37,56 +35,6 @@ const assigneesWithTasks = computed(() => {
     })
 
     return Array.from(map.values())
-})
-
-const loadTasks = async () => {
-    if (loading.value || !hasMore.value) return
-
-    loading.value = true
-
-    try {
-        const res = await fetch(
-            `/api/projects/${props.projectId}/tasks?limit=${limit}&offset=${offset.value}&sortBy=assignee_id`,
-        )
-        if (!res.ok) {
-            throw new Error("Failed to fetch tasks")
-        }
-
-        const json = await res.json()
-        tasks.value.push(...json.data.tasks)
-        hasMore.value = json.data.hasMore
-        offset.value += limit
-    } catch (err) {
-        error.value = err.message
-    } finally {
-        loading.value = false
-    }
-}
-
-watch(
-    () => props.projectId,
-    () => {
-        tasks.value = []
-        offset.value = 0
-        hasMore.value = true
-        loadTasks()
-    },
-    { immediate: true },
-)
-const sentinel = ref(null)
-onMounted(() => {
-    const observer = new IntersectionObserver(
-        ([entry]) => {
-            if (entry.isIntersecting) {
-                loadTasks()
-            }
-        },
-        {
-            root: null,
-            threshold: 0.1,
-        },
-    )
-    observer.observe(sentinel.value)
 })
 
 const draggedTask = ref(null)

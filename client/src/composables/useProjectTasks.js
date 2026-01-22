@@ -1,4 +1,4 @@
-import { ref, watch, onMounted, onBeforeUnmount } from "vue"
+import { ref, watch, onMounted, onBeforeUnmount, computed } from "vue"
 
 export function useProjectTasks(context, groupingIdRef) {
     const tasks = ref([])
@@ -6,26 +6,31 @@ export function useProjectTasks(context, groupingIdRef) {
     const loading = ref(false)
     const hasMore = ref(true)
 
-    const limit = 2
+    const limit = 10
     const offset = ref(0)
     const sentinel = ref(null)
 
     let observer = null
 
-    let url = null
+    const url = computed(() => {
+        if (!groupingIdRef.value) return null
 
-    if (context === "projectKanban") {
-        url = `/api/projects/${groupingIdRef.value}/tasks?limit=${limit}&offset=${offset.value}&sortBy=assignee_id`
-    } else if (context === "userKanban") {
-        url = `/api/users/${groupingIdRef.value}/tasks?limit=${limit}&offset=${offset.value}&sortBy=project_id`
-    }
+        if (context === "projectKanban") {
+            return `/api/projects/${groupingIdRef.value}/tasks?limit=${limit}&offset=${offset.value}&sortBy=assignee_id`
+        }
+        if (context === "userKanban") {
+            return `/api/users/${groupingIdRef.value}/tasks?limit=${limit}&offset=${offset.value}&sortBy=project_id`
+        }
+
+        return null
+    })
 
     const loadTasks = async () => {
         if (loading.value || !hasMore.value || !groupingIdRef.value) return
 
         loading.value = true
         try {
-            const res = await fetch(url)
+            const res = await fetch(url.value)
             if (!res.ok) {
                 throw new Error("Failed to fetch tasks")
             }

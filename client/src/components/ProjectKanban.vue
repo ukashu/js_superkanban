@@ -1,7 +1,7 @@
 <script setup>
 import Task from "./Task.vue"
 import { ref, onMounted, computed, defineEmits, watch, toRef } from "vue"
-import { useProjectTasks } from "../composables/useProjectTasks.js"
+import { useProjectTasks } from "../composables/useFetchTasks.js"
 import ProgressSpinner from "primevue/progressspinner"
 import Message from "primevue/message"
 import Divider from "primevue/divider"

@@ -2,7 +2,7 @@
 import Task from "./Task.vue"
 import { ref, onMounted, computed, toRef } from "vue"
 import { authFetch } from "../helpers/helpers"
-import { useProjectTasks } from "../composables/useProjectTasks"
+import { useProjectTasks } from "../composables/useFetchTasks"
 import ProgressSpinner from "primevue/progressspinner"
 import Message from "primevue/message"
 import Divider from "primevue/divider"

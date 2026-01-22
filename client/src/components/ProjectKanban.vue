@@ -13,6 +13,7 @@ const props = defineProps({
 })
 
 const { tasks, loading, error, sentinel, loadTasks } = useProjectTasks(
+    "projectKanban",
     toRef(props, "projectId"),
 )
 

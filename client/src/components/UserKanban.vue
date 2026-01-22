@@ -1,7 +1,8 @@
 <script setup>
 import Task from "./Task.vue"
-import { ref, onMounted, computed } from "vue"
+import { ref, onMounted, computed, toRef } from "vue"
 import { authFetch } from "../helpers/helpers"
+import { useProjectTasks } from "../composables/useProjectTasks"
 import ProgressSpinner from "primevue/progressspinner"
 import Message from "primevue/message"
 import Divider from "primevue/divider"
@@ -12,12 +13,10 @@ const props = defineProps({
     userId: [Number, String],
 })
 
-const tasks = ref([])
-const error = ref(null)
-const loading = ref(false)
-const hasMore = ref(true)
-const limit = 10
-const offset = ref(0)
+const { tasks, loading, error, sentinel, loadTasks } = useProjectTasks(
+    "userKanban",
+    toRef(props, "userId"),
+)
 
 const projectsWithTasks = computed(() => {
     if (!tasks.value) return []
@@ -36,48 +35,6 @@ const projectsWithTasks = computed(() => {
     })
 
     return Array.from(map.values())
-})
-
-const loadTasks = async () => {
-    if (loading.value || !hasMore.value) return
-
-    loading.value = true
-
-    console.log("Backlog userId = ", props.userId)
-
-    try {
-        const res = await authFetch(
-            `/api/users/${props.userId}/tasks?limit=${limit}&offset=${offset.value}&sortBy=project_id`,
-        )
-        if (!res.ok) {
-            throw new Error("Failed to fetch tasks")
-        }
-
-        const json = await res.json()
-        tasks.value.push(...json.data.tasks)
-        hasMore.value = json.data.hasMore
-        offset.value += limit
-    } catch (err) {
-        error.value = err.message
-    } finally {
-        loading.value = false
-    }
-}
-
-const sentinel = ref(null)
-onMounted(() => {
-    const observer = new IntersectionObserver(
-        ([entry]) => {
-            if (entry.isIntersecting) {
-                loadTasks()
-            }
-        },
-        {
-            root: null,
-            threshold: 0.1,
-        },
-    )
-    observer.observe(sentinel.value)
 })
 
 const draggedTask = ref(null)

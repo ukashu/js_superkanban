@@ -1,25 +1,31 @@
 import { ref, watch, onMounted, onBeforeUnmount } from "vue"
 
-export function useProjectTasks(projectIdRef) {
+export function useProjectTasks(context, groupingIdRef) {
     const tasks = ref([])
     const error = ref(null)
     const loading = ref(false)
     const hasMore = ref(true)
 
-    const limit = 10
+    const limit = 2
     const offset = ref(0)
     const sentinel = ref(null)
 
     let observer = null
 
+    let url = null
+
+    if (context === "projectKanban") {
+        url = `/api/projects/${groupingIdRef.value}/tasks?limit=${limit}&offset=${offset.value}&sortBy=assignee_id`
+    } else if (context === "userKanban") {
+        url = `/api/users/${groupingIdRef.value}/tasks?limit=${limit}&offset=${offset.value}&sortBy=project_id`
+    }
+
     const loadTasks = async () => {
-        if (loading.value || !hasMore.value || !projectIdRef.value) return
+        if (loading.value || !hasMore.value || !groupingIdRef.value) return
 
         loading.value = true
         try {
-            const res = await fetch(
-                `/api/projects/${projectIdRef.value}/tasks?limit=${limit}&offset=${offset.value}&sortBy=assignee_id`,
-            )
+            const res = await fetch(url)
             if (!res.ok) {
                 throw new Error("Failed to fetch tasks")
             }
@@ -36,7 +42,7 @@ export function useProjectTasks(projectIdRef) {
     }
 
     watch(
-        projectIdRef,
+        groupingIdRef,
         () => {
             tasks.value = []
             offset.value = 0

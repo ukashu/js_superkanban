@@ -269,6 +269,7 @@
 - [ ] naprawić LoginView
   - [ ] bug: logowanie złymi danymi łamie stronę
   - [ ] LoginView powinien wyświetlać errory (błędy z serwera/nieprawidłowe dane itp.)
+  - można wzorowac się na obecnym RegisterView
 
 ### Ola
 

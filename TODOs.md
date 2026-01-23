@@ -230,7 +230,6 @@
 ### Backlog
 
 - [x] użycie composables tam gdzie to możliwe
-- [x] bug: dragging lags - if Im fast enough it works (This is a firefox bug, tab dragging is broken as well)
 - [ ] sprawdzić czy errory z backendu wyświetlają się w poprawny sposób, jeżeli nie - naprawić
 - [x] przeniesienie taska z powrotem do backlogu (w widoku projektu)
 - [x] paginacja tasków w kanbanie
@@ -240,14 +239,14 @@
 - [x] bug: drop zone nie zajmuje całej kolumny UserKanban
 - [x] dodać wyświetlanie daty utworzenia do tasków
 - [ ] szczegóły taska
-  - [ ] dodać przycisk details (po kliknięciu wyświetla details)
+  - [ ] przycisk details (po kliknięciu wyświetla details)
   - [ ] edycja taska (przycisk do edycji wewnątrz details) (edycja title, description, status)
   - [ ] dodać przycisk delete (wewnątrz edycji)
 - [ ] szczegóły projektu
   - [ ] przycisk details (po kliknięciu wyświetla details)
-  - [ ] wewnątrz szczegółów przycisk do edycji (edycja title, description)
+  - [ ] wewnątrz details przycisk do edycji (edycja title, description)
   - [ ] przycisk do usunięcia projektu wewnątrz edycji
-- [ ] wyszukiwanie tasków po nazwie (UserKanban i ProjectKanban)
+- [ ] filtrowanie tasków po nazwie (UserKanban i ProjectKanban)
 - [ ] dodać restrykcje związane z rolami
 - [ ] owner_id przy tworzeniu taska powinien być brany z JWT w backendzie
 - [ ] naprawić LoginView
@@ -256,3 +255,31 @@
   - można wzorowac się na obecnym RegisterView
 - [ ] bug: dodanie nowego projektu powinno odświeżać listę projektów
 - [ ] bug: taski w user kanban nie powinny wyświetlać się obok siebie
+
+### Wiktoria
+
+- [ ] szczegóły taska
+  - [ ] przycisk details (po kliknięciu wyświetla details)
+  - [ ] edycja taska (przycisk do edycji wewnątrz details) (edycja title, description, status)
+  - [ ] dodać przycisk delete (wewnątrz edycji)
+- [ ] szczegóły projektu
+  - [ ] przycisk details (po kliknięciu wyświetla details)
+  - [ ] wewnątrz details przycisk do edycji (edycja title, description)
+  - [ ] przycisk do usunięcia projektu wewnątrz edycji
+- [ ] naprawić LoginView
+  - [ ] bug: logowanie złymi danymi łamie stronę
+  - [ ] LoginView powinien wyświetlać errory (błędy z serwera/nieprawidłowe dane itp.)
+
+### Ola
+
+- [ ] dodać restrykcje związane z rolami
+  - najważniejsze jest zabezpieczenie na backendzie
+  - na frontendzie trzeba przy uprzywilejowanych fetchach przekazywać token użytkownika, w `helpers.js` jest od tego funkcja `authFetch`
+  - na frontendzie można ukryć niektóre funkcjonalności jeżeli użytkownik nie ma praw do wykonania ich (np. ukryć przycisk "Add task")
+  - [ ] tylko project owner i admin mogą dodać/edytować/usunąć task do projektu
+  - [ ] tylko project owner i admin mogą przypisać task do użytkownika
+  - [ ] tylko użytkownik X i admin mogą zmienić detale użytkownika X
+  - [ ] tylko użytkownik X i admin mogą wejść w `/users/:userX` na frontendzie
+  - [ ] tylko użytkownik X i admin mogą wejść w `/users/:userX/projects` na frontendzie
+  - [ ] tylko użytkownik X, project owner i admin mogą zmienić status taska przypisanego do użytkownika X z "DOING" na "REVIEW" i odwrotnie
+  - [ ] tylko project owner i admin mogą zmienić status taska z "REVIEW" na "DONE" i odwrotnie

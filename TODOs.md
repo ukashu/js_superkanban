@@ -278,7 +278,7 @@
   - na frontendzie trzeba przy uprzywilejowanych fetchach przekazywać token użytkownika, w `helpers.js` jest od tego funkcja `authFetch`
   - na frontendzie można ukryć niektóre funkcjonalności jeżeli użytkownik nie ma praw do wykonania ich (np. ukryć przycisk "Add task")
   - [ ] tylko project owner i admin mogą dodać/edytować/usunąć task do projektu
-  - [ ] tylko project owner i admin mogą przypisać task do użytkownika
+  - [ ] tylko project owner i admin mogą przypisać/cofnąć przypisanie tasku do użytkownika
   - [ ] tylko użytkownik X i admin mogą zmienić detale użytkownika X
   - [ ] tylko użytkownik X i admin mogą wejść w `/users/:userX` na frontendzie
   - [ ] tylko użytkownik X i admin mogą wejść w `/users/:userX/projects` na frontendzie

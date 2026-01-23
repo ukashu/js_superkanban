@@ -229,8 +229,8 @@
 
 ### Backlog
 
-- [ ] użycie composables tam gdzie to możliwe
-- [ ] bug: dragging lags - if Im fast enough it works (This is a firefox bug, tab dragging is broken as well)
+- [x] użycie composables tam gdzie to możliwe
+- [x] bug: dragging lags - if Im fast enough it works (This is a firefox bug, tab dragging is broken as well)
 - [ ] sprawdzić czy errory z backendu wyświetlają się w poprawny sposób, jeżeli nie - naprawić
 - [x] przeniesienie taska z powrotem do backlogu (w widoku projektu)
 - [x] paginacja tasków w kanbanie
@@ -238,12 +238,21 @@
   - [x] bug: reloading task list does not work
 - [x] optimistic updates przy zmianach statusu tasków
 - [x] bug: drop zone nie zajmuje całej kolumny UserKanban
-- [ ] dodatkowa filtracja w kanbanie (np po nazwie)
+- [ ] dodać datę utworzenia do tasków
+- [ ] szczegóły taska
+  - [ ] dodać przycisk details (po kliknięciu wyświetla details)
+  - [ ] edycja taska (przycisk do edycji wewnątrz details) (edycja title, description, status)
+  - [ ] dodać przycisk delete (wewnątrz edycji)
+- [ ] szczegóły projektu
+  - [ ] przycisk details (po kliknięciu wyświetla details)
+  - [ ] wewnątrz szczegółów przycisk do edycji (edycja title, description)
+  - [ ] przycisk do usunięcia projektu wewnątrz edycji
+- [ ] wyszukiwanie tasków po nazwie (UserKanban i ProjectKanban)
 - [ ] dodać restrykcje związane z rolami
 - [ ] owner_id przy tworzeniu taska powinien być brany z JWT w backendzie
-- [ ] pokazywać w ProjectPage w których projektach użytkownik jest właścicielem a w któ©ych pracownikiem
-- [ ] bug: logowanie złymi danymi łamie stronę
-- [ ] najechanie kursorem na task oraz projekt powinno wyświetlić szczegóły ich dotyczące
+- [ ] naprawić LoginView
+  - [ ] bug: logowanie złymi danymi łamie stronę
+  - [ ] LoginView powinien wyświetlać errory
+  - można wzorowac się na obecnym RegisterView
 - [ ] bug: dodanie nowego projektu powinno odświeżać listę projektów
 - [ ] bug: taski w user kanban nie powinny wyświetlać się obok siebie
-- [ ] make project/user headers sticky in Kanban boards

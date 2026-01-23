@@ -12,6 +12,24 @@ defineProps({
         required: false,
     },
 })
+
+const formatDate = (isoString) => {
+    return new Date(isoString).toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    })
+}
+
+const formatDateTime = (isoString) => {
+    return new Date(isoString).toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+    })
+}
 </script>
 
 <template>
@@ -27,7 +45,12 @@ defineProps({
             </div>
         </template>
         <template #content>
-            <p class="m-0 text-gray-700">{{ task.description }}</p>
+            <p
+                class="m-0 text-gray-700"
+                :title="formatDateTime(task.assignment_date)"
+            >
+                {{ formatDate(task.assignment_date) }}
+            </p>
         </template>
         <template #footer>
             <div class="text-sm text-gray-500 sm:hidden">

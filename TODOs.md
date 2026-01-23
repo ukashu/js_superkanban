@@ -238,7 +238,7 @@
   - [x] bug: reloading task list does not work
 - [x] optimistic updates przy zmianach statusu tasków
 - [x] bug: drop zone nie zajmuje całej kolumny UserKanban
-- [ ] dodać datę utworzenia do tasków
+- [x] dodać wyświetlanie daty utworzenia do tasków
 - [ ] szczegóły taska
   - [ ] dodać przycisk details (po kliknięciu wyświetla details)
   - [ ] edycja taska (przycisk do edycji wewnątrz details) (edycja title, description, status)

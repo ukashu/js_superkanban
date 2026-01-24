@@ -4,59 +4,93 @@ import { useRouter } from "vue-router"
 import Card from "primevue/card"
 import InputText from "primevue/inputtext"
 import Button from "primevue/button"
+import Message from "primevue/message"
 
 const router = useRouter()
+
 const email = ref("")
 const password = ref("")
+const errorMessage = ref("")
+const loading = ref(false)
 
 const submitLogin = async () => {
-  const payload = {
-    email: email.value,
-    password: password.value,
-  }
+    errorMessage.value = ""
+    loading.value = true
 
-  try {
-    const response = await fetch("/api/session/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    })
+    try {
+        const response = await fetch("/api/session/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                email: email.value,
+                password: password.value,
+            }),
+        })
 
-    const jsonResponse = await response.json()
+        const json = await response.json()
 
-    const userId = jsonResponse.data.user.id
-    const token = jsonResponse.data.token
+        if (!response.ok) {
+            errorMessage.value =
+                json.message || "Invalid email or password"
+            return
+        }
 
-    localStorage.setItem("token", token)
-    localStorage.setItem("user_id", userId)
+        const userId = json.data.user.id
+        const token = json.data.token
 
-    await router.push(`/users/${userId}`)
-    location.reload()
-  } catch (error) {
-    console.error("LOGIN error:", error)
-  }
+        localStorage.setItem("token", token)
+        localStorage.setItem("user_id", userId)
+
+        await router.push(`/users/${userId}`)
+    } catch (err) {
+        errorMessage.value = "Server error. Try again later."
+        console.error(err)
+    } finally {
+        loading.value = false
+    }
 }
 </script>
 
 <template>
-  <div class="flex justify-center items-center min-h-screen">
-    <Card class="w-full md:w-25rem">
-      <template #title>Login</template>
-      <template #content>
-        <form @submit.prevent="submitLogin" class="flex flex-col gap-4">
-          <div class="flex flex-col gap-2">
-            <label for="email">Email</label>
-            <InputText id="email" v-model="email" type="email" required />
-          </div>
+    <div class="flex justify-center items-center min-h-screen">
+        <Card class="w-full md:w-25rem">
+            <template #title>Login</template>
 
-          <div class="flex flex-col gap-2">
-            <label for="password">Password</label>
-            <InputText id="password" v-model="password" type="password" required />
-          </div>
+            <template #content>
+                <form @submit.prevent="submitLogin" class="flex flex-col gap-4">
+                    <!-- 🟥 ERROR -->
+                    <Message v-if="errorMessage" severity="error">
+                        {{ errorMessage }}
+                    </Message>
 
-          <Button type="submit" label="Login" />
-        </form>
-      </template>
-    </Card>
-  </div>
+                    <div class="flex flex-col gap-2">
+                        <label for="email">Email</label>
+                        <InputText
+                            id="email"
+                            v-model="email"
+                            type="email"
+                            required
+                        />
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label for="password">Password</label>
+                        <InputText
+                            id="password"
+                            v-model="password"
+                            type="password"
+                            required
+                        />
+                    </div>
+
+                    <Button
+                        type="submit"
+                        label="Login"
+                        :loading="loading"
+                        :disabled="loading"
+                    />
+                </form>
+            </template>
+        </Card>
+    </div>
 </template>

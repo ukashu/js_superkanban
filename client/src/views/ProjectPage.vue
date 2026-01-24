@@ -13,6 +13,8 @@ import Dialog from "primevue/dialog"
 import Button from "primevue/button"
 import ProgressSpinner from "primevue/progressspinner"
 import Message from "primevue/message"
+import InputText from "primevue/inputtext"
+import Textarea from "primevue/textarea"
 
 const projects = ref([])
 const currentProjectId = ref(null)
@@ -31,6 +33,14 @@ const reloadBacklogKey = ref(0)
 const route = useRoute()
 const userId = route.params.userId
 
+const showProjectDetails = ref(false)
+const isEditingProject = ref(false)
+
+const editedProject = ref({
+    title: "",
+    description: "",
+})
+
 function openAssignUser(taskId) {
     selectedTaskId.value = taskId
     showAssignPopup.value = true
@@ -42,8 +52,13 @@ function onAssigned() {
 }
 
 function onRefresh() {
-    showAddTaskPopup.value = false
-    reloadBacklogKey.value++
+    showAddProjectPopup.value = false   
+    fetchUserProjects()                 
+}
+
+function onProjectCreated() {
+    showAddProjectPopup.value = false
+    fetchUserProjects()
 }
 
 async function fetchUserProjects() {
@@ -86,6 +101,57 @@ async function selectProject(id) {
         loading.value = false
     }
 }
+
+function openProjectDetails() {
+    showProjectDetails.value = !showProjectDetails.value
+    isEditingProject.value = false
+
+    editedProject.value = {
+        title: project.value.title,
+        description: project.value.description,
+    }
+}
+
+async function saveProjectEdit() {
+    try {
+        const res = await fetch(`/api/projects/${project.value.project_id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(editedProject.value),
+        })
+
+        if (!res.ok) throw new Error()
+
+        project.value.title = editedProject.value.title
+        project.value.description = editedProject.value.description
+
+        isEditingProject.value = false
+    } catch {
+        alert("Błąd zapisu projektu")
+    }
+}
+
+async function deleteProject() {
+    if (!confirm("Na pewno usunąć projekt?")) return
+
+    try {
+        const res = await fetch(`/api/projects/${project.value.project_id}`, {
+            method: "DELETE",
+        })
+
+        if (!res.ok) throw new Error()
+
+        projects.value = projects.value.filter(
+            (p) => p.project_id !== project.value.project_id,
+        )
+
+        project.value = null
+        selectedProject.value = null
+    } catch {
+        alert("Błąd usuwania projektu")
+    }
+}
+
 
 // Watch for listbox selection change
 watch(selectedProject, (newVal) => {
@@ -139,18 +205,63 @@ function onDropTask() {
             </div>
 
             <div v-else-if="project" class="flex flex-col h-full min-h-0">
-                <div class="flex justify-between items-center mb-6">
+                <div class="flex justify-between items-start mb-6">
                     <div>
                         <h1 class="text-3xl font-bold text-gray-900">
                             {{ project.title }}
                         </h1>
                         <p class="text-gray-600">{{ project.description }}</p>
+
+                        <Button
+                            label="Details"
+                            icon="pi pi-info-circle"
+                            text
+                            class="mt-2"
+                            @click="openProjectDetails"
+                        />
                     </div>
+
                     <Button
                         label="Add Task"
                         icon="pi pi-plus"
                         @click="showAddTaskPopup = true"
                     />
+                </div>
+
+                <div
+                    v-if="showProjectDetails"
+                    class="mb-6 p-4 border rounded-lg bg-gray-50"
+                >
+                    <div v-if="!isEditingProject">
+                        <p><b>Title:</b> {{ project.title }}</p>
+                        <p class="mb-4"><b>Description:</b> {{ project.description }}</p>
+
+                        <Button
+                            label="Edit"
+                            icon="pi pi-pencil"
+                            @click="isEditingProject = true"
+                        />
+                    </div>
+
+                    <div v-else class="flex flex-col gap-3">
+                        <InputText v-model="editedProject.title" />
+                        <Textarea v-model="editedProject.description" rows="3" />
+
+                        <div class="flex gap-2">
+                            <Button label="Save" icon="pi pi-check" @click="saveProjectEdit" />
+                            <Button
+                                label="Cancel"
+                                severity="secondary"
+                                @click="isEditingProject = false"
+                            />
+                            <Button
+                                label="Delete"
+                                severity="danger"
+                                icon="pi pi-trash"
+                                @click="deleteProject"
+                            />
+                        </div>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-4 gap-6 flex-1 min-h-0">
@@ -205,7 +316,7 @@ function onDropTask() {
             header="Create Project"
             :style="{ width: '50vw' }"
         >
-            <CreateProject @refresh="onRefresh" />
+            <CreateProject @project-created="onProjectCreated" />
         </Dialog>
 
         <Dialog

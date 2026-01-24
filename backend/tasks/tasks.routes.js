@@ -4,6 +4,7 @@ import {
     createTask,
     updateTask,
     deleteTask,
+    unassignTask,
 } from "./tasks.controller.js"
 
 const router = express.Router({ mergeParams: true })
@@ -11,5 +12,6 @@ const router = express.Router({ mergeParams: true })
 router.route("/").get(getTasksForProject).post(createTask)
 
 router.route("/:taskId").put(updateTask).delete(deleteTask)
+router.route("/:taskId/unassign").put(unassignTask)
 
 export default router

@@ -1,7 +1,9 @@
 <script setup>
 import Task from "./Task.vue"
-import { ref, onMounted, computed } from "vue"
+import { ref, onMounted, computed, toRef } from "vue"
 import { authFetch } from "../helpers/helpers"
+import { useFetchTasks } from "../composables/useFetchTasks"
+import { useDragTask } from "../composables/useDragTask"
 import ProgressSpinner from "primevue/progressspinner"
 import Message from "primevue/message"
 import Divider from "primevue/divider"
@@ -12,9 +14,18 @@ const props = defineProps({
     userId: [Number, String],
 })
 
-const tasks = ref(null)
-const error = ref(null)
-const loading = ref(true)
+const { tasks, loading, error, sentinel, loadTasks } = useFetchTasks(
+    "userKanban",
+    toRef(props, "userId"),
+)
+
+const {
+    draggedTask,
+    changeTaskStatus,
+    changeNonDragTaskStatus,
+    dragStart,
+    dragEnd,
+} = useDragTask(tasks)
 
 const projectsWithTasks = computed(() => {
     if (!tasks.value) return []
@@ -34,133 +45,72 @@ const projectsWithTasks = computed(() => {
 
     return Array.from(map.values())
 })
-
-const loadTasks = async () => {
-    loading.value = true
-    console.log("Backlog userId = ", props.userId)
-
-    try {
-        const res = await authFetch(`/api/users/${props.userId}/tasks`)
-        if (!res.ok) {
-            throw new Error("Failed to fetch tasks")
-        }
-
-        const json = await res.json()
-        console.log(json)
-        tasks.value = json.data.tasks
-    } catch (err) {
-        error.value = err.message
-    } finally {
-        loading.value = false
-    }
-}
-
-onMounted(loadTasks)
-
-const draggedTask = ref(null) // id: number, status: 'DOING'|'REVIEW'|'DONE'
-
-const changeTaskStatus = async (e, newStatus) => {
-    if (newStatus != draggedTask.value.status) {
-        try {
-            const res = await fetch(
-                `/api/projects/${draggedTask.value.projectId}/tasks/${draggedTask.value.id}`,
-                {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ status: newStatus }),
-                },
-            )
-            if (!res.ok) {
-                throw new Error("Failed to update task status")
-            }
-            const json = await res.json()
-            console.log(json)
-            loadTasks()
-        } catch (err) {
-            error.value = err.message
-        }
-    }
-    console.log({ draggedTask: draggedTask.value })
-    draggedTask.value = null
-}
-
-const dragStart = (task) => {
-    draggedTask.value = {
-        id: task.task_id,
-        status: task.status,
-        projectId: task.project_id,
-    }
-}
-const dragEnd = () => {
-    draggedTask.value = null
-}
 </script>
 <template>
-    <div v-if="loading" class="flex justify-center p-4">
-        <ProgressSpinner />
-    </div>
-    <div v-else-if="error" class="p-4">
+    <div v-if="error" class="p-4">
         <Message severity="error">{{ error }}</Message>
     </div>
-    <div v-else-if="tasks" class="kanban-wrapper">
-        <div class="grid grid-cols-3 gap-4 mb-4 text-center font-bold">
+    <div v-else-if="tasks" class="h-full flex flex-col min-h-0">
+        <div
+            class="hidden sm:grid grid-cols-3 gap-4 mb-4 text-center sticky top-0 z-30 font-bold"
+        >
             <div class="custom-bg-blue-100 p-2 rounded">IN PROGRESS</div>
             <div class="custom-bg-yellow-100 p-2 rounded">REVIEW</div>
             <div class="custom-bg-green-100 p-2 rounded">DONE</div>
         </div>
 
-        <div class="kanban-board relative">
-            <!-- Dropzones -->
+        <div class="flex-1 min-h-0 overflow-y-auto relative">
             <div
-                class="dropzone review-dropzone"
-                :class="{ 'active-zone': draggedTask?.status === 'DOING' }"
-                @dragover.prevent
-                @drop="changeTaskStatus($event, 'REVIEW')"
-            ></div>
-            <div
-                class="dropzone doing-dropzone"
-                :class="{ 'active-zone': draggedTask?.status === 'REVIEW' }"
-                @dragover.prevent
-                @drop="changeTaskStatus($event, 'DOING')"
-            ></div>
-
-            <template
-                v-for="project in projectsWithTasks"
-                :key="project.projectId"
+                class="sm:grid sm:grid-cols-3 sm:gap-4 relative min-h-full text-center content-start"
             >
-                <div class="project-separator col-span-3">
-                    <Divider align="left">
-                        <span class="p-tag">{{
-                            project.projectName || "Uncategorized"
-                        }}</span>
-                    </Divider>
-                </div>
-                <template v-for="task in project.tasks" :key="task.task_id">
-                    <div :class="['task-item', task.status]">
-                        <Task
-                            :draggable="
-                                task.status === 'DOING' ||
-                                task.status === 'REVIEW'
-                            "
-                            @dragstart="dragStart(task)"
-                            @dragend="dragEnd"
-                            :task="task"
-                        />
+                <div
+                    class="dropzone review-dropzone"
+                    :class="{ 'active-zone': draggedTask?.status === 'DOING' }"
+                    @dragover.prevent
+                    @drop="changeTaskStatus($event, 'REVIEW')"
+                ></div>
+                <div
+                    class="dropzone doing-dropzone"
+                    :class="{ 'active-zone': draggedTask?.status === 'REVIEW' }"
+                    @dragover.prevent
+                    @drop="changeTaskStatus($event, 'DOING')"
+                ></div>
+
+                <template
+                    v-for="project in projectsWithTasks"
+                    :key="project.projectId"
+                >
+                    <div class="project-separator col-span-3">
+                        <Divider align="left">
+                            <span class="p-tag">{{
+                                project.projectName || "Uncategorized"
+                            }}</span>
+                        </Divider>
                     </div>
+                    <template v-for="task in project.tasks" :key="task.task_id">
+                        <div :class="['task-item', task.status]">
+                            <Task
+                                :draggable="
+                                    task.status === 'DOING' ||
+                                    task.status === 'REVIEW'
+                                "
+                                @dragstart="(e) => dragStart(e, task)"
+                                @dragend="dragEnd"
+                                :task="task"
+                                :change-status="changeNonDragTaskStatus"
+                            />
+                        </div>
+                    </template>
                 </template>
-            </template>
+                <div ref="sentinel" class="h-10"></div>
+                <div v-if="loading" class="flex justify-center p-4">
+                    <ProgressSpinner />
+                </div>
+            </div>
         </div>
     </div>
 </template>
 <style scoped>
-.kanban-board {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
-    position: relative;
-    min-height: 500px;
-}
-
 .col-span-3 {
     grid-column: 1 / 4;
 }
@@ -180,13 +130,7 @@ const dragEnd = () => {
     top: 0;
     bottom: 0;
     z-index: 0;
-    pointer-events: none; /* Let clicks pass through unless active? No, native DnD handles it */
 }
-/* When dragging, we want dropzones to be targets. 
-   Pointer events should be auto for dropzones when they are needed.
-   But they are overlays. If they are on top, they block clicks on tasks?
-   Tasks are Z-index 1 usually.
-*/
 
 .review-dropzone {
     left: 33.33%;
@@ -201,12 +145,11 @@ const dragEnd = () => {
 .active-zone {
     background-color: rgba(255, 255, 200, 0.3);
     border: 2px dashed #ecc94b;
-    pointer-events: auto; /* Enable dropping */
     z-index: 10;
 }
 
 .task-item {
-    z-index: 20; /* Keep tasks above dropzones */
+    z-index: 20;
     position: relative;
 }
 

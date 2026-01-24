@@ -190,6 +190,8 @@
 - [x] przycisk Add project
 - [ ] zmienić edycję użytkownika na popup
 - [ ] owner_id przy tworzeniu taska powinien być brany z JWT w backendzie
+- [ ] usuwanie tasków (w widoku projektu)
+  - najlepiej poprzez przeciągnięcie i upuszczenie w strefie usuwania, strefa usuwania może pojawiać się pod backlogiem kiedy task jest podniesiony
 
 ### Łukasz
 
@@ -201,9 +203,9 @@
 - [x] naprawić podświetlanie stref zrzutu tasków
 - [x] dodać tailwind do projektu
 - [x] przycisk Add project wyświetlający popup do dodania nowego projektu
-- [ ] najechanie kursorem na task oraz projekt powinno wyświetlić szczegóły ich dotyczące
-- [ ] usuwanie tasków (w widoku projektu)
-  - najlepiej poprzez przeciągnięcie i upuszczenie w strefie usuwania, strefa usuwania może pojawiać się pod backlogiem kiedy task jest podniesiony
+- [x] naprawa scrollowania w User Home
+- [x] bug: `/` przenosi na `/login` nawet jeżeli użytkownik jest zalogowany
+- [x] dodać responsywność
 
 ### Ola
 
@@ -212,24 +214,73 @@
   - dodać ścieżkę w backendzie do pobrania projektów dla usera, Vue powinien pobierać tę listę `onMounted`
   - kliknięcie w projekt z listy powinno zmienić taski wyświetlane w ProjectBacklog i ProjectKanban
 - [x] dodanie component library do projektu
-- [ ] zmienić edycję danych użytkownika na popup wyświetlany po kliknięciu przycisku
+- [x] zmienić edycję danych użytkownika na popup wyświetlany po kliknięciu przycisku
 
 ### Wiktoria
 
 - [x] stworzyć komponent Vue do edycji danych użytkownika
 - [x] przycisk i funkcjonalność Logout w Vue
   - wylogowanie polega na usunięciu wartości `token` i `user_id` z localStorage
-- [ ] po udanym logowaniu/rejestracji przenieść użytkownika na stronę domową użytkownika `/users/<USER_ID>`
-- [ ] przy kliknięciu przycisku "User" w nawigacji id użytkownika powinno byc brane z localstorage, obecnie jest chyba hardkodowane user_id 1 w `App.vue`
-- [ ] przycisk "Logout" powiniem być widzialny tylko dla zalogowanych użytkowników, przyciski "Login" i "Register" tylko dla niezalogowanych
+- [x] po udanym logowaniu/rejestracji przenieść użytkownika na stronę domową użytkownika `/users/<USER_ID>`
+- [x] przy kliknięciu przycisku "User" w nawigacji id użytkownika powinno byc brane z localstorage, obecnie jest chyba hardkodowane user_id 1 w `App.vue`
+- [x] przycisk "Logout" powiniem być widzialny tylko dla zalogowanych użytkowników, przyciski "Login" i "Register" tylko dla niezalogowanych
 
 ## Na zjazd 10
 
 ### Backlog
 
-- [ ] zmienić fetche na używające composables
+- [x] użycie composables tam gdzie to możliwe
 - [ ] sprawdzić czy errory z backendu wyświetlają się w poprawny sposób, jeżeli nie - naprawić
-- [ ] przeniesienie taska z powrotem do backlogu (w widoku projektu)
-- [ ] paginacja tasków w kanbanie
+- [x] przeniesienie taska z powrotem do backlogu (w widoku projektu)
+- [x] paginacja tasków w kanbanie
+  - [ ] bug: kiedy taski załadowane za pierwszym razem nie przepełniają kontenera, nie doładowują się inne
+  - [x] bug: reloading task list does not work
+- [x] optimistic updates przy zmianach statusu tasków
+- [x] bug: drop zone nie zajmuje całej kolumny UserKanban
+- [x] dodać wyświetlanie daty utworzenia do tasków
+- [ ] szczegóły taska
+  - [ ] przycisk details (po kliknięciu wyświetla details)
+  - [ ] edycja taska (przycisk do edycji wewnątrz details) (edycja title, description, status)
+  - [ ] dodać przycisk delete (wewnątrz edycji)
+- [ ] szczegóły projektu
+  - [ ] przycisk details (po kliknięciu wyświetla details)
+  - [ ] wewnątrz details przycisk do edycji (edycja title, description)
+  - [ ] przycisk do usunięcia projektu wewnątrz edycji
+- [ ] filtrowanie tasków po nazwie (UserKanban i ProjectKanban)
 - [ ] dodać restrykcje związane z rolami
 - [ ] owner_id przy tworzeniu taska powinien być brany z JWT w backendzie
+- [ ] naprawić LoginView
+  - [ ] bug: logowanie złymi danymi łamie stronę
+  - [ ] LoginView powinien wyświetlać errory
+  - można wzorowac się na obecnym RegisterView
+- [ ] bug: dodanie nowego projektu powinno odświeżać listę projektów
+- [ ] bug: taski w user kanban nie powinny wyświetlać się obok siebie
+
+### Wiktoria
+
+- [ ] szczegóły taska
+  - [ ] przycisk details (po kliknięciu wyświetla details)
+  - [ ] edycja taska (przycisk do edycji wewnątrz details) (edycja title, description, status)
+  - [ ] dodać przycisk delete (wewnątrz edycji)
+- [ ] szczegóły projektu
+  - [ ] przycisk details (po kliknięciu wyświetla details)
+  - [ ] wewnątrz details przycisk do edycji (edycja title, description)
+  - [ ] przycisk do usunięcia projektu wewnątrz edycji
+- [ ] naprawić LoginView
+  - [ ] bug: logowanie złymi danymi łamie stronę
+  - [ ] LoginView powinien wyświetlać errory (błędy z serwera/nieprawidłowe dane itp.)
+  - można wzorowac się na obecnym RegisterView
+
+### Ola
+
+- [ ] dodać restrykcje związane z rolami
+  - najważniejsze jest zabezpieczenie na backendzie
+  - na frontendzie trzeba przy uprzywilejowanych fetchach przekazywać token użytkownika, w `helpers.js` jest od tego funkcja `authFetch`
+  - na frontendzie można ukryć niektóre funkcjonalności jeżeli użytkownik nie ma praw do wykonania ich (np. ukryć przycisk "Add task")
+  - [ ] tylko project owner i admin mogą dodać/edytować/usunąć task do projektu
+  - [ ] tylko project owner i admin mogą przypisać/cofnąć przypisanie tasku do użytkownika
+  - [ ] tylko użytkownik X i admin mogą zmienić detale użytkownika X
+  - [ ] tylko użytkownik X i admin mogą wejść w `/users/:userX` na frontendzie
+  - [ ] tylko użytkownik X i admin mogą wejść w `/users/:userX/projects` na frontendzie
+  - [ ] tylko użytkownik X, project owner i admin mogą zmienić status taska przypisanego do użytkownika X z "DOING" na "REVIEW" i odwrotnie
+  - [ ] tylko project owner i admin mogą zmienić status taska z "REVIEW" na "DONE" i odwrotnie

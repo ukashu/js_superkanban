@@ -1,6 +1,8 @@
 <script setup>
 import Task from "./Task.vue"
-import { ref, onMounted, computed, defineEmits, watch } from "vue"
+import { ref, onMounted, computed, defineEmits, watch, toRef } from "vue"
+import { useFetchTasks } from "../composables/useFetchTasks.js"
+import { useDragTask } from "../composables/useDragTask.js"
 import ProgressSpinner from "primevue/progressspinner"
 import Message from "primevue/message"
 import Divider from "primevue/divider"
@@ -11,9 +13,18 @@ const props = defineProps({
     projectId: [Number, String],
 })
 
-const tasks = ref(null)
-const error = ref(null)
-const loading = ref(true)
+const { tasks, loading, error, sentinel, loadTasks } = useFetchTasks(
+    "projectKanban",
+    toRef(props, "projectId"),
+)
+
+const {
+    draggedTask,
+    changeTaskStatus,
+    changeNonDragTaskStatus,
+    dragStart,
+    dragEnd,
+} = useDragTask(tasks)
 
 const assigneesWithTasks = computed(() => {
     if (!tasks.value) return []
@@ -35,79 +46,23 @@ const assigneesWithTasks = computed(() => {
 
     return Array.from(map.values())
 })
-
-const loadTasks = async () => {
-    try {
-        const res = await fetch(`/api/projects/${props.projectId}/tasks`)
-        if (!res.ok) {
-            throw new Error("Failed to fetch tasks")
-        }
-
-        const json = await res.json()
-        tasks.value = json.data.tasks
-    } catch (err) {
-        error.value = err.message
-    } finally {
-        loading.value = false
-    }
-}
-
-onMounted(loadTasks)
-watch(() => props.projectId, loadTasks)
-
-const draggedTask = ref(null) // id: number, status: 'DOING'|'REVIEW'|'DONE'
-
-const changeTaskStatus = async (e, newStatus) => {
-    if (newStatus != draggedTask.value.status) {
-        try {
-            const res = await fetch(
-                `/api/projects/${draggedTask.value.projectId}/tasks/${draggedTask.value.id}`,
-                {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ status: newStatus }),
-                },
-            )
-            if (!res.ok) {
-                throw new Error("Failed to update task status")
-            }
-            const json = await res.json()
-            console.log(json)
-            loadTasks()
-        } catch (err) {
-            error.value = err.message
-        }
-    }
-    draggedTask.value = null
-}
-
-const dragStart = (task) => {
-    draggedTask.value = {
-        id: task.task_id,
-        status: task.status,
-        projectId: task.project_id,
-    }
-}
-const dragEnd = () => {
-    draggedTask.value = null
-}
 </script>
 <template>
-    <div v-if="loading" class="flex justify-center p-4">
-        <ProgressSpinner />
-    </div>
-    <div v-else-if="error" class="p-4">
+    <div v-if="error" class="p-4">
         <Message severity="error">{{ error }}</Message>
     </div>
-    <div v-else-if="tasks" class="kanban-wrapper">
-        <div class="grid grid-cols-3 gap-4 mb-4 text-center font-bold">
+    <div v-else-if="tasks" class="h-full">
+        <div
+            class="hidden sm:grid grid-cols-3 gap-4 mb-4 text-center font-bold"
+        >
             <div class="custom-bg-blue-100 p-2 rounded">IN PROGRESS</div>
             <div class="custom-bg-yellow-100 p-2 rounded">REVIEW</div>
             <div class="custom-bg-green-100 p-2 rounded">DONE</div>
         </div>
 
-        <div class="kanban-board relative">
-            <!-- Dropzones -->
+        <div
+            class="sm:grid grid-cols-3 gap-4 mb-4 min-h-full text-center relative content-start"
+        >
             <div
                 class="dropzone doing-dropzone"
                 :class="{
@@ -158,27 +113,23 @@ const dragEnd = () => {
                         <div :class="['task-item', task.status]">
                             <Task
                                 :draggable="true"
-                                @dragstart="dragStart(task)"
+                                @dragstart="(e) => dragStart(e, task)"
                                 @dragend="dragEnd"
                                 :task="task"
+                                :change-status="changeNonDragTaskStatus"
                             />
                         </div>
                     </div>
                 </template>
             </template>
+            <div ref="sentinel" class="h-10"></div>
+            <div v-if="loading" class="flex justify-center p-4">
+                <ProgressSpinner />
+            </div>
         </div>
     </div>
 </template>
 <style scoped>
-.kanban-board {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
-    position: relative;
-    min-height: 500px;
-    overflow: auto;
-}
-
 .task-row {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;

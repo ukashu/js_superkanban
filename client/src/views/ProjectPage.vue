@@ -172,14 +172,32 @@ function onDropTask() {
     selectedTaskId.value = draggedTaskId.value
     showAssignPopup.value = true
 }
+
+function showAssignUserPopup(taskId) {
+    selectedTaskId.value = taskId
+    showAssignPopup.value = true
+}
 </script>
 
 <template>
-    <div class="flex h-full overflow-hidden">
+    <div class="flex flex-col sm:flex-row h-full min-h-0">
         <aside
-            class="w-64 h-full bg-gray-200 flex flex-col border-r border-gray-200 p-4 overflow-y-auto"
+            class="sm:w-64 sm:h-full shrink-0 max-h-[20vh] sm:max-h-none bg-gray-200 flex flex-col gap-2 border-r border-gray-200 p-4 overflow-y-auto"
         >
-            <h3 class="text-xl font-bold mb-4 text-gray-900">My Projects</h3>
+            <div class="flex flex-row flex-1 justify-between sm:hidden">
+                <h3 class="text-xl font-bold mb-4 text-gray-900">
+                    My Projects
+                </h3>
+                <Button
+                    label="New Project"
+                    icon="pi pi-plus"
+                    class="mt-auto"
+                    @click="showAddProjectPopup = true"
+                />
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-gray-900 hidden sm:block">
+                My Projects
+            </h3>
             <Listbox
                 v-model="selectedProject"
                 :options="projects"
@@ -187,15 +205,17 @@ function onDropTask() {
                 class="w-full"
                 listStyle="maxheight: 250px"
             />
-            <Button
-                label="New Project"
-                icon="pi pi-plus"
-                class="mt-auto"
-                @click="showAddProjectPopup = true"
-            />
+            <div class="sm:block hidden mt-auto">
+                <Button
+                    label="New Project"
+                    icon="pi pi-plus"
+                    class="mt-auto"
+                    @click="showAddProjectPopup = true"
+                />
+            </div>
         </aside>
 
-        <main class="flex-1 p-4 bg-white">
+        <main class="flex-1 p-4 bg-white overflow-y-auto min-h-0">
             <div v-if="loading && !project" class="flex justify-center mt-10">
                 <ProgressSpinner />
             </div>
@@ -266,7 +286,7 @@ function onDropTask() {
 
                 <div class="grid grid-cols-4 gap-6 flex-1 min-h-0">
                     <div
-                        class="col-span-1 bg-gray-50 p-4 rounded-lg overflow-y-auto border border-gray-200"
+                        class="col-span-1 bg-gray-50 p-4 rounded-lg sm:overflow-y-auto border border-gray-200"
                     >
                         <h2 class="text-lg font-semibold mb-4 text-gray-900">
                             Backlog
@@ -274,13 +294,20 @@ function onDropTask() {
                         <ProjectBacklog
                             :key="currentProjectId + '-' + reloadBacklogKey"
                             :projectId="currentProjectId"
+                            :showAssignUserPopup="showAssignUserPopup"
                             @drag-task="onDragTask"
+                            @refresh="onRefresh"
                             class="project-backlog"
+                        />
+                        <Button
+                            label="Add Task"
+                            icon="pi pi-plus"
+                            @click="showAddTaskPopup = true"
                         />
                     </div>
 
                     <div
-                        class="col-span-3 bg-gray-50 p-4 rounded-lg overflow-y-auto border border-gray-200"
+                        class="col-span-3 bg-gray-50 p-4 rounded-lg sm:overflow-y-auto border border-gray-200"
                     >
                         <h2 class="text-lg font-semibold mb-4 text-gray-900">
                             Kanban Board

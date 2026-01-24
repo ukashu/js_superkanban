@@ -14,9 +14,19 @@ const errorMessage = ref("")
 const loading = ref(false)
 
 const submitLogin = async () => {
+    const payload = {
+        email: email.value,
+        password: password.value,
+    }
     errorMessage.value = ""
     loading.value = true
 
+    try {
+        const response = await fetch("/api/session/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+        })
     try {
         const response = await fetch("/api/session/login", {
             method: "POST",
@@ -27,8 +37,11 @@ const submitLogin = async () => {
             }),
         })
 
+        const jsonResponse = await response.json()
         const json = await response.json()
 
+        const userId = jsonResponse.data.user.id
+        const token = jsonResponse.data.token
         if (!response.ok) {
             errorMessage.value =
                 json.message || "Invalid email or password"
@@ -40,7 +53,14 @@ const submitLogin = async () => {
 
         localStorage.setItem("token", token)
         localStorage.setItem("user_id", userId)
+        localStorage.setItem("token", token)
+        localStorage.setItem("user_id", userId)
 
+        await router.push(`/users/${userId}`)
+        location.reload()
+    } catch (error) {
+        console.error("LOGIN error:", error)
+    }
         await router.push(`/users/${userId}`)
     } catch (err) {
         errorMessage.value = "Server error. Try again later."
@@ -52,6 +72,20 @@ const submitLogin = async () => {
 </script>
 
 <template>
+    <div class="flex justify-center items-center min-h-screen">
+        <Card class="w-full md:w-25rem">
+            <template #title>Login</template>
+            <template #content>
+                <form @submit.prevent="submitLogin" class="flex flex-col gap-4">
+                    <div class="flex flex-col gap-2">
+                        <label for="email">Email</label>
+                        <InputText
+                            id="email"
+                            v-model="email"
+                            type="email"
+                            required
+                        />
+                    </div>
     <div class="flex justify-center items-center min-h-screen">
         <Card class="w-full md:w-25rem">
             <template #title>Login</template>
@@ -82,7 +116,21 @@ const submitLogin = async () => {
                             required
                         />
                     </div>
+                    <div class="flex flex-col gap-2">
+                        <label for="password">Password</label>
+                        <InputText
+                            id="password"
+                            v-model="password"
+                            type="password"
+                            required
+                        />
+                    </div>
 
+                    <Button type="submit" label="Login" />
+                </form>
+            </template>
+        </Card>
+    </div>
                     <Button
                         type="submit"
                         label="Login"

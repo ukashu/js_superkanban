@@ -11,11 +11,13 @@ const app = express()
 const PORT = Number(process.env.PORT) || 5000
 
 app.use(express.json())
-app.use(cors({
-    origin: "http://localhost:5173",
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    methods: ["GET","POST","PUT","DELETE"]
-}))
+app.use(
+    cors({
+        origin: "http://localhost:5173",
+        allowedHeaders: ["Content-Type", "Authorization"],
+        methods: ["GET", "POST", "PUT", "DELETE"],
+    }),
+)
 
 app.get("/", (req, res) => {
     res.send("API is running...")
@@ -28,6 +30,6 @@ app.use("/api/projects", projectRoutes)
 
 app.use(errorHandler)
 
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`)
+app.listen(PORT, "127.0.0.1", () => {
+    console.log(`Server running at http://127.0.0.1:${PORT}`)
 })

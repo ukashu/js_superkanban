@@ -2,11 +2,15 @@
 import { ref, computed, onMounted, defineEmits } from "vue"
 import ProgressSpinner from "primevue/progressspinner"
 
-const emit = defineEmits(["drag-task", "drag-end"])
+const emit = defineEmits(["drag-task", "drag-end", "refresh"])
 
 const props = defineProps({
     projectId: {
         type: [String, Number],
+        required: true,
+    },
+    showAssignUserPopup: {
+        type: Function,
         required: true,
     },
 })
@@ -44,13 +48,34 @@ function onDragStart(event, task) {
     emit("drag-task", task.task_id)
 }
 
-function onDragEnd() {
-    emit("drag-end")
+async function unassignTask(e) {
+    console.log(`${e.dataTransfer.getData("text")}`)
+    try {
+        const res = await fetch(
+            `/api/projects/${props.projectId}/tasks/${e.dataTransfer.getData("text")}/unassign`,
+            {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+            },
+        )
+        if (!res.ok) {
+            throw new Error("Failed to unassign task status")
+        }
+        const json = await res.json()
+        console.log(json)
+        emit("refresh")
+    } catch (err) {
+        console.error("Błąd przy unassign taska: ", err)
+    }
 }
 </script>
 
 <template>
-    <div class="h-full flex flex-col">
+    <div
+        @dragover.prevent
+        @drop="unassignTask($event)"
+        class="h-full flex flex-col"
+    >
         <div v-if="loading" class="flex justify-center p-4">
             <ProgressSpinner style="width: 50px; height: 50px" />
         </div>
@@ -66,7 +91,7 @@ function onDragEnd() {
                 :key="task.task_id"
                 draggable="true"
                 @dragstart="onDragStart($event, task)"
-                @dragend="onDragEnd"
+                @click="showAssignUserPopup(task.task_id)"
                 class="backlog-item"
             >
                 <span class="font-bold">{{ task.title }}</span>
@@ -78,7 +103,7 @@ function onDragEnd() {
 <style scoped>
 .backlog-item {
     background-color: #ffffff;
-    color: #374151; /* Dark gray text for readability */
+    color: #374151;
     border: 1px solid #e5e7eb;
     border-radius: 6px;
     padding: 0.75rem 1rem;
@@ -86,15 +111,15 @@ function onDragEnd() {
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     cursor: move;
     transition: all 0.2s ease;
-    user-select: none; /* Prevent text selection while dragging */
+    user-select: none;
 }
 
 .backlog-item:hover {
-    background-color: #f9fafb; /* Light gray on hover */
+    background-color: #f9fafb;
     box-shadow:
         0 4px 6px -1px rgba(0, 0, 0, 0.1),
         0 2px 4px -1px rgba(0, 0, 0, 0.06);
     border-color: #d1d5db;
-    transform: translateY(-1px); /* Slight lift effect */
+    transform: translateY(-1px);
 }
 </style>

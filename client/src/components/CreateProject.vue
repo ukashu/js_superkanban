@@ -3,6 +3,7 @@ import { ref } from "vue"
 import InputText from "primevue/inputtext"
 import Textarea from "primevue/textarea"
 import Button from "primevue/button"
+import { authFetch } from "../helpers/helpers.js"
 
 const title = ref("")
 const description = ref("")
@@ -13,7 +14,7 @@ userId.value = localStorage.getItem("user_id")
 
 async function submitForm() {
     try {
-        const res = await fetch("/api/projects", {
+        const res = await authFetch("/api/projects", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

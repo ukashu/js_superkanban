@@ -26,9 +26,11 @@ const submitLogin = async () => {
 
         const userId = jsonResponse.data.user.id
         const token = jsonResponse.data.token
+        const isAdmin = jsonResponse.data.user.is_admin
 
         localStorage.setItem("token", token)
         localStorage.setItem("user_id", userId)
+        localStorage.setItem("is_admin", isAdmin)
 
         await router.push(`/users/${userId}`)
         location.reload()

@@ -3,6 +3,7 @@ import { ref } from "vue"
 import InputText from "primevue/inputtext"
 import Textarea from "primevue/textarea"
 import Button from "primevue/button"
+import { authFetch } from "../helpers/helpers.js"
 
 const props = defineProps(["projectId"])
 const emit = defineEmits(["refresh"])
@@ -13,7 +14,7 @@ const message = ref("")
 
 async function createTask() {
     try {
-        const res = await fetch(`/api/projects/${props.projectId}/tasks`, {
+        const res = await authFetch(`/api/projects/${props.projectId}/tasks`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

@@ -11,20 +11,6 @@ export const getTasksForProject = async (req, res, next) => {
             "SELECT t.*, u.name as assignee_name FROM tasks t LEFT JOIN users u ON t.assignee_id = u.user_id WHERE t.project_id = ?"
         const params = [projectId]
 
-        const projectOwner = await dbAll(
-            "SELECT owner_id FROM projects WHERE project_id = ?",
-            projectId,
-        )
-
-        /*
-        if (!projectOwner || projectOwner[0].owner_id != req.user.user_id) {
-            return res.status(403).json({
-                success: false,
-                message: "You don't have access to this resource",
-            })
-        }
-        */
-
         if (assigneeName) {
             query += " AND u.name LIKE ?"
             params.push(`%${assigneeName}%`)
@@ -75,11 +61,6 @@ export const createTask = async (req, res, next) => {
             return res.status(400).json({ message: "Title is required" })
         }
 
-        const allowedStatuses = ["BACKLOG", "DOING", "REVIEW", "DONE"]
-        if (status && !allowedStatuses.includes(status)) {
-            return res.status(400).json({ message: "Invalid status" })
-        }
-
         const result = await dbRun(
             `INSERT INTO tasks (project_id, assignee_id, title, description, status, assignment_date)
        VALUES (?, ?, ?, ?, ?, ?)`,
@@ -111,6 +92,59 @@ export const updateTask = async (req, res, next) => {
         const allowedStatuses = ["BACKLOG", "DOING", "REVIEW", "DONE"]
         if (status && !allowedStatuses.includes(status)) {
             return res.status(400).json({ message: "Invalid status" })
+        }
+
+        const project = await dbGet(
+            "SELECT owner_id FROM projects WHERE project_id = ?",
+            [projectId],
+        )
+        if (!project) {
+            return res.status(404).json({ message: "Project not found" })
+        }
+
+        const task = await dbGet(
+            "SELECT * FROM tasks WHERE task_id = ? AND project_id = ?",
+            [taskId, projectId],
+        )
+        if (!task) {
+            return res.status(404).json({ message: "Task not found" })
+        }
+
+        const isAdmin = req.user.is_admin === 1
+        const isProjectOwner = project.owner_id === req.user.user_id
+        const isAssignee = task.assignee_id === req.user.user_id
+
+        if (isAdmin || isProjectOwner) {
+            // Allow all
+        } else if (isAssignee) {
+            // Check restricted fields
+            if (
+                title !== undefined ||
+                description !== undefined ||
+                assignee_id !== undefined
+            ) {
+                return res.status(403).json({
+                    message:
+                        "Access denied. Assignee cannot edit task details other than status.",
+                })
+            }
+
+            // Check status transition
+            if (status) {
+                const currentStatus = task.status
+                const isValidTransition =
+                    (currentStatus === "DOING" && status === "REVIEW") ||
+                    (currentStatus === "REVIEW" && status === "DOING")
+
+                if (!isValidTransition) {
+                    return res.status(403).json({
+                        message:
+                            "Access denied. Assignee can only switch between DOING and REVIEW.",
+                    })
+                }
+            }
+        } else {
+            return res.status(403).json({ message: "Access denied." })
         }
 
         const dbResult = await dbRun(
@@ -180,7 +214,7 @@ export const deleteTask = async (req, res, next) => {
             [taskId, projectId],
         )
 
-        if (!dbResult) {
+        if (dbResult.changes === 0) {
             return res.status(404).json({
                 success: false,
                 message: "Task not found",

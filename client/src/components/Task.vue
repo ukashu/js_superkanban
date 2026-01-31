@@ -15,6 +15,10 @@ const props = defineProps({
         type: Function,
         required: false,
     },
+    editable: {
+        type: Boolean,
+        required: true,
+    },
 })
 
 const formatDate = (isoString) => {
@@ -121,6 +125,7 @@ const deleteTask = async () => {
                     <p><b>Assigned:</b> {{ task.assignee_name }}</p>
 
                     <Button
+                        v-if="editable"
                         label="Edit"
                         icon="pi pi-pencil"
                         size="small"

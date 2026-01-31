@@ -118,6 +118,7 @@ const assigneesWithTasks = computed(() => {
                                 @refresh="emit('refresh')"
                                 :task="task"
                                 :change-status="changeNonDragTaskStatus"
+                                :editable="true"
                             />
                         </div>
                     </div>

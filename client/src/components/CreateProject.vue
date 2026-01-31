@@ -5,6 +5,8 @@ import Textarea from "primevue/textarea"
 import Button from "primevue/button"
 import { authFetch } from "../helpers/helpers.js"
 
+const emit = defineEmits(["project-created"])
+
 const title = ref("")
 const description = ref("")
 const message = ref("")
@@ -20,19 +22,20 @@ async function submitForm() {
             body: JSON.stringify({
                 title: title.value,
                 description: description.value,
-                owner_id: userId.value,
+                owner_id: localStorage.getItem("user_id"),
             }),
         })
 
         const json = await res.json()
-        message.value = json.message || "Created!"
-        if (res.ok) {
-            title.value = ""
-            description.value = ""
-        }
+        
+        if (!res.ok) throw new Error()
+        message.value = "Project created successfully"
+        emit("project-created")
+        title.value = ""
+        description.value = ""
     } catch (err) {
-        console.error(err)
         message.value = "Error creating project"
+        console.error(err)
     }
 }
 </script>

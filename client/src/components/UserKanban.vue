@@ -96,6 +96,7 @@ const projectsWithTasks = computed(() => {
                                 "
                                 @dragstart="(e) => dragStart(e, task)"
                                 @dragend="dragEnd"
+                                :editable="false"
                                 :task="task"
                                 :change-status="changeNonDragTaskStatus"
                             />

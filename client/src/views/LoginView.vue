@@ -4,29 +4,39 @@ import { useRouter } from "vue-router"
 import Card from "primevue/card"
 import InputText from "primevue/inputtext"
 import Button from "primevue/button"
+import Message from "primevue/message"
 
 const router = useRouter()
+
 const email = ref("")
 const password = ref("")
+const errorMessage = ref("")
+const loading = ref(false)
 
 const submitLogin = async () => {
-    const payload = {
-        email: email.value,
-        password: password.value,
-    }
+    errorMessage.value = ""
+    loading.value = true
 
     try {
         const response = await fetch("/api/session/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
+            body: JSON.stringify({
+                email: email.value,
+                password: password.value,
+            }),
         })
 
-        const jsonResponse = await response.json()
+        const json = await response.json()
 
-        const userId = jsonResponse.data.user.id
-        const token = jsonResponse.data.token
-        const isAdmin = jsonResponse.data.user.is_admin
+        if (!response.ok) {
+            errorMessage.value = json.message || "Invalid email or password"
+            return
+        }
+
+        const userId = json.data.user.id
+        const token = json.data.token
+        const isAdmin = json.data.user.is_admin
 
         localStorage.setItem("token", token)
         localStorage.setItem("user_id", userId)
@@ -34,8 +44,11 @@ const submitLogin = async () => {
 
         await router.push(`/users/${userId}`)
         location.reload()
-    } catch (error) {
-        console.error("LOGIN error:", error)
+    } catch (err) {
+        console.error("LOGIN error:", err)
+        errorMessage.value = "Server error. Try again later."
+    } finally {
+        loading.value = false
     }
 }
 </script>
@@ -44,8 +57,13 @@ const submitLogin = async () => {
     <div class="flex justify-center items-center min-h-screen">
         <Card class="w-full md:w-25rem">
             <template #title>Login</template>
+
             <template #content>
                 <form @submit.prevent="submitLogin" class="flex flex-col gap-4">
+                    <Message v-if="errorMessage" severity="error">
+                        {{ errorMessage }}
+                    </Message>
+
                     <div class="flex flex-col gap-2">
                         <label for="email">Email</label>
                         <InputText
@@ -66,7 +84,12 @@ const submitLogin = async () => {
                         />
                     </div>
 
-                    <Button type="submit" label="Login" />
+                    <Button
+                        type="submit"
+                        label="Login"
+                        :loading="loading"
+                        :disabled="loading"
+                    />
                 </form>
             </template>
         </Card>

@@ -46,8 +46,9 @@ const statuses = ["todo", "in_progress", "done"]
 
 const saveEdit = async () => {
     try {
+        console.log({ edited: editedTask.value })
         await fetch(
-            `http://localhost:5000/api/tasks/${editedTask.value.task_id}`,
+            `http://localhost:5000/api/projects/${editedTask.value.project_id}/tasks/${editedTask.value.task_id}`,
             {
                 method: "PUT",
                 headers: {
@@ -69,12 +70,15 @@ const deleteTask = async () => {
     if (!confirm("Czy na pewno chcesz usunąć ten task?")) return
 
     try {
-        await fetch(`http://localhost:5000/api/tasks/${props.task.task_id}`, {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+        await fetch(
+            `http://localhost:5000/api/projects/${editedTask.value.project_id}/tasks/${props.task.task_id}`,
+            {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
             },
-        })
+        )
 
         emit("taskDeleted", props.task.task_id)
     } catch (err) {

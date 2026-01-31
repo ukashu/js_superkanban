@@ -52,7 +52,7 @@ function onDragStart(event, task) {
 async function unassignTask(e) {
     console.log(`${e.dataTransfer.getData("text")}`)
     try {
-        const res = await fetch(
+        const res = await authFetch(
             `/api/projects/${props.projectId}/tasks/${e.dataTransfer.getData("text")}/unassign`,
             {
                 method: "PUT",

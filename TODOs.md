@@ -294,5 +294,6 @@
   - [ ] w project kanban nie pokazują się przyciski, backlog pokazuje się w złym miejscu oraz taski nie wypełniają całej szerokości
 - [x] edit task details doesnt do anything
 - [x] editing task does not refresh
+- [x] My projects has useless margin on the bottom
 - [ ] editing project does not refresh my projects list
 - [ ] popups are not wide enough on small screens

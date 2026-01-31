@@ -243,14 +243,7 @@ function showAssignUserPopup(taskId) {
                     />
                 </div>
 
-                <div v-if="!isEditingProject">
-                    <p><b>Title:</b> {{ project.title }}</p>
-                    <p class="mb-4">
-                        <b>Description:</b> {{ project.description }}
-                    </p>
-                </div>
-
-                <div v-else class="flex flex-col gap-3">
+                <div v-if="isEditingProject" class="flex flex-col gap-3">
                     <InputText v-model="editedProject.title" />
                     <Textarea v-model="editedProject.description" rows="3" />
 

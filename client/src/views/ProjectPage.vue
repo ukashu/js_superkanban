@@ -89,6 +89,10 @@ async function selectProject(id) {
 
         const json = await res.json()
         project.value = json.data
+        editedProject.value = {
+            title: project.value.title,
+            description: project.value.description,
+        }
         reloadBacklogKey.value++
     } catch (err) {
         error.value = err.message
@@ -226,11 +230,9 @@ function showAssignUserPopup(taskId) {
                         </h1>
                         <p class="text-gray-600">{{ project.description }}</p>
                         <Button
-                            label="Details"
-                            icon="pi pi-info-circle"
-                            text
-                            class="mt-2"
-                            @click="openProjectDetails"
+                            label="Edit"
+                            icon="pi pi-pencil"
+                            @click="isEditingProject = true"
                         />
                     </div>
 
@@ -241,48 +243,34 @@ function showAssignUserPopup(taskId) {
                     />
                 </div>
 
-                <div
-                    v-if="showProjectDetails"
-                    class="mb-6 p-4 border rounded-lg bg-gray-50"
-                >
-                    <div v-if="!isEditingProject">
-                        <p><b>Title:</b> {{ project.title }}</p>
-                        <p class="mb-4">
-                            <b>Description:</b> {{ project.description }}
-                        </p>
+                <div v-if="!isEditingProject">
+                    <p><b>Title:</b> {{ project.title }}</p>
+                    <p class="mb-4">
+                        <b>Description:</b> {{ project.description }}
+                    </p>
+                </div>
 
+                <div v-else class="flex flex-col gap-3">
+                    <InputText v-model="editedProject.title" />
+                    <Textarea v-model="editedProject.description" rows="3" />
+
+                    <div class="flex gap-2">
                         <Button
-                            label="Edit"
-                            icon="pi pi-pencil"
-                            @click="isEditingProject = true"
+                            label="Save"
+                            icon="pi pi-check"
+                            @click="saveProjectEdit"
                         />
-                    </div>
-
-                    <div v-else class="flex flex-col gap-3">
-                        <InputText v-model="editedProject.title" />
-                        <Textarea
-                            v-model="editedProject.description"
-                            rows="3"
+                        <Button
+                            label="Cancel"
+                            severity="secondary"
+                            @click="isEditingProject = false"
                         />
-
-                        <div class="flex gap-2">
-                            <Button
-                                label="Save"
-                                icon="pi pi-check"
-                                @click="saveProjectEdit"
-                            />
-                            <Button
-                                label="Cancel"
-                                severity="secondary"
-                                @click="isEditingProject = false"
-                            />
-                            <Button
-                                label="Delete"
-                                severity="danger"
-                                icon="pi pi-trash"
-                                @click="deleteProject"
-                            />
-                        </div>
+                        <Button
+                            label="Delete"
+                            severity="danger"
+                            icon="pi pi-trash"
+                            @click="deleteProject"
+                        />
                     </div>
                 </div>
 

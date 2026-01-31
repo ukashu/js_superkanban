@@ -11,6 +11,10 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    changeStatus: {
+        type: Function,
+        required: false,
+    },
 })
 
 const formatDate = (isoString) => {
@@ -83,13 +87,18 @@ const deleteTask = async () => {
     <Card class="task-card mb-4">
         <template #title>
             <div class="flex justify-between items-center">
-                <span class="font-bold">{{ task.title }}</span>
-                <Button
-                    label="Details"
-                    size="small"
-                    text
-                    @click="showDetails = !showDetails"
-                />
+                <span class="sm:text-lg font-bold">{{ task.title }}</span>
+                <div>
+                    <p class="ml-auto text-sm sm:hidden">
+                        {{ task.status }}
+                    </p>
+                    <Button
+                        label="Details"
+                        size="small"
+                        text
+                        @click="showDetails = !showDetails"
+                    />
+                </div>
             </div>
         </template>
 
@@ -149,14 +158,40 @@ const deleteTask = async () => {
         </template>
 
         <template #footer>
-            <small class="text-gray-500">
-                Assigned to: {{ task.assignee_name }}
-            </small>
+            <div class="flex items-between justify-around sm:hidden">
+                <Button
+                    label="DOING"
+                    class="DOING"
+                    @click="changeStatus(task, 'DOING')"
+                />
+                <Button
+                    label="REVIEW"
+                    class="REVIEW"
+                    @click="changeStatus(task, 'REVIEW')"
+                />
+                <Button
+                    label="DONE"
+                    class="DONE"
+                    @click="changeStatus(task, 'DONE')"
+                />
+            </div>
         </template>
     </Card>
 </template>
 
 <style scoped>
+.DOING {
+    background-color: #ebf8ff;
+    color: #2c5282;
+}
+.REVIEW {
+    background-color: #fffff0;
+    color: #744210;
+}
+.DONE {
+    background-color: #f0fff4;
+    color: #276749;
+}
 .task-card {
     max-width: 600px;
 }

@@ -287,8 +287,8 @@
 
 ### Ostatnie zmiany
 
-- [ ] zmienic z powrotem na wyswietlanie daty w tasku
-- [ ] klikanie w details niczego nie pokazuje (można zamiast tego po prostu wyświetlić edit)
+- [x] zmienic z powrotem na wyswietlanie daty w tasku
+- [ ] klikanie w details projektu niczego nie pokazuje (można zamiast tego po prostu wyświetlić edit)
 - [ ] naprawić responsywnosc w widoku userkanban i project kanban
-  - [ ] w user kanban nie pokazują się przyciski
+  - [x] w user kanban nie pokazują się przyciski
   - [ ] w project kanban nie pokazują się przyciski, backlog pokazuje się w złym miejscu oraz taski nie wypełniają całej szerokości

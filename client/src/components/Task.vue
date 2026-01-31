@@ -13,6 +13,24 @@ const props = defineProps({
     },
 })
 
+const formatDate = (isoString) => {
+    return new Date(isoString).toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    })
+}
+
+const formatDateTime = (isoString) => {
+    return new Date(isoString).toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+    })
+}
+
 const emit = defineEmits(["taskDeleted", "taskUpdated"])
 
 const showDetails = ref(false)
@@ -24,14 +42,17 @@ const statuses = ["todo", "in_progress", "done"]
 
 const saveEdit = async () => {
     try {
-        await fetch(`http://localhost:5000/api/tasks/${editedTask.value.task_id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+        await fetch(
+            `http://localhost:5000/api/tasks/${editedTask.value.task_id}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+                body: JSON.stringify(editedTask.value),
             },
-            body: JSON.stringify(editedTask.value),
-        })
+        )
 
         emit("taskUpdated", editedTask.value)
         isEditing.value = false
@@ -73,7 +94,12 @@ const deleteTask = async () => {
         </template>
 
         <template #content>
-            <p>{{ task.description }}</p>
+            <p
+                class="m-0 text-gray-700"
+                :title="formatDateTime(task.assignment_date)"
+            >
+                {{ formatDate(task.assignment_date) }}
+            </p>
 
             <div v-if="showDetails" class="mt-3">
                 <!-- VIEW MODE -->
@@ -101,7 +127,11 @@ const deleteTask = async () => {
                     />
 
                     <div class="flex gap-2 mt-2">
-                        <Button label="Save" icon="pi pi-check" @click="saveEdit" />
+                        <Button
+                            label="Save"
+                            icon="pi pi-check"
+                            @click="saveEdit"
+                        />
                         <Button
                             label="Cancel"
                             severity="secondary"

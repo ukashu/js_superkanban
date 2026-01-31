@@ -35,7 +35,7 @@ const formatDateTime = (isoString) => {
     })
 }
 
-const emit = defineEmits(["taskDeleted", "taskUpdated"])
+const emit = defineEmits(["taskDeleted", "taskUpdated", "refresh"])
 
 const showDetails = ref(false)
 const isEditing = ref(false)
@@ -59,7 +59,7 @@ const saveEdit = async () => {
             },
         )
 
-        emit("taskUpdated", editedTask.value)
+        emit("refresh")
         isEditing.value = false
     } catch (err) {
         console.error("Błąd edycji taska:", err)
@@ -80,7 +80,7 @@ const deleteTask = async () => {
             },
         )
 
-        emit("taskDeleted", props.task.task_id)
+        emit("refresh")
     } catch (err) {
         console.error("Błąd usuwania taska:", err)
     }

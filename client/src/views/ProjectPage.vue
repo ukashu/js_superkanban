@@ -319,6 +319,7 @@ function showAssignUserPopup(taskId) {
                             :projectId="currentProjectId"
                             class="project-kanban"
                             @drop-task="onDropTask"
+                            @refresh="onRefresh"
                         />
                     </div>
                 </div>

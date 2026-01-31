@@ -7,7 +7,7 @@ import ProgressSpinner from "primevue/progressspinner"
 import Message from "primevue/message"
 import Divider from "primevue/divider"
 
-const emit = defineEmits(["drop-task"])
+const emit = defineEmits(["drop-task", "refresh"])
 
 const props = defineProps({
     projectId: [Number, String],
@@ -115,8 +115,10 @@ const assigneesWithTasks = computed(() => {
                                 :draggable="true"
                                 @dragstart="(e) => dragStart(e, task)"
                                 @dragend="dragEnd"
+                                @refresh="emit('refresh')"
                                 :task="task"
                                 :change-status="changeNonDragTaskStatus"
+                                :editable="true"
                             />
                         </div>
                     </div>

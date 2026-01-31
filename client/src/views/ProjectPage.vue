@@ -13,6 +13,8 @@ import Dialog from "primevue/dialog"
 import Button from "primevue/button"
 import ProgressSpinner from "primevue/progressspinner"
 import Message from "primevue/message"
+import InputText from "primevue/inputtext"
+import Textarea from "primevue/textarea"
 
 const projects = ref([])
 const currentProjectId = ref(null)
@@ -31,6 +33,14 @@ const reloadBacklogKey = ref(0)
 const route = useRoute()
 const userId = route.params.userId
 
+const showProjectDetails = ref(false)
+const isEditingProject = ref(false)
+
+const editedProject = ref({
+    title: "",
+    description: "",
+})
+
 function openAssignUser(taskId) {
     selectedTaskId.value = taskId
     showAssignPopup.value = true
@@ -42,7 +52,7 @@ function onAssigned() {
 }
 
 function onRefresh() {
-    showAddTaskPopup.value = false
+    showAddProjectPopup.value = false
     reloadBacklogKey.value++
 }
 
@@ -79,11 +89,65 @@ async function selectProject(id) {
 
         const json = await res.json()
         project.value = json.data
+        editedProject.value = {
+            title: project.value.title,
+            description: project.value.description,
+        }
         reloadBacklogKey.value++
     } catch (err) {
         error.value = err.message
     } finally {
         loading.value = false
+    }
+}
+
+function openProjectDetails() {
+    showProjectDetails.value = !showProjectDetails.value
+    isEditingProject.value = false
+
+    editedProject.value = {
+        title: project.value.title,
+        description: project.value.description,
+    }
+}
+
+async function saveProjectEdit() {
+    try {
+        const res = await fetch(`/api/projects/${project.value.project_id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(editedProject.value),
+        })
+
+        if (!res.ok) throw new Error()
+
+        project.value.title = editedProject.value.title
+        project.value.description = editedProject.value.description
+
+        isEditingProject.value = false
+    } catch {
+        alert("Błąd zapisu projektu")
+    }
+}
+
+async function deleteProject() {
+    if (!confirm("Na pewno usunąć projekt?")) return
+
+    try {
+        const res = await fetch(`/api/projects/${project.value.project_id}`, {
+            method: "DELETE",
+        })
+
+        if (!res.ok) throw new Error()
+
+        projects.value = projects.value.filter(
+            (p) => p.project_id !== project.value.project_id,
+        )
+
+        project.value = null
+        selectedProject.value = null
+    } catch {
+        alert("Błąd usuwania projektu")
     }
 }
 
@@ -165,12 +229,42 @@ function showAssignUserPopup(taskId) {
                             {{ project.title }}
                         </h1>
                         <p class="text-gray-600">{{ project.description }}</p>
+                        <Button
+                            label="Edit"
+                            icon="pi pi-pencil"
+                            @click="isEditingProject = true"
+                        />
                     </div>
+
                     <Button
                         label="Add Task"
                         icon="pi pi-plus"
                         @click="showAddTaskPopup = true"
                     />
+                </div>
+
+                <div v-if="isEditingProject" class="flex flex-col gap-3">
+                    <InputText v-model="editedProject.title" />
+                    <Textarea v-model="editedProject.description" rows="3" />
+
+                    <div class="flex gap-2">
+                        <Button
+                            label="Save"
+                            icon="pi pi-check"
+                            @click="saveProjectEdit"
+                        />
+                        <Button
+                            label="Cancel"
+                            severity="secondary"
+                            @click="isEditingProject = false"
+                        />
+                        <Button
+                            label="Delete"
+                            severity="danger"
+                            icon="pi pi-trash"
+                            @click="deleteProject"
+                        />
+                    </div>
                 </div>
 
                 <div class="sm:grid sm:grid-cols-4 gap-6 flex-1 min-h-0">
@@ -206,6 +300,7 @@ function showAssignUserPopup(taskId) {
                             :projectId="currentProjectId"
                             class="project-kanban"
                             @drop-task="onDropTask"
+                            @refresh="onRefresh"
                         />
                     </div>
                 </div>
@@ -221,7 +316,7 @@ function showAssignUserPopup(taskId) {
             v-model:visible="showAddTaskPopup"
             modal
             header="Create Task"
-            :style="{ width: '50vw' }"
+            class="w-[90vw] sm:w-[50vw]"
         >
             <CreateTask :projectId="currentProjectId" @refresh="onRefresh" />
         </Dialog>
@@ -230,16 +325,16 @@ function showAssignUserPopup(taskId) {
             v-model:visible="showAddProjectPopup"
             modal
             header="Create Project"
-            :style="{ width: '50vw' }"
+            class="w-[90vw] sm:w-[50vw]"
         >
-            <CreateProject @refresh="onRefresh" />
+            <CreateProject @project-created="onRefresh" />
         </Dialog>
 
         <Dialog
             v-model:visible="showAssignPopup"
             modal
             header="Assign User"
-            :style="{ width: '40vw' }"
+            class="w-[90vw] sm:w-[40vw]"
         >
             <AssignUserToTask
                 :projectId="currentProjectId"

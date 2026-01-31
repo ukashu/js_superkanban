@@ -5,7 +5,13 @@
         <div v-if="loading">Ładowanie...</div>
 
         <div v-else>
-            <Task v-for="task in tasks" :key="task.task_id" :task="task" />
+            <Task
+                v-for="task in tasks"
+                :key="task.task_id"
+                :task="task"
+                @taskDeleted="handleDelete"
+                @taskUpdated="handleUpdate"
+            />
         </div>
         <ProjectBacklog :project-id="projectId" />
     </div>
@@ -39,6 +45,22 @@ onMounted(async () => {
         loading.value = false
     }
 })
+
+const handleDelete = (taskId) => {
+    tasks.value = tasks.value.filter(
+        (task) => task.task_id !== taskId,
+    )
+}
+
+const handleUpdate = (updatedTask) => {
+    const index = tasks.value.findIndex(
+        (task) => task.task_id === updatedTask.task_id,
+    )
+
+    if (index !== -1) {
+        tasks.value[index] = { ...updatedTask }
+    }
+}
 </script>
 
 <style scoped>

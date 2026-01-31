@@ -284,3 +284,17 @@
   - [ ] tylko użytkownik X i admin mogą wejść w `/users/:userX/projects` na frontendzie
   - [ ] tylko użytkownik X, project owner i admin mogą zmienić status taska przypisanego do użytkownika X z "DOING" na "REVIEW" i odwrotnie
   - [ ] tylko project owner i admin mogą zmienić status taska z "REVIEW" na "DONE" i odwrotnie
+
+### Ostatnie zmiany
+
+- [x] zmienic z powrotem na wyswietlanie daty w tasku
+- [ ] klikanie w details projektu niczego nie pokazuje (można zamiast tego po prostu wyświetlić edit)
+- [ ] naprawić responsywnosc w widoku userkanban i project kanban
+  - [x] w user kanban nie pokazują się przyciski
+  - [ ] w project kanban nie pokazują się przyciski, backlog pokazuje się w złym miejscu oraz taski nie wypełniają całej szerokości
+- [x] edit task details doesnt do anything
+- [x] editing task does not refresh project kanban
+- [x] disable editing task in user kanban
+- [x] My projects has useless margin on the bottom
+- [ ] editing project does not refresh my projects list
+- [ ] popups are not wide enough on small screens

@@ -32,6 +32,7 @@ const validateUserDetails = [
         .isEmail()
         .withMessage("Invalid email format"),
     body("password")
+        .optional()
         .notEmpty()
         .withMessage("Password is required")
         .isLength({ min: 6 })
@@ -50,7 +51,7 @@ router.route("/:userId/projects").get(isSameUserOrAdmin, getProjectsForUser)
 router
     .route("/:userId")
     .get(isSameUserOrAdmin, getUserById)
-    .put(isSameUserOrAdmin, editUser)
+    .put(validateUserDetails, isSameUserOrAdmin, editUser)
     .delete(isAdmin, deleteUser)
 
 router.route("/").get(findUsers)

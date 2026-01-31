@@ -303,3 +303,5 @@
 - [ ] restrict project routes
 - [x] admin should be able to add user ot task
 - [x] bug: users cannot assign users to tasks (401 unauthorized)
+- [ ] user updating does not work
+- [ ] please enter email message is not showing in Login

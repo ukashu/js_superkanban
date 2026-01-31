@@ -1,5 +1,6 @@
 import { dbGet, dbRun, dbAll } from "../db/db.js"
 import { validationResult } from "express-validator"
+import bcrypt from "bcrypt"
 
 const mockUsers = [
     { name: "JD", email: "johndoe@email.com" },
@@ -75,6 +76,13 @@ export const editUser = async (req, res, next) => {
         })
     }
 
+    let hashedPassword = undefined
+
+    if (password !== undefined) {
+        const salt = await bcrypt.genSalt(10)
+        hashedPassword = await bcrypt.hash(password, salt)
+    }
+
     try {
         const dbResult = await dbRun(
             `UPDATE users
@@ -84,7 +92,7 @@ export const editUser = async (req, res, next) => {
                 password = COALESCE(?, password),
                 is_admin = COALESCE(?, is_admin)
             WHERE user_id = ?`,
-            [username, email, password, is_admin, userId],
+            [username, email, hashedPassword, is_admin, userId],
         )
 
         if (dbResult.changes === 0) {

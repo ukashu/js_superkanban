@@ -316,7 +316,7 @@ function showAssignUserPopup(taskId) {
             v-model:visible="showAddTaskPopup"
             modal
             header="Create Task"
-            :style="{ width: '50vw' }"
+            class="w-[90vw] sm:w-[50vw]"
         >
             <CreateTask :projectId="currentProjectId" @refresh="onRefresh" />
         </Dialog>
@@ -325,7 +325,7 @@ function showAssignUserPopup(taskId) {
             v-model:visible="showAddProjectPopup"
             modal
             header="Create Project"
-            :style="{ width: '50vw' }"
+            class="w-[90vw] sm:w-[50vw]"
         >
             <CreateProject @project-created="onRefresh" />
         </Dialog>
@@ -334,7 +334,7 @@ function showAssignUserPopup(taskId) {
             v-model:visible="showAssignPopup"
             modal
             header="Assign User"
-            :style="{ width: '40vw' }"
+            class="w-[90vw] sm:w-[40vw]"
         >
             <AssignUserToTask
                 :projectId="currentProjectId"

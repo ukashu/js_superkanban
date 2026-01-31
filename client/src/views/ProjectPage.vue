@@ -132,11 +132,14 @@ function openProjectDetails() {
 
 async function saveProjectEdit() {
     try {
-        const res = await fetch(`/api/projects/${project.value.project_id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(editedProject.value),
-        })
+        const res = await authFetch(
+            `/api/projects/${project.value.project_id}`,
+            {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(editedProject.value),
+            },
+        )
 
         if (!res.ok) throw new Error()
 
@@ -153,9 +156,12 @@ async function deleteProject() {
     if (!confirm("Na pewno usunąć projekt?")) return
 
     try {
-        const res = await fetch(`/api/projects/${project.value.project_id}`, {
-            method: "DELETE",
-        })
+        const res = await authFetch(
+            `/api/projects/${project.value.project_id}`,
+            {
+                method: "DELETE",
+            },
+        )
 
         if (!res.ok) throw new Error()
 

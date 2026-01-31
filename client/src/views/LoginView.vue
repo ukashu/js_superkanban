@@ -30,7 +30,8 @@ const submitLogin = async () => {
         const json = await response.json()
 
         if (!response.ok) {
-            errorMessage.value = json.message || "Invalid email or password"
+            errorMessage.value =
+                json?.message || json?.error || "Nie udało się zalogować."
             return
         }
 
@@ -60,7 +61,11 @@ const submitLogin = async () => {
 
             <template #content>
                 <form @submit.prevent="submitLogin" class="flex flex-col gap-4">
-                    <Message v-if="errorMessage" severity="error">
+                    <Message
+                        v-if="errorMessage"
+                        severity="error"
+                        :closable="false"
+                    >
                         {{ errorMessage }}
                     </Message>
 

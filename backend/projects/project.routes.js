@@ -8,7 +8,7 @@ import {
 } from "./project.controllers.js"
 import {
     isAdmin,
-    isSameUserOrAdmin,
+    isProjectOwnerOrAdmin,
 } from "../middleware/authorization.middleware.js"
 import { authenticateToken } from "../middleware/auth.middleware.js"
 import { body } from "express-validator"
@@ -26,9 +26,9 @@ const validateProject = [
 
 router
     .route("/:projectId")
-    .get(getProjectById)
-    .put(validateProject, editProject)
-    .delete(deleteProject)
+    .get(isProjectOwnerOrAdmin, getProjectById)
+    .put(validateProject, isProjectOwnerOrAdmin, editProject)
+    .delete(isProjectOwnerOrAdmin, deleteProject)
 
 router.route("/").get(isAdmin, getProjects).post(validateProject, createProject)
 

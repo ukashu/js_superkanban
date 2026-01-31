@@ -4,7 +4,11 @@ import { validationResult } from "express-validator"
 export const getProjects = async (req, res, next) => {
     try {
         const projects = await dbAll("SELECT * FROM projects")
-        res.status(200).json({ message: "Query successful", data: projects })
+        res.status(200).json({
+            success: true,
+            message: "Query successful",
+            data: { projects },
+        })
     } catch (error) {
         next(error)
     }

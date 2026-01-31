@@ -70,8 +70,14 @@ function onRefresh() {
 }
 
 async function fetchUserProjects() {
+    const url = currentUser.isAdmin
+        ? `/api/projects/`
+        : `/api/users/${userId}/projects`
+
+    console.log({ currentUser })
+
     try {
-        const res = await authFetch(`/api/users/${userId}/projects`)
+        const res = await authFetch(url)
         if (!res.ok) throw new Error("Failed to fetch user projects")
         const json = await res.json()
         if (json.success) {

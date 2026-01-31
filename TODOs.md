@@ -300,3 +300,5 @@
 - [x] popups are not wide enough on small screens
 - [ ] admin should fetch all projects in projectView
 - [x] change user icon if admin
+- [ ] restrict project routes
+- [ ] admin should be able to add user ot task

@@ -15,7 +15,6 @@ export const getProjects = async (req, res, next) => {
 }
 
 export const getProjectById = async (req, res, next) => {
-    console.log("HIT THE ENDPOINT!!!!!")
     const projectId = Number(req.params.projectId)
     try {
         const project = await dbGet(

@@ -60,40 +60,17 @@
 
 ## Na zjazd 7
 
-### Backlog
-
-- [ ] design interfejsu
-- [ ] stworzenie komponentów bez stylingu
-  - [ ] Task - task as displayed on a kanban board
-  - [ ] KanbanBoard
-  - [ ] Backlog - list of tasks in backlog for a project (more compact tasks)
-  - [ ] ProjectDetails popup showing project details, members and description
-  - [ ] TaskEdit popup with delete option
-  - [ ] ProjectEdit popup with delete option
-- - [ ] UserDetailsEdit popup with delete option
-- [ ] ProjectCreate popup component
-- [ ] Task Create popup component
-- [ ] Assign user to task popup component
-- [ ] UpcomingTasks component
-- [ ] stworzenie Viewsów
-  - [ ] User Account/Homepage view
-  - [ ] Project view
-- [ ] Add new route getTasksForUser `/users/:userId/tasks`
-- [ ] Add new route getProjectsForUser `/users/:userId/projects` (always project owner first, project worker second)
-- [ ] filtrowanie i sortowanie tasków po stronie backendu w `/projects/:projectId/tasks` oraz `/users/:userId/tasks`
-
 ### Łukasz
 
 - [ ] zmienić fetche na stosujące Composables
-- [ ] rozwinąć UserHomePage
-  - [ ] stworzyć stronę zgodną z wireframe
-    - [ ] dane użytkownika
-    - [ ] możliwość edycji danych użytkownika
-    - [ ] nadchodzące terminy tasków
-    - [ ] kanban board ze wszystkimi taskami użytkownika jako Component (póki co bez drag and drop)
+- [x] rozwinąć UserHomePage
+  - [x] stworzyć stronę zgodną z wireframe
+    - [x] dane użytkownika
+    - [x] możliwość edycji danych użytkownika
+    - [x] nadchodzące terminy tasków
+    - [x] kanban board ze wszystkimi taskami użytkownika jako Component (póki co bez drag and drop)
 - [x] KanbanBoard component
-- [ ] EditUserData popup component
-- [ ] Add new route getProjectsForUser `/users/:userId/projects`
+- [x] Add new route getProjectsForUser `/users/:userId/projects`
 
 ### Wiktoria
 
@@ -121,17 +98,8 @@
 
 ## Zjazd 8
 
-### Backlog
-
-- [ ] w get tasks for project group by zmienić żeby struktura odpowiedzi była taka sama jak innych, po prostu posortowane po assignee
-- [ ] zmienić backend żeby data to zawsze była raw data, nie np. key "tasks" i dopiero wtedy array of tasks
-- [x] naprawić dodawanie taska
-- [ ] Styling
-  - [ ] zmienić CreateTask na popup
-
 ### Łukasz
 
-- [ ] zabezpieczenie ścieżek w backendzie
 - [x] połączyć frontend z backendem w kontekście uwierzytelniania i autoryzacji
 - [x] mechanika dodawania taska do pracownika poprzez przeciągnięcie taska w widoku projektu
 
@@ -153,45 +121,6 @@
 - rola zapisana w JWT?
 
 ## Na zjazd 9
-
-### Backlog
-
-- [ ] Dodać user homepage
-  - [x] user kanban
-  - [x] zmiana statusu tasks poprzez przeciągnięcie
-    - [ ] może zmienić z refetcha po zmianie statusu na optimistic update?
-  - [ ] user details
-- [x] bug: nie widać tasków w backlogu w ProjectKanban
-- [x] zmienić table na grid w kanbanie
-- [ ] usuwanie tasków/projektów
-- [ ] bug: reloadBacklogKey could cause overflow issues?
-- [ ] zabezpieczenie wszystkich ścieżek w backendzie które powinny być chronione
-- [ ] dodanie wysyłania JWT w frontendzie tam gdzie frontend requestuje chronione zasoby (według wzoru z `ProjectKanban.vue`)
-- [ ] edit user details
-- [ ] dodać logout
-- [ ] make login/register redirect to user home
-- [ ] extending Project homepage
-  - [ ] dodać listę projektów zmieniającą listę tasków
-- [ ] dodać opcje sortowania/filtracji w frontendzie
-  - [ ] w project kanban
-  - [ ] w user kanban
-- [x] usunąć niepotrzebne części
-  - [x] Tasks frontend route
-- [ ] zmienić fetche na composables
-- [ ] poprawne wyświetlanie errorów w UI (np. w popupach)
-- [ ] dodanie listy projektów w ProjectView
-- [ ] dodanie fetch composable i użycie w ProjectKanban
-- [ ] kliknięcie na projekt z listy projektów zmienia zawartośc ProjectKanban
-
-- [x] naprawić błąd: dwa taski w jednym rzędzie
-- [x] cała strona nie powinna się scrollować, tylko kanban, backlog i project list
-- [x] napraw podświetlanie stref zrzutu tasków
-- [x] dodaj tailwind
-- [x] przycisk Add project
-- [ ] zmienić edycję użytkownika na popup
-- [ ] owner_id przy tworzeniu taska powinien być brany z JWT w backendzie
-- [ ] usuwanie tasków (w widoku projektu)
-  - najlepiej poprzez przeciągnięcie i upuszczenie w strefie usuwania, strefa usuwania może pojawiać się pod backlogiem kiedy task jest podniesiony
 
 ### Łukasz
 
@@ -227,48 +156,41 @@
 
 ## Na zjazd 10
 
-### Backlog
+### Łukasz
 
 - [x] użycie composables tam gdzie to możliwe
-- [ ] sprawdzić czy errory z backendu wyświetlają się w poprawny sposób, jeżeli nie - naprawić
 - [x] przeniesienie taska z powrotem do backlogu (w widoku projektu)
 - [x] paginacja tasków w kanbanie
-  - [ ] bug: kiedy taski załadowane za pierwszym razem nie przepełniają kontenera, nie doładowują się inne
   - [x] bug: reloading task list does not work
 - [x] optimistic updates przy zmianach statusu tasków
 - [x] bug: drop zone nie zajmuje całej kolumny UserKanban
 - [x] dodać wyświetlanie daty utworzenia do tasków
-- [ ] szczegóły taska
-  - [ ] przycisk details (po kliknięciu wyświetla details)
-  - [ ] edycja taska (przycisk do edycji wewnątrz details) (edycja title, description, status)
-  - [ ] dodać przycisk delete (wewnątrz edycji)
-- [ ] szczegóły projektu
-  - [ ] przycisk details (po kliknięciu wyświetla details)
-  - [ ] wewnątrz details przycisk do edycji (edycja title, description)
-  - [ ] przycisk do usunięcia projektu wewnątrz edycji
-- [ ] filtrowanie tasków po nazwie (UserKanban i ProjectKanban)
-- [ ] dodać restrykcje związane z rolami
-- [ ] owner_id przy tworzeniu taska powinien być brany z JWT w backendzie
-- [ ] naprawić LoginView
-  - [ ] bug: logowanie złymi danymi łamie stronę
-  - [ ] LoginView powinien wyświetlać errory
-  - można wzorowac się na obecnym RegisterView
-- [ ] bug: dodanie nowego projektu powinno odświeżać listę projektów
-- [ ] bug: taski w user kanban nie powinny wyświetlać się obok siebie
+- [x] zmienic z powrotem na wyswietlanie daty w tasku
+- [x] naprawić responsywnosc w widoku userkanban i project kanban
+  - [x] w user kanban nie pokazują się przyciski
+  - [x] w project kanban nie pokazują się przyciski, backlog pokazuje się w złym miejscu oraz taski nie wypełniają całej szerokości
+- [x] bug: naprawa edycji tasków
+- [x] edytowanie taska nie odświeża UserKanban
+- [x] wyłączenie edycji tasków w UserKanban
+- [x] rozszerzenie popupów na mniejszych ekranach
+- [x] admin widzi wszystkie projekty w ProjectView
+- [x] zmiana ikonki użytkownika w UI na hashtag jeżeli jest adminem
+- [x] zabezpieczyć ścieżki projektu w backendzie
+- [x] zamienić fetch na authFetch w pozostałych miejscach kodu
 
 ### Wiktoria
 
-- [ ] szczegóły taska
-  - [ ] przycisk details (po kliknięciu wyświetla details)
-  - [ ] edycja taska (przycisk do edycji wewnątrz details) (edycja title, description, status)
-  - [ ] dodać przycisk delete (wewnątrz edycji)
-- [ ] szczegóły projektu
-  - [ ] przycisk details (po kliknięciu wyświetla details)
-  - [ ] wewnątrz details przycisk do edycji (edycja title, description)
-  - [ ] przycisk do usunięcia projektu wewnątrz edycji
-- [ ] naprawić LoginView
-  - [ ] bug: logowanie złymi danymi łamie stronę
-  - [ ] LoginView powinien wyświetlać errory (błędy z serwera/nieprawidłowe dane itp.)
+- [x] szczegóły taska
+  - [x] przycisk details (po kliknięciu wyświetla details)
+  - [x] edycja taska (przycisk do edycji wewnątrz details) (edycja title, description, status)
+  - [x] dodać przycisk delete (wewnątrz edycji)
+- [x] szczegóły projektu
+  - [x] przycisk details (po kliknięciu wyświetla details)
+  - [x] wewnątrz details przycisk do edycji (edycja title, description)
+  - [x] przycisk do usunięcia projektu wewnątrz edycji
+- [x] naprawić LoginView
+  - [x] bug: logowanie złymi danymi łamie stronę
+  - [x] LoginView powinien wyświetlać errory (błędy z serwera/nieprawidłowe dane itp.)
   - można wzorowac się na obecnym RegisterView
 
 ### Ola
@@ -284,23 +206,3 @@
   - [x] tylko użytkownik X i admin mogą wejść w `/users/:userX/projects` na frontendzie
   - [x] tylko użytkownik X, project owner i admin mogą zmienić status taska przypisanego do użytkownika X z "DOING" na "REVIEW" i odwrotnie
   - [x] tylko project owner i admin mogą zmienić status taska z "REVIEW" na "DONE" i odwrotnie
-
-### Ostatnie zmiany
-
-- [x] zmienic z powrotem na wyswietlanie daty w tasku
-- [ ] klikanie w details projektu niczego nie pokazuje (można zamiast tego po prostu wyświetlić edit)
-- [ ] naprawić responsywnosc w widoku userkanban i project kanban
-  - [x] w user kanban nie pokazują się przyciski
-  - [ ] w project kanban nie pokazują się przyciski, backlog pokazuje się w złym miejscu oraz taski nie wypełniają całej szerokości
-- [x] edit task details doesnt do anything
-- [x] editing task does not refresh project kanban
-- [x] disable editing task in user kanban
-- [x] My projects has useless margin on the bottom
-- [ ] editing project does not refresh my projects list
-- [x] popups are not wide enough on small screens
-- [x] admin should fetch all projects in projectView
-- [x] change user icon if admin
-- [ ] restrict project routes
-- [x] admin should be able to add user ot task
-- [x] bug: users cannot assign users to tasks (401 unauthorized)
-- [x] user updating does not work

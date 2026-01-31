@@ -34,7 +34,7 @@ async function assign() {
     }
 
     try {
-        const res = await fetch(
+        const res = await authFetch(
             `/api/projects/${props.projectId}/tasks/${props.taskId}`,
             {
                 method: "PUT",

@@ -298,7 +298,8 @@
 - [x] My projects has useless margin on the bottom
 - [ ] editing project does not refresh my projects list
 - [x] popups are not wide enough on small screens
-- [ ] admin should fetch all projects in projectView
+- [x] admin should fetch all projects in projectView
 - [x] change user icon if admin
 - [ ] restrict project routes
-- [ ] admin should be able to add user ot task
+- [x] admin should be able to add user ot task
+- [x] bug: users cannot assign users to tasks (401 unauthorized)

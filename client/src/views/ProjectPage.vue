@@ -52,13 +52,8 @@ function onAssigned() {
 }
 
 function onRefresh() {
-    showAddProjectPopup.value = false   
-    fetchUserProjects()                 
-}
-
-function onProjectCreated() {
     showAddProjectPopup.value = false
-    fetchUserProjects()
+    reloadBacklogKey.value++
 }
 
 async function fetchUserProjects() {
@@ -152,7 +147,6 @@ async function deleteProject() {
     }
 }
 
-
 // Watch for listbox selection change
 watch(selectedProject, (newVal) => {
     if (newVal && newVal.project_id) {
@@ -225,13 +219,12 @@ function showAssignUserPopup(taskId) {
             </div>
 
             <div v-else-if="project" class="flex flex-col h-full min-h-0">
-                <div class="flex justify-between items-start mb-6">
+                <div class="hidden sm:flex justify-between items-center mb-6">
                     <div>
                         <h1 class="text-3xl font-bold text-gray-900">
                             {{ project.title }}
                         </h1>
                         <p class="text-gray-600">{{ project.description }}</p>
-
                         <Button
                             label="Details"
                             icon="pi pi-info-circle"
@@ -254,7 +247,9 @@ function showAssignUserPopup(taskId) {
                 >
                     <div v-if="!isEditingProject">
                         <p><b>Title:</b> {{ project.title }}</p>
-                        <p class="mb-4"><b>Description:</b> {{ project.description }}</p>
+                        <p class="mb-4">
+                            <b>Description:</b> {{ project.description }}
+                        </p>
 
                         <Button
                             label="Edit"
@@ -265,10 +260,17 @@ function showAssignUserPopup(taskId) {
 
                     <div v-else class="flex flex-col gap-3">
                         <InputText v-model="editedProject.title" />
-                        <Textarea v-model="editedProject.description" rows="3" />
+                        <Textarea
+                            v-model="editedProject.description"
+                            rows="3"
+                        />
 
                         <div class="flex gap-2">
-                            <Button label="Save" icon="pi pi-check" @click="saveProjectEdit" />
+                            <Button
+                                label="Save"
+                                icon="pi pi-check"
+                                @click="saveProjectEdit"
+                            />
                             <Button
                                 label="Cancel"
                                 severity="secondary"
@@ -284,7 +286,7 @@ function showAssignUserPopup(taskId) {
                     </div>
                 </div>
 
-                <div class="grid grid-cols-4 gap-6 flex-1 min-h-0">
+                <div class="sm:grid sm:grid-cols-4 gap-6 flex-1 min-h-0">
                     <div
                         class="col-span-1 bg-gray-50 p-4 rounded-lg sm:overflow-y-auto border border-gray-200"
                     >
@@ -343,7 +345,7 @@ function showAssignUserPopup(taskId) {
             header="Create Project"
             :style="{ width: '50vw' }"
         >
-            <CreateProject @project-created="onProjectCreated" />
+            <CreateProject @project-created="onRefresh" />
         </Dialog>
 
         <Dialog

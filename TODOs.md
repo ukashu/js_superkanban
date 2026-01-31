@@ -292,3 +292,4 @@
 - [ ] naprawić responsywnosc w widoku userkanban i project kanban
   - [x] w user kanban nie pokazują się przyciski
   - [ ] w project kanban nie pokazują się przyciski, backlog pokazuje się w złym miejscu oraz taski nie wypełniają całej szerokości
+- [ ] edit task details doesnt do anything

@@ -180,11 +180,8 @@ export const getProjectsForUser = async (req, res, next) => {
 
     try {
         const projects = await dbAll(
-            `SELECT DISTINCT p.* FROM projects p
-             LEFT JOIN tasks t ON p.project_id = t.project_id
-             WHERE p.owner_id = ? OR t.assignee_id = ?
-             ORDER BY CASE WHEN p.owner_id = ? THEN 0 ELSE 1 END, p.title`,
-            [userId, userId, userId],
+            `SELECT DISTINCT * FROM projects WHERE owner_id = ?`,
+            [userId],
         )
 
         return res.status(200).json({

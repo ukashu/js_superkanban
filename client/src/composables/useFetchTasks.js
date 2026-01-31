@@ -1,4 +1,5 @@
 import { ref, watch, onMounted, onBeforeUnmount, computed } from "vue"
+import { authFetch } from "../helpers/helpers.js"
 
 export function useFetchTasks(context, groupingIdRef) {
     const tasks = ref([])
@@ -30,14 +31,18 @@ export function useFetchTasks(context, groupingIdRef) {
 
         loading.value = true
         try {
-            const res = await fetch(url.value)
+            const res = await authFetch(url.value)
+
             if (!res.ok) {
                 throw new Error("Failed to fetch tasks")
             }
 
             const json = await res.json()
-            tasks.value.push(...json.data.tasks)
-            hasMore.value = json.data.hasMore
+
+            const newTasks = json.data?.tasks || []
+            tasks.value.push(...newTasks)
+
+            hasMore.value = json.data?.hasMore || false
             offset.value += limit
         } catch (err) {
             error.value = err.message
@@ -73,6 +78,7 @@ export function useFetchTasks(context, groupingIdRef) {
 
         if (sentinel.value) observer.observe(sentinel.value)
     })
+
     onBeforeUnmount(() => {
         if (observer && sentinel.value) {
             observer.unobserve(sentinel.value)

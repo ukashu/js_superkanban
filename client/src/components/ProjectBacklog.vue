@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, defineEmits } from "vue"
 import ProgressSpinner from "primevue/progressspinner"
+import { authFetch } from "../helpers/helpers.js"
 
 const emit = defineEmits(["drag-task", "drag-end", "refresh"])
 
@@ -24,7 +25,7 @@ onMounted(async () => {
     console.log("Backlog projectId = ", props.projectId)
 
     try {
-        const res = await fetch(`/api/projects/${props.projectId}/tasks`)
+        const res = await authFetch(`/api/projects/${props.projectId}/tasks`)
         if (!res.ok) {
             throw new Error("Failed to fetch backlog tasks")
         }

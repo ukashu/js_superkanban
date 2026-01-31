@@ -1,13 +1,15 @@
 import { ref, watch } from "vue"
+import { authFetch } from "../helpers/helpers.js"
 
 export function useDragTask(tasksRef) {
     const draggedTask = ref(null)
+    const error = ref(null)
 
     const changeTaskStatus = async (e, newStatus) => {
         if (newStatus != draggedTask.value.status) {
             updateTaskStatusLocal(draggedTask.value.id, newStatus)
             try {
-                const res = await fetch(
+                const res = await authFetch(
                     `/api/projects/${draggedTask.value.projectId}/tasks/${draggedTask.value.id}`,
                     {
                         method: "PUT",
@@ -22,6 +24,7 @@ export function useDragTask(tasksRef) {
                 console.log(json)
             } catch (err) {
                 error.value = err.message
+                console.error(err)
             }
         }
         draggedTask.value = null
@@ -30,7 +33,7 @@ export function useDragTask(tasksRef) {
     const changeNonDragTaskStatus = async (task, newStatus) => {
         updateTaskStatusLocal(task.task_id, newStatus)
         try {
-            const res = await fetch(
+            const res = await authFetch(
                 `/api/projects/${task.project_id}/tasks/${task.task_id}`,
                 {
                     method: "PUT",
@@ -49,6 +52,7 @@ export function useDragTask(tasksRef) {
     }
 
     const updateTaskStatusLocal = (taskId, newStatus) => {
+        if (!tasksRef.value) return
         const task = tasksRef.value.find((t) => t.task_id === taskId)
         if (!task) return
         task.status = newStatus
@@ -58,7 +62,6 @@ export function useDragTask(tasksRef) {
         event.dataTransfer.dropEffect = "move"
         event.dataTransfer.effectAllowed = "move"
         event.dataTransfer.setData("text/plain", task.task_id.toString())
-        //emit("drag-task", task.task_id)
 
         draggedTask.value = {
             id: task.task_id,
@@ -72,6 +75,7 @@ export function useDragTask(tasksRef) {
 
     return {
         draggedTask,
+        error,
         changeTaskStatus,
         changeNonDragTaskStatus,
         dragStart,

@@ -1,6 +1,8 @@
 <script setup>
-import { ref, onMounted, watch } from "vue"
+import { ref, onMounted, watch, computed } from "vue"
 import { useRoute } from "vue-router"
+
+import { authFetch, getCurrentUser } from "../helpers/helpers.js"
 
 import CreateTask from "../components/CreateTask.vue"
 import CreateProject from "../components/CreateProject.vue"
@@ -18,7 +20,7 @@ import Textarea from "primevue/textarea"
 
 const projects = ref([])
 const currentProjectId = ref(null)
-const selectedProject = ref(null) // Object for Listbox
+const selectedProject = ref(null)
 const project = ref(null)
 const loading = ref(true)
 const error = ref(null)
@@ -32,6 +34,17 @@ const reloadBacklogKey = ref(0)
 
 const route = useRoute()
 const userId = route.params.userId
+
+const currentUser = getCurrentUser()
+
+const canManageProject = computed(() => {
+    if (!project.value) return false
+    return currentUser.isAdmin || project.value.owner_id === currentUser.userId
+})
+
+const canCreateProject = computed(() => {
+    return currentUser.isAdmin || currentUser.userId === Number(userId)
+})
 
 const showProjectDetails = ref(false)
 const isEditingProject = ref(false)
@@ -58,7 +71,7 @@ function onRefresh() {
 
 async function fetchUserProjects() {
     try {
-        const res = await fetch(`/api/users/${userId}/projects`)
+        const res = await authFetch(`/api/users/${userId}/projects`)
         if (!res.ok) throw new Error("Failed to fetch user projects")
         const json = await res.json()
         if (json.success) {
@@ -82,7 +95,7 @@ async function selectProject(id) {
     loading.value = true
     error.value = null
     try {
-        const res = await fetch(`/api/projects/${id}`)
+        const res = await authFetch(`/api/projects/${id}`)
         if (!res.ok) {
             throw new Error("Failed to fetch project")
         }
@@ -187,6 +200,7 @@ function showAssignUserPopup(taskId) {
                     My Projects
                 </h3>
                 <Button
+                    v-if="canCreateProject"
                     label="New Project"
                     icon="pi pi-plus"
                     class="mt-auto"
@@ -205,6 +219,7 @@ function showAssignUserPopup(taskId) {
             />
             <div class="sm:block hidden mt-auto">
                 <Button
+                    v-if="canCreateProject"
                     label="New Project"
                     icon="pi pi-plus"
                     class="mt-auto"
@@ -237,6 +252,7 @@ function showAssignUserPopup(taskId) {
                     </div>
 
                     <Button
+                        v-if="canManageProject"
                         label="Add Task"
                         icon="pi pi-plus"
                         @click="showAddTaskPopup = true"
@@ -283,6 +299,7 @@ function showAssignUserPopup(taskId) {
                             class="project-backlog"
                         />
                         <Button
+                            v-if="canManageProject"
                             label="Add Task"
                             icon="pi pi-plus"
                             @click="showAddTaskPopup = true"
@@ -311,7 +328,6 @@ function showAssignUserPopup(taskId) {
             </div>
         </main>
 
-        <!-- Dialogs -->
         <Dialog
             v-model:visible="showAddTaskPopup"
             modal

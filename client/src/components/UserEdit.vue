@@ -3,6 +3,7 @@ import { ref, watch } from "vue"
 import Dialog from "primevue/dialog"
 import InputText from "primevue/inputtext"
 import Button from "primevue/button"
+import { authFetch } from "../helpers/helpers.js"
 
 const props = defineProps({
     user: Object,
@@ -26,7 +27,7 @@ watch(
 )
 
 const save = async () => {
-    const res = await fetch(`/api/users/${props.user.user_id}`, {
+    const res = await authFetch(`/api/users/${props.user.user_id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",

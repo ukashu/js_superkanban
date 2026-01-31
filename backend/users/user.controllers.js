@@ -6,7 +6,7 @@ const mockUsers = [
     { name: "JK", email: "jankowalski@email.com" },
 ]
 
-export const getUserById = async (req, res) => {
+export const getUserById = async (req, res, next) => {
     const userId = Number(req.params.userId)
 
     try {
@@ -22,20 +22,17 @@ export const getUserById = async (req, res) => {
             })
         }
 
-        // TODO we do not want to return is_admin in the response
         return res.status(200).json({
             success: true,
             message: "Query succesful",
-            data: {
-                user,
-            },
+            data: { user },
         })
     } catch (err) {
         next(err)
     }
 }
 
-export const deleteUser = async (req, res) => {
+export const deleteUser = async (req, res, next) => {
     const userId = Number(req.params.userId)
 
     try {
@@ -44,7 +41,7 @@ export const deleteUser = async (req, res) => {
             userId,
         )
 
-        if (!dbResult) {
+        if (!dbResult || dbResult.changes === 0) {
             return res.status(404).json({
                 success: false,
                 message: "User not found",
@@ -61,15 +58,22 @@ export const deleteUser = async (req, res) => {
     }
 }
 
-export const editUser = async (req, res) => {
+export const editUser = async (req, res, next) => {
     const userId = Number(req.params.userId)
-    // TODO restrict updating is_admin, restrict updating password
+
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
         return next(errors)
     }
 
     const { username, email, password, is_admin } = req.body
+
+    if (is_admin !== undefined && req.user.is_admin !== 1) {
+        return res.status(403).json({
+            success: false,
+            message: "Access denied. Only admin can change role.",
+        })
+    }
 
     try {
         const dbResult = await dbRun(
@@ -104,30 +108,21 @@ export const findUsers = async (req, res, next) => {
     try {
         let email = req.query.email
 
-        // Jeśli nie podano email — zwróć wszystkich użytkowników
         if (!email) {
             const users = await dbAll("SELECT user_id, name, email FROM users")
-
-            return res.status(200).json({
-                success: true,
-                data: users,
-            })
+            return res.status(200).json({ success: true, data: users })
         }
 
-        // Jeśli podano email — wykonaj filtr
         email = email.toLowerCase()
 
         const users = await dbAll(
             `SELECT user_id, name, email
-       FROM users
-       WHERE LOWER(email) LIKE ?`,
+             FROM users
+             WHERE LOWER(email) LIKE ?`,
             [`%${email}%`],
         )
 
-        return res.status(200).json({
-            success: true,
-            data: users,
-        })
+        return res.status(200).json({ success: true, data: users })
     } catch (err) {
         next(err)
     }
@@ -138,8 +133,6 @@ export const getTasksForUser = async (req, res, next) => {
     const { sortBy, groupBy } = req.query
     const limit = Number(req.query.limit) || 20
     const offset = Number(req.query.offset) || 0
-
-    // TODO zabezpieczyc sciezke if userId != authenticated user
 
     try {
         let query =
@@ -187,8 +180,7 @@ export const getProjectsForUser = async (req, res, next) => {
 
     try {
         const projects = await dbAll(
-            `SELECT DISTINCT p.* 
-             FROM projects p
+            `SELECT DISTINCT p.* FROM projects p
              LEFT JOIN tasks t ON p.project_id = t.project_id
              WHERE p.owner_id = ? OR t.assignee_id = ?
              ORDER BY CASE WHEN p.owner_id = ? THEN 0 ELSE 1 END, p.title`,

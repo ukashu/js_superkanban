@@ -1,7 +1,7 @@
 <script setup>
 import Task from "./Task.vue"
 import { ref, onMounted, computed, toRef } from "vue"
-import { authFetch } from "../helpers/helpers"
+import { authFetch } from "../helpers/helpers.js"
 import { useFetchTasks } from "../composables/useFetchTasks"
 import { useDragTask } from "../composables/useDragTask"
 import ProgressSpinner from "primevue/progressspinner"
@@ -167,3 +167,7 @@ const projectsWithTasks = computed(() => {
     color: #276749;
 }
 </style>
+const res = await fetch(`/api/users/${props.user.user_id}`, { method: "PUT",
+headers: { "Content-Type": "application/json", }, body: JSON.stringify({ name:
+name.value, email: email.value, }), }) if (res.ok) { emit("user-updated", {
+name: name.value, email: email.value }) visible.value = false }

@@ -273,17 +273,17 @@
 
 ### Ola
 
-- [ ] dodać restrykcje związane z rolami
+- [x] dodać restrykcje związane z rolami
   - najważniejsze jest zabezpieczenie na backendzie
   - na frontendzie trzeba przy uprzywilejowanych fetchach przekazywać token użytkownika, w `helpers.js` jest od tego funkcja `authFetch`
   - na frontendzie można ukryć niektóre funkcjonalności jeżeli użytkownik nie ma praw do wykonania ich (np. ukryć przycisk "Add task")
-  - [ ] tylko project owner i admin mogą dodać/edytować/usunąć task do projektu
-  - [ ] tylko project owner i admin mogą przypisać/cofnąć przypisanie tasku do użytkownika
-  - [ ] tylko użytkownik X i admin mogą zmienić detale użytkownika X
-  - [ ] tylko użytkownik X i admin mogą wejść w `/users/:userX` na frontendzie
-  - [ ] tylko użytkownik X i admin mogą wejść w `/users/:userX/projects` na frontendzie
-  - [ ] tylko użytkownik X, project owner i admin mogą zmienić status taska przypisanego do użytkownika X z "DOING" na "REVIEW" i odwrotnie
-  - [ ] tylko project owner i admin mogą zmienić status taska z "REVIEW" na "DONE" i odwrotnie
+  - [x] tylko project owner i admin mogą dodać/edytować/usunąć task do projektu
+  - [x] tylko project owner i admin mogą przypisać/cofnąć przypisanie tasku do użytkownika
+  - [x] tylko użytkownik X i admin mogą zmienić detale użytkownika X
+  - [x] tylko użytkownik X i admin mogą wejść w `/users/:userX` na frontendzie
+  - [x] tylko użytkownik X i admin mogą wejść w `/users/:userX/projects` na frontendzie
+  - [x] tylko użytkownik X, project owner i admin mogą zmienić status taska przypisanego do użytkownika X z "DOING" na "REVIEW" i odwrotnie
+  - [x] tylko project owner i admin mogą zmienić status taska z "REVIEW" na "DONE" i odwrotnie
 
 ### Ostatnie zmiany
 
@@ -298,3 +298,4 @@
 - [x] My projects has useless margin on the bottom
 - [ ] editing project does not refresh my projects list
 - [ ] popups are not wide enough on small screens
+- [ ] admin should fetch all projects in projectView

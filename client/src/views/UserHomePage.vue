@@ -4,6 +4,7 @@ import { useRoute } from "vue-router"
 import Card from "primevue/card"
 import UserKanban from "../components/UserKanban.vue"
 import UserEdit from "../components/UserEdit.vue"
+import { authFetch } from "../helpers/helpers.js"
 
 const user = ref(null)
 const route = useRoute()
@@ -15,8 +16,7 @@ onMounted(async () => {
     console.log("UserHomePage userId:", userId)
 
     try {
-        const userRes = await fetch(`/api/users/${userId}`)
-        // TODO zająć się error handlingiem
+        const userRes = await authFetch(`/api/users/${userId}`)
         if (userRes.ok) {
             const resJson = await userRes.json()
             if (resJson.success) {

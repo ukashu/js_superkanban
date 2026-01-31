@@ -36,9 +36,11 @@ const submitLogin = async () => {
 
         const userId = json.data.user.id
         const token = json.data.token
+        const isAdmin = json.data.user.is_admin
 
         localStorage.setItem("token", token)
         localStorage.setItem("user_id", userId)
+        localStorage.setItem("is_admin", isAdmin)
 
         await router.push(`/users/${userId}`)
         location.reload()
@@ -58,7 +60,6 @@ const submitLogin = async () => {
 
             <template #content>
                 <form @submit.prevent="submitLogin" class="flex flex-col gap-4">
-                    
                     <Message v-if="errorMessage" severity="error">
                         {{ errorMessage }}
                     </Message>

@@ -3,6 +3,7 @@ import { ref, defineEmits } from "vue"
 import InputText from "primevue/inputtext"
 import Dropdown from "primevue/dropdown"
 import Button from "primevue/button"
+import { authFetch } from "../helpers/helpers.js"
 
 const props = defineProps(["projectId", "taskId"])
 const emit = defineEmits(["assigned"])
@@ -16,7 +17,7 @@ const loadingUsers = ref(false)
 async function findUser() {
     loadingUsers.value = true
     try {
-        const res = await fetch(`/api/users?email=${searchEmail.value}`)
+        const res = await authFetch(`/api/users?email=${searchEmail.value}`)
         const json = await res.json()
         users.value = json.data
     } catch (err) {

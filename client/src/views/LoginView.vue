@@ -40,7 +40,7 @@ const submitLogin = async () => {
 
         localStorage.setItem("token", token)
         localStorage.setItem("user_id", userId)
-        localStorage.setItem("is_admin", isAdmin)
+        if (isAdmin) localStorage.setItem("is_admin", isAdmin)
 
         await router.push(`/users/${userId}`)
         location.reload()

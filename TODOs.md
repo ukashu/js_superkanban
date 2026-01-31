@@ -297,5 +297,6 @@
 - [x] disable editing task in user kanban
 - [x] My projects has useless margin on the bottom
 - [ ] editing project does not refresh my projects list
-- [ ] popups are not wide enough on small screens
+- [x] popups are not wide enough on small screens
 - [ ] admin should fetch all projects in projectView
+- [x] change user icon if admin

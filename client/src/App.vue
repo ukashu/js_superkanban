@@ -8,23 +8,42 @@ const router = useRouter()
 
 const userId = ref(null)
 const isLoggedIn = ref(false)
+const isAdmin = ref(false)
 const refreshAuth = () => {
     userId.value = localStorage.getItem("user_id")
     isLoggedIn.value = !!localStorage.getItem("token")
+    isAdmin.value = !!localStorage.getItem("is_admin")
 }
 
 onMounted(() => {
     refreshAuth()
+    console.log({ isAdmin: isAdmin.value })
 })
 
 const logout = () => {
     localStorage.removeItem("token")
     localStorage.removeItem("user_id")
+    localStorage.removeItem("is_admin")
     isLoggedIn.value = false
+    isAdmin.value = false
     router.push("/login")
 }
 
 const items = computed(() => {
+    if (isLoggedIn.value && isAdmin.value) {
+        return [
+            {
+                label: "User (admin)",
+                icon: "pi pi-hashtag text-red-600",
+                route: `/users/${userId.value}`,
+            },
+            {
+                label: "Projects",
+                icon: "pi pi-folder",
+                route: `/users/${userId.value}/projects`,
+            },
+        ]
+    }
     if (isLoggedIn.value) {
         return [
             {
